@@ -1,189 +1,195 @@
-{% extends "base.html" %}
 
-{% block title %}Home - Community Cleanliness & Waste Awareness System{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Community Cleanliness and Waste Awareness System">
+  <title>Home - Community Cleanliness &amp; Waste Awareness System</title>
 
-{% block content %}
-<!-- Hero Section -->
-<div class="hero-section text-center">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
   <div class="container">
+    <a class="navbar-brand fw-bold" href="./index.html">
+      <i class="bi bi-recycle"></i> Clean Community
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#mainNav" aria-controls="mainNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link active" href="./index.html">Home</a>
+        <a class="nav-link" href="./segregation.html">Segregation Guide</a>
+        <a class="nav-link" href="./tips.html">Eco Tips</a>
+        <a class="nav-link" href="./report_issue.html">Report an Issue</a>
+        <a class="nav-link" href="./view_reports.html">View Reports</a>
+      </div>
+    </div>
+  </div>
+</nav>
 
-    <h1 class="display-5 hero-title mb-3">Community Cleanliness &<br>Waste Awareness System</h1>
+<header class="hero-section text-center">
+  <div class="container py-5">
+    <h1 class="display-5 hero-title mb-3">
+      Community Cleanliness &amp;<br>Waste Awareness System
+    </h1>
     <p class="hero-subtitle mb-4">
       Promoting sustainable waste segregation, daily environmental conservation habits,
       and structured local issue reporting across campuses and residential communities.
     </p>
     <div class="d-flex flex-wrap justify-content-center gap-3">
-      <a href="{{ url_for('report_issue') }}" class="btn btn-warning btn-lg px-4 fw-bold shadow-sm">
+      <a href="./report_issue.html" class="btn btn-warning btn-lg px-4 fw-bold shadow-sm">
         <i class="bi bi-plus-circle-fill me-1"></i> Report an Issue
       </a>
-      <a href="{{ url_for('segregation_guide') }}" class="btn btn-outline-light btn-lg px-4">
+      <a href="./segregation.html" class="btn btn-outline-light btn-lg px-4">
         <i class="bi bi-book-half me-1"></i> Segregation Guide
       </a>
-      <a href="{{ url_for('view_reports') }}" class="btn btn-light btn-lg px-4 text-success fw-semibold">
+      <a href="./view_reports.html" class="btn btn-light btn-lg px-4 text-success fw-semibold">
         <i class="bi bi-table me-1"></i> View Reports
       </a>
     </div>
   </div>
-</div>
+</header>
 
-<div class="container my-4">
-  <!-- Key Statistics Row -->
-  <div class="row g-3 mb-5">
+<main class="container my-4">
+  <section class="row g-3 mb-5 text-center">
     <div class="col-6 col-md-3">
       <div class="stat-card">
         <i class="bi bi-file-earmark-text stat-icon"></i>
-        <div class="stat-number">{{ stats.total_reports }}</div>
-        <div class="stat-label">Logged Reports</div>
+        <div class="stat-number">—</div>
+        <div class="stat-label">Live Reports</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="stat-card">
         <i class="bi bi-trash3 stat-icon text-success"></i>
-        <div class="stat-number">{{ stats.total_categories }}</div>
+        <div class="stat-number">5</div>
         <div class="stat-label">Waste Categories</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="stat-card">
         <i class="bi bi-lightbulb stat-icon text-warning"></i>
-        <div class="stat-number">{{ stats.total_tips }}</div>
+        <div class="stat-number">19</div>
         <div class="stat-label">Practical Tips</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="stat-card">
-        <i class="bi bi-database-check stat-icon text-primary"></i>
-        <div class="stat-number">CSV</div>
-        <div class="stat-label">Local Persistence</div>
+        <i class="bi bi-globe stat-icon text-primary"></i>
+        <div class="stat-number">Free</div>
+        <div class="stat-label">Static Website</div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Core Modules Grid -->
-  <div class="text-center mb-4">
-    <h3 class="fw-bold text-dark mb-1">System Capabilities</h3>
-    <p class="text-muted">Explore how simple, modular software drives environmental action and awareness.</p>
-  </div>
+  <section class="text-center mb-4">
+    <h2 class="fw-bold text-dark mb-1">System Capabilities</h2>
+    <p class="text-muted">
+      Explore how simple, modular software drives environmental action and awareness.
+    </p>
+  </section>
 
-  <div class="row g-4 mb-5">
-    <!-- Card 1: Segregation Guide -->
+  <section class="row g-4 mb-5">
     <div class="col-md-6 col-lg-3">
-      <div class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
+      <article class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
         <div>
           <div class="d-inline-flex p-3 rounded-circle bg-success bg-opacity-10 text-success mb-3 fs-3">
             <i class="bi bi-recycle"></i>
           </div>
-          <h5 class="fw-bold mb-2">Waste Segregation Guide</h5>
+          <h3 class="h5 fw-bold mb-2">Waste Segregation Guide</h3>
           <p class="text-muted small">
-            Master proper categorization for wet, dry, e-waste, hazardous, and special waste with handling and safety rules.
+            Learn proper categorization for wet, dry, electronic, hazardous and special waste.
           </p>
         </div>
-        <a href="{{ url_for('segregation_guide') }}" class="btn btn-outline-success btn-sm w-100 fw-semibold mt-3">
+        <a href="./segregation.html" class="btn btn-outline-success btn-sm w-100 mt-3">
           Explore Guide <i class="bi bi-arrow-right ms-1"></i>
         </a>
-      </div>
+      </article>
     </div>
 
-    <!-- Card 2: Tips Hub -->
     <div class="col-md-6 col-lg-3">
-      <div class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
+      <article class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
         <div>
           <div class="d-inline-flex p-3 rounded-circle bg-warning bg-opacity-10 text-warning mb-3 fs-3">
             <i class="bi bi-lightbulb-fill"></i>
           </div>
-          <h5 class="fw-bold mb-2">Environmental Tips Hub</h5>
+          <h3 class="h5 fw-bold mb-2">Environmental Tips Hub</h3>
           <p class="text-muted small">
-            Access 19 actionable tips on single-use plastics, water saving, energy conservation, and home composting.
+            Access 19 practical tips on reducing plastic, saving water and conserving energy.
           </p>
         </div>
-        <a href="{{ url_for('environmental_tips') }}" class="btn btn-outline-warning btn-sm w-100 fw-semibold text-dark mt-3">
+        <a href="./tips.html" class="btn btn-outline-warning btn-sm w-100 mt-3">
           Read Eco Tips <i class="bi bi-arrow-right ms-1"></i>
         </a>
-      </div>
+      </article>
     </div>
 
-    <!-- Card 3: Issue Reporting -->
     <div class="col-md-6 col-lg-3">
-      <div class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
+      <article class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
         <div>
           <div class="d-inline-flex p-3 rounded-circle bg-primary bg-opacity-10 text-primary mb-3 fs-3">
             <i class="bi bi-megaphone-fill"></i>
           </div>
-          <h5 class="fw-bold mb-2">Report Community Issue</h5>
+          <h3 class="h5 fw-bold mb-2">Report Community Issue</h3>
           <p class="text-muted small">
-            Report overflowing dustbins, litter hotspots, or drainage issues with validated forms and automatic IDs.
+            Prepare a report about overflowing bins, litter hotspots or drainage issues.
           </p>
         </div>
-        <a href="{{ url_for('report_issue') }}" class="btn btn-primary btn-sm w-100 fw-semibold mt-3">
+        <a href="./report_issue.html" class="btn btn-primary btn-sm w-100 mt-3">
           Submit Report <i class="bi bi-arrow-right ms-1"></i>
         </a>
-      </div>
+      </article>
     </div>
 
-    <!-- Card 4: Reports Dashboard -->
     <div class="col-md-6 col-lg-3">
-      <div class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
+      <article class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
         <div>
           <div class="d-inline-flex p-3 rounded-circle bg-info bg-opacity-10 text-info mb-3 fs-3">
             <i class="bi bi-table"></i>
           </div>
-          <h5 class="fw-bold mb-2">Saved Reports Dashboard</h5>
+          <h3 class="h5 fw-bold mb-2">Reports Dashboard</h3>
           <p class="text-muted small">
-            Filter and review all submitted issues stored locally in <code>reports.csv</code> without external SQL servers.
+            Open the reports page to explore its available static demonstration content.
           </p>
         </div>
-        <a href="{{ url_for('view_reports') }}" class="btn btn-outline-info btn-sm w-100 fw-semibold text-dark mt-3">
+        <a href="./view_reports.html" class="btn btn-outline-info btn-sm w-100 mt-3">
           Open Dashboard <i class="bi bi-arrow-right ms-1"></i>
         </a>
-      </div>
+      </article>
     </div>
+  </section>
+
+  <section class="eco-card p-4 mb-4">
+    <h2 class="h5 fw-bold">
+      <i class="bi bi-clock-history text-success me-2"></i>Recently Logged Community Issues
+    </h2>
+    <p class="text-muted small">
+      Live submissions are unavailable in this GitHub Pages version.
+    </p>
+    <div class="alert alert-success mb-0">
+      <i class="bi bi-info-circle me-1"></i>
+      This is the static frontend. Report storage and live statistics require a backend.
+      No reports have been retrieved from the Python application.
+    </div>
+  </section>
+</main>
+
+<footer class="bg-dark text-white text-center py-4 mt-5">
+  <div class="container">
+    <p class="fw-semibold mb-1">Community Cleanliness &amp; Waste Awareness System</p>
+    <p class="small mb-0">Small actions today create a cleaner tomorrow.</p>
   </div>
+</footer>
 
-  <!-- Recent Submissions Banner -->
-  {% if stats.recent_reports %}
-    <div class="eco-card p-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-          <h5 class="fw-bold mb-0"><i class="bi bi-clock-history text-success me-2"></i>Recently Logged Community Issues</h5>
-          <span class="small text-muted">Latest submissions stored in local <code>reports.csv</code></span>
-        </div>
-        <a href="{{ url_for('view_reports') }}" class="btn btn-sm btn-outline-secondary">View All ({{ stats.total_reports }})</a>
-      </div>
-
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-light">
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Date & Time</th>
-              <th scope="col">Location</th>
-              <th scope="col">Issue Type</th>
-              <th scope="col">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for r in stats.recent_reports %}
-              <tr>
-                <td><span class="badge-id">{{ r.id }}</span></td>
-                <td class="small text-muted">{{ r.timestamp }}</td>
-                <td class="fw-semibold">{{ r.location }}</td>
-                <td><span class="badge bg-light text-dark border">{{ r.issue_type }}</span></td>
-                <td class="small text-muted">{{ r.description | truncate(60) }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  {% else %}
-    <div class="alert alert-light border p-4 text-center rounded-4">
-      <i class="bi bi-check2-circle fs-1 text-success d-block mb-2"></i>
-      <h5 class="fw-bold">No community reports logged yet!</h5>
-      <p class="text-muted small mb-3">Be the first to submit a local cleanliness issue to initialize your local database.</p>
-      <a href="{{ url_for('report_issue') }}" class="btn btn-eco btn-sm px-3">
-        <i class="bi bi-plus-circle me-1"></i> Submit First Report
-      </a>
-    </div>
-  {% endif %}
-</div>
-{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./main.js"></script>
+</body>
+</html>
