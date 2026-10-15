@@ -1,159 +1,455 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waste Segregation Guide - Community Cleanliness System</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Custom Eco Theme CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-{% block title %}Waste Segregation Guide - Community Cleanliness System{% endblock %}
-
-{% block content %}
-<div class="container py-4">
-  <!-- Page Header -->
-  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-    <div>
-      <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-semibold mb-2">
-        <i class="bi bi-recycle me-1"></i> Feature 1: Community Education
-      </span>
-      <h2 class="fw-bold mb-1">Waste Segregation Guide</h2>
-      <p class="text-muted mb-0">Learn how to separate waste at source to support community hygiene and circular recycling.</p>
-    </div>
-    <div>
-      <a href="{{ url_for('report_issue') }}" class="btn btn-outline-success">
-        <i class="bi bi-megaphone me-1"></i> Report an Unsegregated Hotspot
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-eco sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-recycle fs-4 text-warning"></i>
+        <span>EcoClean Community</span>
       </a>
-    </div>
-  </div>
-
-  <!-- Mandatory Municipal Variance Alert -->
-  <div class="alert alert-warning border-0 shadow-sm d-flex align-items-start gap-3 p-3 rounded-3 mb-4">
-    <i class="bi bi-exclamation-diamond-fill fs-3 text-warning mt-1"></i>
-    <div>
-      <h6 class="fw-bold mb-1">Municipal Notice & Variance Disclaimer</h6>
-      <p class="small mb-0 text-dark">
-        Not all materials are universally recyclable in every region. Collection frequency, bin color coding, and processing
-        facilities vary by municipality and city council. Always verify and comply with your local municipal guidelines.
-      </p>
-    </div>
-  </div>
-
-  <!-- Category Filter Tabs -->
-  <ul class="nav nav-pills justify-content-center gap-2 mb-4" id="categoryTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active rounded-pill px-3 py-2 fw-semibold" id="tab-all-btn" data-bs-toggle="pill" data-bs-target="#tab-all" type="button" role="tab">
-        <i class="bi bi-grid-fill me-1"></i> All 5 Categories
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-    </li>
-    {% for cat in categories %}
-      <li class="nav-item" role="presentation">
-        <button class="nav-link rounded-pill px-3 py-2 fw-semibold" id="tab-{{ cat.id }}-btn" data-bs-toggle="pill" data-bs-target="#tab-{{ cat.id }}" type="button" role="tab">
-          <i class="bi {{ cat.icon }} me-1"></i> {{ cat.title.split(' ')[0] }}
-        </button>
-      </li>
-    {% endfor %}
-  </ul>
 
-  <!-- Tab Contents -->
-  <div class="tab-content" id="categoryTabsContent">
-    
-    <!-- All Categories View -->
-    <div class="tab-pane fade show active" id="tab-all" role="tabpanel">
-      <div class="row g-4">
-        {% for cat in categories %}
-          <div class="col-12">
-            <div class="eco-card p-4 category-card cat-{{ cat.id.split('-')[0] }}">
-              <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-                <div class="d-flex align-items-center gap-2">
-                  <span class="fs-3 text-{{ cat.color }}"><i class="bi {{ cat.icon }}"></i></span>
-                  <h4 class="fw-bold mb-0">{{ cat.title }}</h4>
-                </div>
-                <span class="badge bg-{{ cat.color }} px-3 py-2 rounded-pill">{{ cat.badge }}</span>
-              </div>
-
-              <!-- Definition -->
-              <div class="mb-3">
-                <div class="section-tag mb-1"><i class="bi bi-info-circle me-1"></i> Definition</div>
-                <p class="text-secondary mb-0">{{ cat.definition }}</p>
-              </div>
-
-              <div class="row g-3 mb-3">
-                <!-- Examples -->
-                <div class="col-md-6">
-                  <div class="p-3 rounded-3 bg-light h-100">
-                    <div class="section-tag mb-2 text-dark"><i class="bi bi-check2-circle text-success me-1"></i> Common Examples</div>
-                    <ul class="list-unstyled mb-0 small text-secondary">
-                      {% for ex in cat.examples %}
-                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> {{ ex }}</li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                </div>
-
-                <!-- Handling & Safety -->
-                <div class="col-md-6">
-                  <div class="p-3 rounded-3 bg-light h-100">
-                    <div class="section-tag mb-2 text-dark"><i class="bi bi-gear-wide-connected text-primary me-1"></i> Handling & Disposal Method</div>
-                    <p class="small text-secondary mb-2">{{ cat.handling }}</p>
-                    
-                    <div class="section-tag mb-1 text-danger"><i class="bi bi-shield-exclamation text-danger me-1"></i> Safety Precautions</div>
-                    <p class="small text-danger mb-0">{{ cat.precautions }}</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Municipal Specifics -->
-              <div class="p-2 px-3 rounded-2 bg-light border-start border-3 border-secondary small text-muted">
-                <strong><i class="bi bi-buildings me-1"></i> Local Municipal Guideline:</strong> {{ cat.municipal_note }}
-              </div>
-            </div>
-          </div>
-        {% endfor %}
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="bi bi-house-door me-1"></i> Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="segregation.html">
+              <i class="bi bi-trash-fill me-1"></i> Waste Segregation
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="tips.html">
+              <i class="bi bi-lightbulb me-1"></i> Eco Tips
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="view_reports.html">
+              <i class="bi bi-journal-text me-1"></i> Saved Reports
+            </a>
+          </li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <a class="btn nav-btn-highlight btn-sm px-3 py-2 rounded-pill d-flex align-items-center gap-1" href="report_issue.html">
+              <i class="bi bi-plus-circle-fill"></i> Report Issue
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
+  </nav>
 
-    <!-- Individual Tab Panes -->
-    {% for cat in categories %}
-      <div class="tab-pane fade" id="tab-{{ cat.id }}" role="tabpanel">
-        <div class="eco-card p-4 p-md-5 category-card cat-{{ cat.id.split('-')[0] }} mx-auto" style="max-width: 900px;">
-          <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-            <div class="d-flex align-items-center gap-3">
-              <span class="fs-1 text-{{ cat.color }}"><i class="bi {{ cat.icon }}"></i></span>
-              <div>
-                <h3 class="fw-bold mb-0">{{ cat.title }}</h3>
-                <span class="badge bg-{{ cat.color }} mt-1">{{ cat.badge }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="my-4">
-            <h5 class="fw-bold text-dark mb-2">Definition</h5>
-            <p class="lead fs-6 text-secondary">{{ cat.definition }}</p>
-          </div>
-
-          <div class="row g-4 mb-4">
-            <div class="col-md-6">
-              <div class="card h-100 border-0 bg-light p-3 rounded-3">
-                <h6 class="fw-bold text-success mb-2"><i class="bi bi-box-seam me-1"></i> What Goes Here?</h6>
-                <ul class="list-unstyled mb-0 small">
-                  {% for ex in cat.examples %}
-                    <li class="py-1 border-bottom border-white"><i class="bi bi-check-circle-fill text-success me-2"></i>{{ ex }}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="card h-100 border-0 bg-light p-3 rounded-3">
-                <h6 class="fw-bold text-primary mb-2"><i class="bi bi-arrow-repeat me-1"></i> How to Dispose Properly</h6>
-                <p class="small text-secondary mb-3">{{ cat.handling }}</p>
-                <h6 class="fw-bold text-danger mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Worker & Environmental Safety</h6>
-                <p class="small text-danger mb-0">{{ cat.precautions }}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="alert alert-secondary small mb-0">
-            <strong>Municipal Regulation:</strong> {{ cat.municipal_note }}
-          </div>
+  <!-- Main Content -->
+  <main>
+    <div class="container py-4">
+      <!-- Page Header -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+          <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-semibold mb-2">
+            <i class="bi bi-recycle me-1"></i> Feature 1: Community Education
+          </span>
+          <h2 class="fw-bold mb-1">Waste Segregation Guide</h2>
+          <p class="text-muted mb-0">Learn how to separate waste at source to support community hygiene and circular recycling.</p>
+        </div>
+        <div>
+          <a href="report_issue.html" class="btn btn-outline-success">
+            <i class="bi bi-megaphone me-1"></i> Report an Unsegregated Hotspot
+          </a>
         </div>
       </div>
-    {% endfor %}
 
-  </div>
-</div>
-{% endblock %}
+      <!-- Mandatory Municipal Variance Alert -->
+      <div class="alert alert-warning border-0 shadow-sm d-flex align-items-start gap-3 p-3 rounded-3 mb-4">
+        <i class="bi bi-exclamation-diamond-fill fs-3 text-warning mt-1"></i>
+        <div>
+          <h6 class="fw-bold mb-1">Municipal Notice &amp; Variance Disclaimer</h6>
+          <p class="small mb-0 text-dark">
+            Not all materials are universally recyclable in every region. Collection frequency, bin color coding, and processing
+            facilities vary by municipality and city council. Always verify and comply with your local municipal guidelines.
+          </p>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <ul class="nav nav-pills justify-content-center gap-2 mb-4" id="categoryTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active rounded-pill px-3 py-2 fw-semibold" id="tab-all-btn" data-bs-toggle="pill" data-bs-target="#tab-all" type="button" role="tab">
+            <i class="bi bi-grid-fill me-1"></i> All 5 Categories
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-pill px-3 py-2 fw-semibold" id="tab-wet-btn" data-bs-toggle="pill" data-bs-target="#tab-wet" type="button" role="tab">
+            <i class="bi bi-leaf me-1"></i> Wet Waste
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-pill px-3 py-2 fw-semibold" id="tab-dry-btn" data-bs-toggle="pill" data-bs-target="#tab-dry" type="button" role="tab">
+            <i class="bi bi-recycle me-1"></i> Dry Waste
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-pill px-3 py-2 fw-semibold" id="tab-ewaste-btn" data-bs-toggle="pill" data-bs-target="#tab-ewaste" type="button" role="tab">
+            <i class="bi bi-cpu me-1"></i> E-Waste
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-pill px-3 py-2 fw-semibold" id="tab-hazardous-btn" data-bs-toggle="pill" data-bs-target="#tab-hazardous" type="button" role="tab">
+            <i class="bi bi-exclamation-triangle me-1"></i> Hazardous
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-pill px-3 py-2 fw-semibold" id="tab-special-btn" data-bs-toggle="pill" data-bs-target="#tab-special" type="button" role="tab">
+            <i class="bi bi-shield-shaded me-1"></i> Special
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab Contents -->
+      <div class="tab-content" id="categoryTabsContent">
+        
+        <!-- All Categories View -->
+        <div class="tab-pane fade show active" id="tab-all" role="tabpanel">
+          <div class="row g-4">
+            
+            <!-- Category 1: Wet Waste -->
+            <div class="col-12">
+              <div class="eco-card p-4 category-card cat-wet">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="fs-3 text-success"><i class="bi bi-leaf"></i></span>
+                    <h4 class="fw-bold mb-0">Wet Waste (Biodegradable)</h4>
+                  </div>
+                  <span class="badge bg-success px-3 py-2 rounded-pill">Organic &amp; Compostable</span>
+                </div>
+                <div class="mb-3">
+                  <div class="section-tag mb-1"><i class="bi bi-info-circle me-1"></i> Definition</div>
+                  <p class="text-secondary mb-0">Organic waste originating from plant or animal sources that breaks down naturally through biological decomposition into rich organic matter.</p>
+                </div>
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-check2-circle text-success me-1"></i> Common Examples</div>
+                      <ul class="list-unstyled mb-0 small text-secondary">
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Kitchen food scraps, fruit rinds, and vegetable peels</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Leftover cooked meals, bread, and eggshells</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Used tea leaves, coffee grounds, and nutshells</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Garden clippings, dried leaves, and wilted flowers</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-gear-wide-connected text-primary me-1"></i> Handling &amp; Disposal Method</div>
+                      <p class="small text-secondary mb-2">Collect inside a dedicated green bin. Drain excess water and gravies before disposal to prevent noxious odors and liquid seepage. Use for household composting or community organic waste converters.</p>
+                      <div class="section-tag mb-1 text-danger"><i class="bi bi-shield-exclamation text-danger me-1"></i> Safety Precautions</div>
+                      <p class="small text-danger mb-0">Always keep bins covered to avoid pest attraction. Never mix plastics, glass, or pet feces into organic compostable waste.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-2 px-3 rounded-2 bg-light border-start border-3 border-secondary small text-muted">
+                  <strong><i class="bi bi-buildings me-1"></i> Local Municipal Guideline:</strong> Municipal collection schedules vary. Many civic bodies collect wet waste daily. Always verify your local municipality's green bin pickup rules.
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 2: Dry Waste -->
+            <div class="col-12">
+              <div class="eco-card p-4 category-card cat-dry">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="fs-3 text-primary"><i class="bi bi-recycle"></i></span>
+                    <h4 class="fw-bold mb-0">Dry Recyclable Waste</h4>
+                  </div>
+                  <span class="badge bg-primary px-3 py-2 rounded-pill">Recyclable</span>
+                </div>
+                <div class="mb-3">
+                  <div class="section-tag mb-1"><i class="bi bi-info-circle me-1"></i> Definition</div>
+                  <p class="text-secondary mb-0">Clean, non-biodegradable materials that can be sorted, shredded, or melted down and re-manufactured into new commercial goods.</p>
+                </div>
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-check2-circle text-success me-1"></i> Common Examples</div>
+                      <ul class="list-unstyled mb-0 small text-secondary">
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Newspapers, notebooks, cardboard boxes, and carton packaging</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Rinsed plastic beverage bottles, food containers, and jugs</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Glass bottles and clean sauce jars</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Tin cans, beverage cans, aluminum foil, and metal caps</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-gear-wide-connected text-primary me-1"></i> Handling &amp; Disposal Method</div>
+                      <p class="small text-secondary mb-2">Clean and air-dry containers before binning to eliminate food contamination. Flatten cardboard cartons and crush beverage bottles to conserve bin volume. Keep inside a blue bin.</p>
+                      <div class="section-tag mb-1 text-danger"><i class="bi bi-shield-exclamation text-danger me-1"></i> Safety Precautions</div>
+                      <p class="small text-danger mb-0">Wrap shattered glass bottles or sharp metal lids inside thick paper before disposal to safeguard waste handlers from cuts.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-2 px-3 rounded-2 bg-light border-start border-3 border-secondary small text-muted">
+                  <strong><i class="bi bi-buildings me-1"></i> Local Municipal Guideline:</strong> Not all plastics are universally recyclable. Recycling eligibility depends on local Material Recovery Facility (MRF) infrastructure.
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 3: E-Waste -->
+            <div class="col-12">
+              <div class="eco-card p-4 category-card cat-ewaste">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="fs-3 text-warning"><i class="bi bi-cpu"></i></span>
+                    <h4 class="fw-bold mb-0">E-Waste (Electronic Waste)</h4>
+                  </div>
+                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Special Recovery</span>
+                </div>
+                <div class="mb-3">
+                  <div class="section-tag mb-1"><i class="bi bi-info-circle me-1"></i> Definition</div>
+                  <p class="text-secondary mb-0">Discarded electrical and electronic appliances, components, and gadgets that have reached the end of their functional utility.</p>
+                </div>
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-check2-circle text-success me-1"></i> Common Examples</div>
+                      <ul class="list-unstyled mb-0 small text-secondary">
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Smartphones, chargers, cables, and power adapters</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Laptops, computer peripherals, and keyboards</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Dry cell batteries, lithium-ion battery packs, and button cells</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> CFL bulbs, LED tubelights, and printed circuit boards (PCBs)</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-gear-wide-connected text-primary me-1"></i> Handling &amp; Disposal Method</div>
+                      <p class="small text-secondary mb-2">Store separately in a clean, moisture-free container. Never dispose of e-waste in general household trash or set it on fire. Hand it over to certified e-waste drives or authorized collection kiosks.</p>
+                      <div class="section-tag mb-1 text-danger"><i class="bi bi-shield-exclamation text-danger me-1"></i> Safety Precautions</div>
+                      <p class="small text-danger mb-0">Never dismantle batteries or circuit boards manually. Punctured batteries can ignite or leach toxic heavy metals (lead, cadmium, mercury) into soil and water.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-2 px-3 rounded-2 bg-light border-start border-3 border-secondary small text-muted">
+                  <strong><i class="bi bi-buildings me-1"></i> Local Municipal Guideline:</strong> E-waste requires specialized recovery centers to neutralize heavy metals and recover precious elements. Consult your city portal for authorized collection drives.
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 4: Hazardous Waste -->
+            <div class="col-12">
+              <div class="eco-card p-4 category-card cat-hazardous">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="fs-3 text-danger"><i class="bi bi-exclamation-triangle"></i></span>
+                    <h4 class="fw-bold mb-0">Hazardous Household Waste</h4>
+                  </div>
+                  <span class="badge bg-danger px-3 py-2 rounded-pill">Toxic &amp; Regulated</span>
+                </div>
+                <div class="mb-3">
+                  <div class="section-tag mb-1"><i class="bi bi-info-circle me-1"></i> Definition</div>
+                  <p class="text-secondary mb-0">Substances posing substantial hazards to human safety and ecosystems due to flammable, toxic, corrosive, or chemically reactive characteristics.</p>
+                </div>
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-check2-circle text-success me-1"></i> Common Examples</div>
+                      <ul class="list-unstyled mb-0 small text-secondary">
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Paints, synthetic varnishes, and enamel thinners</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Pesticides, weedicides, and rodent control pellets</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Acidic bathroom cleaners, drain unblockers, and ammonia solutions</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Motor oil, brake fluids, and lead-acid vehicle batteries</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-gear-wide-connected text-primary me-1"></i> Handling &amp; Disposal Method</div>
+                      <p class="small text-secondary mb-2">Retain products in their original labeled containers whenever feasible. Store in a secure, ventilated spot away from heat, open flames, children, and domestic pets.</p>
+                      <div class="section-tag mb-1 text-danger"><i class="bi bi-shield-exclamation text-danger me-1"></i> Safety Precautions</div>
+                      <p class="small text-danger mb-0">Always wear protective gloves and a face covering during handling. NEVER pour hazardous liquids into sinks, toilets, or street gutters, as they severely poison municipal water bodies.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-2 px-3 rounded-2 bg-light border-start border-3 border-secondary small text-muted">
+                  <strong><i class="bi bi-buildings me-1"></i> Local Municipal Guideline:</strong> Hazardous waste disposal is strictly governed by environmental protection laws. Surrender only at designated municipal hazardous collection drop-off points.
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 5: Special Waste -->
+            <div class="col-12">
+              <div class="eco-card p-4 category-card cat-special">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="fs-3 text-secondary"><i class="bi bi-shield-shaded"></i></span>
+                    <h4 class="fw-bold mb-0">Special Waste (Sanitary &amp; Bulky)</h4>
+                  </div>
+                  <span class="badge bg-secondary px-3 py-2 rounded-pill">Biomedical &amp; Bulky</span>
+                </div>
+                <div class="mb-3">
+                  <div class="section-tag mb-1"><i class="bi bi-info-circle me-1"></i> Definition</div>
+                  <p class="text-secondary mb-0">Waste items requiring specialized bio-secure disposal or dedicated oversized transport due to hygiene considerations or large volume.</p>
+                </div>
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-check2-circle text-success me-1"></i> Common Examples</div>
+                      <ul class="list-unstyled mb-0 small text-secondary">
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Sanitary napkins, baby diapers, and incontinence products</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Used medical bandages, antiseptic cotton swabs, and surgical masks</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Discarded mattresses, large broken furniture, and bed frames</li>
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> Renovation rubble, broken tiles, and construction debris</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="p-3 rounded-3 bg-light h-100">
+                      <div class="section-tag mb-2 text-dark"><i class="bi bi-gear-wide-connected text-primary me-1"></i> Handling &amp; Disposal Method</div>
+                      <p class="small text-secondary mb-2">Wrap sanitary hygiene items securely in newspaper or biodegradable bags, marked with a distinct red dot for sanitation worker safety. Contact local civic helplines to schedule dedicated pickup for bulky furniture.</p>
+                      <div class="section-tag mb-1 text-danger"><i class="bi bi-shield-exclamation text-danger me-1"></i> Safety Precautions</div>
+                      <p class="small text-danger mb-0">NEVER flush diapers or sanitary napkins down toilets; they do not dissolve and cause catastrophic sewer clogs. Protect sanitation workers from direct exposure to biological waste.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-2 px-3 rounded-2 bg-light border-start border-3 border-secondary small text-muted">
+                  <strong><i class="bi bi-buildings me-1"></i> Local Municipal Guideline:</strong> Sanitary waste is treated in high-temperature municipal incinerators. Bulky items require scheduled municipal on-demand transport.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Individual Category Tabs (for focused view) -->
+        <div class="tab-pane fade" id="tab-wet" role="tabpanel">
+          <div class="eco-card p-4 p-md-5 category-card cat-wet mx-auto" style="max-width: 900px;">
+            <h3 class="fw-bold mb-3"><i class="bi bi-leaf text-success me-2"></i>Wet Waste (Biodegradable)</h3>
+            <p class="lead fs-6 text-secondary">Organic waste originating from plant or animal sources that breaks down naturally through biological decomposition into rich organic matter.</p>
+            <div class="p-3 bg-light rounded-3 mb-3">
+              <h6 class="fw-bold text-success">Common Items:</h6>
+              <p class="small mb-0">Food scraps, vegetable peels, tea leaves, fruit rinds, stale cooked food, eggshells, and garden clippings.</p>
+            </div>
+            <div class="p-3 bg-light rounded-3">
+              <h6 class="fw-bold text-primary">Disposal &amp; Safety:</h6>
+              <p class="small mb-1">Use a green covered dustbin. Drain liquid before disposal. Ideal for kitchen composting.</p>
+              <p class="small text-danger mb-0"><strong>Warning:</strong> Keep covered to avoid flies and rodents. Never mix plastics.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-dry" role="tabpanel">
+          <div class="eco-card p-4 p-md-5 category-card cat-dry mx-auto" style="max-width: 900px;">
+            <h3 class="fw-bold mb-3"><i class="bi bi-recycle text-primary me-2"></i>Dry Recyclable Waste</h3>
+            <p class="lead fs-6 text-secondary">Clean, non-biodegradable items that can be processed and remanufactured into new products.</p>
+            <div class="p-3 bg-light rounded-3 mb-3">
+              <h6 class="fw-bold text-primary">Common Items:</h6>
+              <p class="small mb-0">Paper, cardboard boxes, clean plastic bottles, beverage cartons, glass containers, and metal tins.</p>
+            </div>
+            <div class="p-3 bg-light rounded-3">
+              <h6 class="fw-bold text-primary">Disposal &amp; Safety:</h6>
+              <p class="small mb-1">Rinse and dry containers. Flatten cardboard to save space. Collect in blue bins.</p>
+              <p class="small text-danger mb-0"><strong>Warning:</strong> Wrap broken glass in thick paper to protect sanitation workers.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-ewaste" role="tabpanel">
+          <div class="eco-card p-4 p-md-5 category-card cat-ewaste mx-auto" style="max-width: 900px;">
+            <h3 class="fw-bold mb-3"><i class="bi bi-cpu text-warning me-2"></i>E-Waste (Electronic Waste)</h3>
+            <p class="lead fs-6 text-secondary">Discarded electrical and electronic gadgets and components that reached end-of-life.</p>
+            <div class="p-3 bg-light rounded-3 mb-3">
+              <h6 class="fw-bold text-warning">Common Items:</h6>
+              <p class="small mb-0">Old smartphones, chargers, dead lithium batteries, cables, power banks, computer mice, and tubes.</p>
+            </div>
+            <div class="p-3 bg-light rounded-3">
+              <h6 class="fw-bold text-primary">Disposal &amp; Safety:</h6>
+              <p class="small mb-1">Deposit at certified e-waste drives or authorized drop kiosks. Never burn or dump with general trash.</p>
+              <p class="small text-danger mb-0"><strong>Warning:</strong> Never dismantle batteries manually; punctured batteries leach heavy metals and catch fire.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-hazardous" role="tabpanel">
+          <div class="eco-card p-4 p-md-5 category-card cat-hazardous mx-auto" style="max-width: 900px;">
+            <h3 class="fw-bold mb-3"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Hazardous Household Waste</h3>
+            <p class="lead fs-6 text-secondary">Substances posing toxic, flammable, or corrosive hazards to human health and ecosystems.</p>
+            <div class="p-3 bg-light rounded-3 mb-3">
+              <h6 class="fw-bold text-danger">Common Items:</h6>
+              <p class="small mb-0">Paints, thinners, garden pesticides, rodent poisons, toilet cleaners, and motor oil.</p>
+            </div>
+            <div class="p-3 bg-light rounded-3">
+              <h6 class="fw-bold text-primary">Disposal &amp; Safety:</h6>
+              <p class="small mb-1">Retain in original labeled containers. Dispose of exclusively at municipal hazardous waste drop-offs.</p>
+              <p class="small text-danger mb-0"><strong>Warning:</strong> NEVER pour down sinks or street drains; it poisons municipal waterways.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-special" role="tabpanel">
+          <div class="eco-card p-4 p-md-5 category-card cat-special mx-auto" style="max-width: 900px;">
+            <h3 class="fw-bold mb-3"><i class="bi bi-shield-shaded text-secondary me-2"></i>Special Waste (Sanitary &amp; Bulky)</h3>
+            <p class="lead fs-6 text-secondary">Items requiring bio-secure handling or oversized transportation due to hygiene or volume.</p>
+            <div class="p-3 bg-light rounded-3 mb-3">
+              <h6 class="fw-bold text-secondary">Common Items:</h6>
+              <p class="small mb-0">Sanitary pads, diapers, medical bandages, discarded mattresses, and renovation debris.</p>
+            </div>
+            <div class="p-3 bg-light rounded-3">
+              <h6 class="fw-bold text-primary">Disposal &amp; Safety:</h6>
+              <p class="small mb-1">Wrap sanitary waste in newspaper marked with a red dot. Schedule on-demand bulk pickup for furniture.</p>
+              <p class="small text-danger mb-0"><strong>Warning:</strong> NEVER flush sanitary pads down toilets; they cause severe sewer clogs.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-md-6 text-center text-md-start">
+          <h6 class="fw-bold mb-1 text-dark"><i class="bi bi-recycle text-success me-1"></i> Community Cleanliness & Waste Awareness System</h6>
+          <p class="small mb-0 text-muted">A community engagement project promoting sustainable waste management.</p>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <span class="badge bg-light text-dark border p-2 me-2">
+            <i class="bi bi-filetype-csv text-primary me-1"></i> Exportable to <code>reports.csv</code>
+          </span>
+          <span class="badge bg-light text-success border p-2">
+            <i class="bi bi-shield-check me-1"></i> Academic Prototype
+          </span>
+        </div>
+      </div>
+      <hr class="my-3 opacity-25">
+      <div class="text-center small text-muted">
+        Academic disclaimer: Reports are saved locally for campus tracking and are not automatically submitted to civic municipal departments.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,113 +1,201 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report an Issue - Community Cleanliness System</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Custom Eco Theme CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-{% block title %}Report a Cleanliness Issue - Community Cleanliness System{% endblock %}
-
-{% block content %}
-<div class="container py-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-eco sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-recycle fs-4 text-warning"></i>
+        <span>EcoClean Community</span>
+      </a>
       
-      <!-- Page Header -->
-      <div class="text-center mb-4">
-        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-semibold mb-2">
-          <i class="bi bi-megaphone-fill me-1"></i> Feature 3: Community Engagement
-        </span>
-        <h2 class="fw-bold text-dark">Report a Cleanliness or Environmental Issue</h2>
-        <p class="text-muted">
-          Log local litter hotspots, overflowing bins, or drainage issues to keep campus grounds clean.
-        </p>
-      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-      <!-- Academic Prototype Disclaimer Banner -->
-      <div class="alert alert-light border border-secondary border-opacity-25 shadow-sm p-3 rounded-3 mb-4">
-        <div class="d-flex align-items-center gap-2">
-          <i class="bi bi-info-circle-fill text-primary fs-5"></i>
-          <div class="small text-muted">
-            <strong>Local Academic Prototype:</strong> All submitted reports are safely stored locally in <code>reports.csv</code>.
-            Reports are <em>not</em> automatically submitted to municipal authorities.
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="bi bi-house-door me-1"></i> Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="segregation.html">
+              <i class="bi bi-trash-fill me-1"></i> Waste Segregation
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="tips.html">
+              <i class="bi bi-lightbulb me-1"></i> Eco Tips
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="view_reports.html">
+              <i class="bi bi-journal-text me-1"></i> Saved Reports
+            </a>
+          </li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <a class="btn nav-btn-highlight btn-sm px-3 py-2 rounded-pill d-flex align-items-center gap-1 active" href="report_issue.html">
+              <i class="bi bi-plus-circle-fill"></i> Report Issue
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container py-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          
+          <!-- Page Header -->
+          <div class="text-center mb-4">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-semibold mb-2">
+              <i class="bi bi-megaphone-fill me-1"></i> Feature 3: Community Engagement
+            </span>
+            <h2 class="fw-bold text-dark">Report a Cleanliness or Environmental Issue</h2>
+            <p class="text-muted">
+              Log local litter hotspots, overflowing bins, or drainage issues to keep campus grounds clean.
+            </p>
           </div>
+
+          <!-- Academic Prototype Disclaimer Banner -->
+          <div class="alert alert-light border border-secondary border-opacity-25 shadow-sm p-3 rounded-3 mb-4">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-info-circle-fill text-primary fs-5"></i>
+              <div class="small text-muted">
+                <strong>Local Academic Prototype:</strong> All submitted reports are safely stored locally in your browser and exportable to <code>reports.csv</code>.
+                Reports are <em>not</em> automatically submitted to municipal authorities.
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Form Card -->
+          <div class="form-card mb-4">
+            <form id="reportIssueForm" novalidate>
+              
+              <!-- Location Input -->
+              <div class="mb-4">
+                <label for="location" class="form-label d-flex justify-content-between">
+                  <span><i class="bi bi-geo-alt-fill text-danger me-1"></i> Location or Area Name <span class="text-danger">*</span></span>
+                  <span class="small text-muted fw-normal">Required</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-control form-control-lg" 
+                  id="location" 
+                  name="location" 
+                  placeholder="e.g. Science Block Canteen, Library Lawn, North Gate..." 
+                  required
+                  minlength="2"
+                >
+                <div class="invalid-feedback" id="locationFeedback">
+                  Please enter a valid location (at least 2 characters).
+                </div>
+                <div class="form-text text-muted">
+                  Be specific about landmarks so community volunteers or campus maintenance can locate the problem.
+                </div>
+              </div>
+
+              <!-- Issue Type Dropdown -->
+              <div class="mb-4">
+                <label for="issue_type" class="form-label d-flex justify-content-between">
+                  <span><i class="bi bi-tag-fill text-primary me-1"></i> Issue Category <span class="text-danger">*</span></span>
+                  <span class="small text-muted fw-normal">Required</span>
+                </label>
+                <select class="form-select form-select-lg" id="issue_type" name="issue_type" required>
+                  <option value="" disabled selected>-- Select Issue Category --</option>
+                  <option value="Littering">Littering</option>
+                  <option value="Overflowing Dustbin">Overflowing Dustbin</option>
+                  <option value="Improper Waste Segregation">Improper Waste Segregation</option>
+                  <option value="Plastic Pollution">Plastic Pollution</option>
+                  <option value="Drainage / Stagnant Water Issue">Drainage / Stagnant Water Issue</option>
+                  <option value="Other Environmental Issue">Other Environmental Issue</option>
+                </select>
+                <div class="form-text text-muted">
+                  Choose the category that best describes the environmental concern.
+                </div>
+              </div>
+
+              <!-- Optional Description -->
+              <div class="mb-4">
+                <label for="description" class="form-label d-flex justify-content-between">
+                  <span><i class="bi bi-pencil-square text-success me-1"></i> Additional Description</span>
+                  <span class="small text-muted fw-normal">Optional</span>
+                </label>
+                <textarea 
+                  class="form-control" 
+                  id="description" 
+                  name="description" 
+                  rows="4" 
+                  placeholder="Describe the severity, quantity of waste, or any hazard (e.g. broken glass near walkway)..."
+                ></textarea>
+                <div class="form-text text-muted">
+                  You can leave this blank if the location and issue type are self-explanatory.
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex flex-wrap gap-3 align-items-center justify-content-between pt-3 border-top">
+                <a href="view_reports.html" class="btn btn-outline-secondary px-3">
+                  <i class="bi bi-arrow-left me-1"></i> Cancel &amp; View Reports
+                </a>
+                <button type="submit" class="btn btn-eco btn-lg px-4 shadow-sm" id="submitReportBtn">
+                  <i class="bi bi-check2-circle me-1"></i> Submit Report
+                </button>
+              </div>
+
+            </form>
+          </div>
+
         </div>
       </div>
-
-      <!-- Main Form Card -->
-      <div class="form-card mb-4">
-        <form method="POST" action="{{ url_for('report_issue') }}" id="reportIssueForm" novalidate>
-          
-          <!-- Location Input -->
-          <div class="mb-4">
-            <label for="location" class="form-label d-flex justify-content-between">
-              <span><i class="bi bi-geo-alt-fill text-danger me-1"></i> Location or Area Name <span class="text-danger">*</span></span>
-              <span class="small text-muted fw-normal">Required</span>
-            </label>
-            <input 
-              type="text" 
-              class="form-control form-control-lg {% if form_data.location and form_data.location|trim|length < 2 %}is-invalid{% endif %}" 
-              id="location" 
-              name="location" 
-              placeholder="e.g. Science Block Canteen, Library Lawn, North Gate..." 
-              value="{{ form_data.location if form_data else '' }}"
-              required
-              minlength="2"
-            >
-            <div class="invalid-feedback" id="locationFeedback">
-              Please enter a valid location (at least 2 characters).
-            </div>
-            <div class="form-text text-muted">
-              Be specific about landmarks so community volunteers or campus maintenance can locate the problem.
-            </div>
-          </div>
-
-          <!-- Issue Type Dropdown -->
-          <div class="mb-4">
-            <label for="issue_type" class="form-label d-flex justify-content-between">
-              <span><i class="bi bi-tag-fill text-primary me-1"></i> Issue Category <span class="text-danger">*</span></span>
-              <span class="small text-muted fw-normal">Required</span>
-            </label>
-            <select class="form-select form-select-lg" id="issue_type" name="issue_type" required>
-              <option value="" disabled {% if not form_data.issue_type %}selected{% endif %}>-- Select Issue Category --</option>
-              {% for itype in issue_types %}
-                <option value="{{ itype }}" {% if form_data.issue_type == itype %}selected{% endif %}>
-                  {{ itype }}
-                </option>
-              {% endfor %}
-            </select>
-            <div class="form-text text-muted">
-              Choose the category that best describes the environmental concern.
-            </div>
-          </div>
-
-          <!-- Optional Description -->
-          <div class="mb-4">
-            <label for="description" class="form-label d-flex justify-content-between">
-              <span><i class="bi bi-pencil-square text-success me-1"></i> Additional Description</span>
-              <span class="small text-muted fw-normal">Optional</span>
-            </label>
-            <textarea 
-              class="form-control" 
-              id="description" 
-              name="description" 
-              rows="4" 
-              placeholder="Describe the severity, quantity of waste, or any hazard (e.g. broken glass near walkway)..."
-            >{{ form_data.description if form_data else '' }}</textarea>
-            <div class="form-text text-muted">
-              You can leave this blank if the location and issue type are self-explanatory.
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="d-flex flex-wrap gap-3 align-items-center justify-content-between pt-3 border-top">
-            <a href="{{ url_for('view_reports') }}" class="btn btn-outline-secondary px-3">
-              <i class="bi bi-arrow-left me-1"></i> Cancel & View Reports
-            </a>
-            <button type="submit" class="btn btn-eco btn-lg px-4 shadow-sm" id="submitReportBtn">
-              <i class="bi bi-check2-circle me-1"></i> Submit Report
-            </button>
-          </div>
-
-        </form>
-      </div>
-
     </div>
-  </div>
-</div>
-{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-md-6 text-center text-md-start">
+          <h6 class="fw-bold mb-1 text-dark"><i class="bi bi-recycle text-success me-1"></i> Community Cleanliness & Waste Awareness System</h6>
+          <p class="small mb-0 text-muted">A community engagement project promoting sustainable waste management.</p>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <span class="badge bg-light text-dark border p-2 me-2">
+            <i class="bi bi-filetype-csv text-primary me-1"></i> Exportable to <code>reports.csv</code>
+          </span>
+          <span class="badge bg-light text-success border p-2">
+            <i class="bi bi-shield-check me-1"></i> Academic Prototype
+          </span>
+        </div>
+      </div>
+      <hr class="my-3 opacity-25">
+      <div class="text-center small text-muted">
+        Academic disclaimer: Reports are saved locally for campus tracking and are not automatically submitted to civic municipal departments.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>

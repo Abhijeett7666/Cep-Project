@@ -1,111 +1,533 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Environmental Tips Hub - Community Cleanliness System</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Custom Eco Theme CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-{% block title %}Environmental Tips Hub - Community Cleanliness System{% endblock %}
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-eco sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-recycle fs-4 text-warning"></i>
+        <span>EcoClean Community</span>
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-{% block content %}
-<div class="container py-4">
-  <!-- Page Header -->
-  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-    <div>
-      <span class="badge bg-warning bg-opacity-25 text-dark px-3 py-2 rounded-pill fw-semibold mb-2">
-        <i class="bi bi-lightbulb-fill text-warning me-1"></i> Feature 2: Practical Habits
-      </span>
-      <h2 class="fw-bold mb-1">Environmental Tips Hub</h2>
-      <p class="text-muted mb-0">Practical, everyday actions to minimize waste and promote campus sustainability.</p>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="bi bi-house-door me-1"></i> Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="segregation.html">
+              <i class="bi bi-trash-fill me-1"></i> Waste Segregation
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="tips.html">
+              <i class="bi bi-lightbulb me-1"></i> Eco Tips
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="view_reports.html">
+              <i class="bi bi-journal-text me-1"></i> Saved Reports
+            </a>
+          </li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <a class="btn nav-btn-highlight btn-sm px-3 py-2 rounded-pill d-flex align-items-center gap-1" href="report_issue.html">
+              <i class="bi bi-plus-circle-fill"></i> Report Issue
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="d-flex gap-2">
-      <span class="badge bg-light text-dark border px-3 py-2 d-flex align-items-center fs-6">
-        <i class="bi bi-card-checklist text-success me-2"></i> {{ tips|length }} Actionable Tips
-      </span>
-    </div>
-  </div>
+  </nav>
 
-  <!-- Interactive "Tip of the Day" Spotlight Card -->
-  <div class="tip-highlight-box mb-5 shadow-sm">
-    <div class="row align-items-center gy-3">
-      <div class="col-md-9">
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <span class="badge bg-success text-white px-2 py-1 small">
-            <i class="bi bi-stars me-1"></i> Featured Action
+  <!-- Main Content -->
+  <main>
+    <div class="container py-4">
+      <!-- Page Header -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+          <span class="badge bg-warning bg-opacity-25 text-dark px-3 py-2 rounded-pill fw-semibold mb-2">
+            <i class="bi bi-lightbulb-fill text-warning me-1"></i> Feature 2: Practical Habits
           </span>
-          <span id="dailyTipArea" class="small fw-bold text-success">General Conservation</span>
+          <h2 class="fw-bold mb-1">Environmental Tips Hub</h2>
+          <p class="text-muted mb-0">Practical, everyday actions to minimize waste and promote campus sustainability.</p>
         </div>
-        <h4 id="dailyTipText" class="fw-bold text-dark mb-1 fst-italic">
-          "Carry a durable cloth or canvas tote bag whenever you step out to avoid plastic bags."
-        </h4>
-        <span class="small text-muted">A small daily habit makes a massive community difference.</span>
-      </div>
-      <div class="col-md-3 text-md-end">
-        <div class="btn-group shadow-sm">
-          <button id="prevTipBtn" class="btn btn-outline-success btn-sm px-3" title="Previous Tip">
-            <i class="bi bi-chevron-left"></i> Prev
-          </button>
-          <button id="nextTipBtn" class="btn btn-success btn-sm px-3" title="Next Tip">
-            Next <i class="bi bi-chevron-right"></i>
-          </button>
+        <div class="d-flex gap-2">
+          <span class="badge bg-light text-dark border px-3 py-2 d-flex align-items-center fs-6">
+            <i class="bi bi-card-checklist text-success me-2"></i> 19 Actionable Tips
+          </span>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Filters & Search Bar -->
-  <div class="row g-3 align-items-center mb-4">
-    <div class="col-lg-7">
-      <div class="d-flex flex-wrap gap-2">
-        {% for cat in categories %}
-          <button type="button" class="filter-pill {% if cat.slug == 'all' %}active{% endif %}" data-filter="{{ cat.slug }}">
-            {{ cat.name }}
-          </button>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="col-lg-5">
-      <div class="input-group">
-        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-        <input type="text" id="tipSearchInput" class="form-control border-start-0" placeholder="Search tips by keyword (e.g. water, plastic)...">
-      </div>
-    </div>
-  </div>
-
-  <!-- Grid of Tips Cards -->
-  <div class="row g-4" id="tipsGrid">
-    {% for item in tips %}
-      <div class="col-md-6 col-lg-4 tip-item" data-category="{{ item.category_slug }}">
-        <div class="tip-card">
-          <div>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="badge bg-light text-success border small">
-                <i class="bi {{ item.icon }} me-1"></i> {{ item.area }}
+      <!-- Interactive "Tip of the Day" Spotlight Card -->
+      <div class="tip-highlight-box mb-5 shadow-sm">
+        <div class="row align-items-center gy-3">
+          <div class="col-md-9">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge bg-success text-white px-2 py-1 small">
+                <i class="bi bi-stars me-1"></i> Featured Action
               </span>
-              <span class="text-muted small">#{{ item.id }}</span>
+              <span id="dailyTipArea" class="small fw-bold text-success">General Conservation</span>
             </div>
-            <p class="card-text text-dark mt-2 mb-3">
-              {{ item.tip }}
-            </p>
+            <h4 id="dailyTipText" class="fw-bold text-dark mb-1 fst-italic">
+              "Carry a durable cloth or canvas tote bag whenever you step out to avoid plastic bags."
+            </h4>
+            <span class="small text-muted">A small daily habit makes a massive community difference.</span>
           </div>
-          <div class="pt-2 border-top d-flex justify-content-between align-items-center">
-            <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
-            <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('{{ item.tip }}'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
-              <i class="bi bi-share me-1"></i>Share
-            </button>
+          <div class="col-md-3 text-md-end">
+            <div class="btn-group shadow-sm">
+              <button id="prevTipBtn" class="btn btn-outline-success btn-sm px-3" title="Previous Tip">
+                <i class="bi bi-chevron-left"></i> Prev
+              </button>
+              <button id="nextTipBtn" class="btn btn-success btn-sm px-3" title="Next Tip">
+                Next <i class="bi bi-chevron-right"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    {% endfor %}
-  </div>
 
-  <!-- Empty State if search matches nothing -->
-  <div id="tipsEmptyNotice" class="text-center py-5" style="display: none;">
-    <i class="bi bi-search fs-1 text-muted d-block mb-2"></i>
-    <h5 class="fw-bold text-dark">No tips matched your search query</h5>
-    <p class="text-muted small">Try searching for broader keywords such as 'plastic', 'water', or 'energy'.</p>
-  </div>
-</div>
-{% endblock %}
+      <!-- Filters & Search Bar -->
+      <div class="row g-3 align-items-center mb-4">
+        <div class="col-lg-7">
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="filter-pill active" data-filter="all">All Tips</button>
+            <button type="button" class="filter-pill" data-filter="plastic">Plastic Reduction</button>
+            <button type="button" class="filter-pill" data-filter="water">Water Conservation</button>
+            <button type="button" class="filter-pill" data-filter="energy">Energy Conservation</button>
+            <button type="button" class="filter-pill" data-filter="reuse">Recycling &amp; Reuse</button>
+            <button type="button" class="filter-pill" data-filter="cleanliness">Clean Public Spaces</button>
+            <button type="button" class="filter-pill" data-filter="composting">Organic Composting</button>
+            <button type="button" class="filter-pill" data-filter="ewaste">E-Waste Disposal</button>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" id="tipSearchInput" class="form-control border-start-0" placeholder="Search tips by keyword (e.g. water, plastic)...">
+          </div>
+        </div>
+      </div>
 
-{% block extra_scripts %}
-<script>
-  // Expose tips data array to JavaScript for the interactive Tip of the Day cycler
-  window.APP_TIPS_DATA = {{ tips | tojson }};
-</script>
-{% endblock %}
+      <!-- Grid of Tips Cards -->
+      <div class="row g-4" id="tipsGrid">
+        <!-- Tip 1 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="plastic">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-bag-check me-1"></i> Reducing Single-Use Plastic</span>
+                <span class="text-muted small">#1</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Carry a durable cloth or canvas tote bag whenever you step out to avoid plastic bags.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Carry a durable cloth or canvas tote bag whenever you step out to avoid plastic bags.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 2 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="plastic">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-cup-straw me-1"></i> Reducing Single-Use Plastic</span>
+                <span class="text-muted small">#2</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Bring your own stainless steel water bottle and skip buying single-use bottled water.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Bring your own stainless steel water bottle and skip buying single-use bottled water.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 3 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="plastic">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-slash-circle me-1"></i> Reducing Single-Use Plastic</span>
+                <span class="text-muted small">#3</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Decline single-use plastic cutlery and straws; carry reusable portable utensils in your bag.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Decline single-use plastic cutlery and straws; carry reusable portable utensils in your bag.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 4 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="water">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-droplet-half me-1"></i> Saving Water</span>
+                <span class="text-muted small">#4</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Turn off running taps while brushing your teeth or washing hands to save up to 6 liters per minute.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Turn off running taps while brushing your teeth or washing hands to save up to 6 liters per minute.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 5 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="water">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-wrench me-1"></i> Saving Water</span>
+                <span class="text-muted small">#5</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Report and immediately repair leaky faucets and flush valves across college hostels and campus labs.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Report and immediately repair leaky faucets and flush valves across college hostels and campus labs.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 6 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="water">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-flower1 me-1"></i> Saving Water</span>
+                <span class="text-muted small">#6</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Reuse water drained from rinsing rice, pulses, and vegetables to nourish potted garden plants.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Reuse water drained from rinsing rice, pulses, and vegetables to nourish potted garden plants.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 7 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="energy">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-lightbulb-off me-1"></i> Conserving Electricity</span>
+                <span class="text-muted small">#7</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Switch off lights, fans, computer displays, and projectors whenever stepping out of classrooms.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Switch off lights, fans, computer displays, and projectors whenever stepping out of classrooms.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 8 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="energy">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-plug me-1"></i> Conserving Electricity</span>
+                <span class="text-muted small">#8</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Unplug chargers and idle electronic adapters; phantom standby power can consume 10% of household electricity.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Unplug chargers and idle electronic adapters; phantom standby power can consume 10% of household electricity.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 9 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="energy">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-sun me-1"></i> Conserving Electricity</span>
+                <span class="text-muted small">#9</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Utilize natural window daylight in study spaces during daytime hours rather than artificial illumination.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Utilize natural window daylight in study spaces during daytime hours rather than artificial illumination.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 10 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="reuse">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-file-earmark-text me-1"></i> Recycling &amp; Reusing</span>
+                <span class="text-muted small">#10</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Use blank reverse sides of printed handouts and assignments for rough calculations and brainstorming notes.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Use blank reverse sides of printed handouts and assignments for rough calculations and brainstorming notes.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 11 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="reuse">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-box-seam me-1"></i> Recycling &amp; Reusing</span>
+                <span class="text-muted small">#11</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Wash and repurpose glass containers and plastic jars to organize stationery, cables, and dry groceries.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Wash and repurpose glass containers and plastic jars to organize stationery, cables, and dry groceries.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 12 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="reuse">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-book me-1"></i> Recycling &amp; Reusing</span>
+                <span class="text-muted small">#12</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Donate completed course textbooks, lab notebooks, and unused stationery to juniors or library donation boxes.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Donate completed course textbooks, lab notebooks, and unused stationery to juniors or library donation boxes.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 13 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="cleanliness">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-trash3 me-1"></i> Keeping Public Places Clean</span>
+                <span class="text-muted small">#13</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Never litter in public streets or campus pathways; keep trash in your pocket until you spot an appropriate bin.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Never litter in public streets or campus pathways; keep trash in your pocket until you spot an appropriate bin.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 14 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="cleanliness">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-people me-1"></i> Keeping Public Places Clean</span>
+                <span class="text-muted small">#14</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Join or coordinate monthly cleanliness and plogging drives in campus grounds and neighborhood parks.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Join or coordinate monthly cleanliness and plogging drives in campus grounds and neighborhood parks.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 15 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="cleanliness">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-signpost-split me-1"></i> Keeping Public Places Clean</span>
+                <span class="text-muted small">#15</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Practice waste segregation at source by depositing waste into distinct wet and dry bins at public food courts.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Practice waste segregation at source by depositing waste into distinct wet and dry bins at public food courts.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 16 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="composting">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-tree me-1"></i> Organic Composting</span>
+                <span class="text-muted small">#16</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Set up a terracotta pot composter for fruit and vegetable peels to produce natural nutrient-rich plant fertilizer.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Set up a terracotta pot composter for fruit and vegetable peels to produce natural nutrient-rich plant fertilizer.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 17 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="composting">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-layers me-1"></i> Organic Composting</span>
+                <span class="text-muted small">#17</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Balance wet green kitchen waste with dry browns (dry leaves, shredded unprinted cardboard) to ensure odorless composting.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Balance wet green kitchen waste with dry browns (dry leaves, shredded unprinted cardboard) to ensure odorless composting.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 18 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="ewaste">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-phone me-1"></i> E-Waste Disposal</span>
+                <span class="text-muted small">#18</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Dispose of depleted batteries, chargers, and dead gadgets at authorized e-waste bins rather than household trash.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Dispose of depleted batteries, chargers, and dead gadgets at authorized e-waste bins rather than household trash.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip 19 -->
+        <div class="col-md-6 col-lg-4 tip-item" data-category="ewaste">
+          <div class="tip-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-light text-success border small"><i class="bi bi-tools me-1"></i> E-Waste Disposal</span>
+                <span class="text-muted small">#19</span>
+              </div>
+              <p class="card-text text-dark mt-2 mb-3">Repair cracked screens or battery issues before deciding to replace electronic devices with new models.</p>
+            </div>
+            <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+              <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('Repair cracked screens or battery issues before deciding to replace electronic devices with new models.'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+                <i class="bi bi-share me-1"></i>Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Empty State -->
+      <div id="tipsEmptyNotice" class="text-center py-5" style="display: none;">
+        <i class="bi bi-search fs-1 text-muted d-block mb-2"></i>
+        <h5 class="fw-bold text-dark">No tips matched your search query</h5>
+        <p class="text-muted small">Try searching for broader keywords such as 'plastic', 'water', or 'energy'.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-md-6 text-center text-md-start">
+          <h6 class="fw-bold mb-1 text-dark"><i class="bi bi-recycle text-success me-1"></i> Community Cleanliness & Waste Awareness System</h6>
+          <p class="small mb-0 text-muted">A community engagement project promoting sustainable waste management.</p>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <span class="badge bg-light text-dark border p-2 me-2">
+            <i class="bi bi-filetype-csv text-primary me-1"></i> Exportable to <code>reports.csv</code>
+          </span>
+          <span class="badge bg-light text-success border p-2">
+            <i class="bi bi-shield-check me-1"></i> Academic Prototype
+          </span>
+        </div>
+      </div>
+      <hr class="my-3 opacity-25">
+      <div class="text-center small text-muted">
+        Academic disclaimer: Reports are saved locally for campus tracking and are not automatically submitted to civic municipal departments.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>
