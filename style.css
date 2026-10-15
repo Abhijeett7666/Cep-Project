@@ -1,0 +1,286 @@
+/*
+  Community Cleanliness & Waste Awareness System - Custom Styling
+  Eco-conscious, modern, and accessible color palette
+*/
+
+:root {
+  --eco-primary: #2d6a4f;
+  --eco-primary-dark: #1b4332;
+  --eco-primary-light: #52b788;
+  --eco-accent: #74c69d;
+  --eco-mint: #d8f3dc;
+  --eco-bg: #f8faf9;
+  --eco-card-bg: #ffffff;
+  --eco-text-main: #212529;
+  --eco-text-muted: #6c757d;
+  --eco-border: #e2e8f0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--eco-bg);
+  color: var(--eco-text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* ---------------------------------------------------------
+   Navbar Styling
+--------------------------------------------------------- */
+.navbar-eco {
+  background: linear-gradient(135deg, var(--eco-primary-dark) 0%, var(--eco-primary) 100%);
+  box-shadow: 0 4px 15px rgba(27, 67, 50, 0.15);
+}
+
+.navbar-eco .navbar-brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.2px;
+  color: #ffffff !important;
+}
+
+.navbar-eco .nav-link {
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-weight: 500;
+  padding: 0.5rem 0.85rem;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar-eco .nav-link:hover,
+.navbar-eco .nav-link.active {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+.nav-btn-highlight {
+  background-color: var(--eco-primary-light) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn-highlight:hover {
+  background-color: var(--eco-accent) !important;
+}
+
+/* ---------------------------------------------------------
+   Hero Section
+--------------------------------------------------------- */
+.hero-section {
+  background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%);
+  color: #ffffff;
+  padding: 4rem 1rem 3.5rem;
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 10px 25px rgba(27, 67, 50, 0.12);
+}
+
+.hero-title {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--eco-mint);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------
+   Stat Cards & Feature Cards
+--------------------------------------------------------- */
+.stat-card {
+  background: var(--eco-card-bg);
+  border: 1px solid var(--eco-border);
+  border-radius: 14px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: var(--eco-primary);
+  margin-bottom: 0.5rem;
+}
+
+.stat-number {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--eco-primary-dark);
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--eco-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.eco-card {
+  background: var(--eco-card-bg);
+  border: 1px solid var(--eco-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.eco-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+}
+
+.eco-card-header {
+  border-bottom: 1px solid var(--eco-border);
+  background-color: #ffffff;
+  padding: 1.25rem 1.5rem;
+}
+
+/* ---------------------------------------------------------
+   Waste Segregation Tabs & Cards
+--------------------------------------------------------- */
+.category-card {
+  border-left: 6px solid;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.cat-wet { border-left-color: #2d6a4f; }
+.cat-dry { border-left-color: #0d6efd; }
+.cat-ewaste { border-left-color: #ff9f1c; }
+.cat-hazardous { border-left-color: #e63946; }
+.cat-special { border-left-color: #6c757d; }
+
+.section-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--eco-text-muted);
+}
+
+/* ---------------------------------------------------------
+   Tip of the Day Card
+--------------------------------------------------------- */
+.tip-highlight-box {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 1px solid #a5d6a7;
+  border-radius: 16px;
+  padding: 1.75rem;
+  position: relative;
+}
+
+.tip-card {
+  background: #ffffff;
+  border: 1px solid var(--eco-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Filter pills */
+.filter-pill {
+  border-radius: 20px;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.95rem;
+  cursor: pointer;
+  border: 1px solid var(--eco-border);
+  background-color: #ffffff;
+  color: var(--eco-text-main);
+  transition: all 0.2s ease;
+}
+
+.filter-pill:hover,
+.filter-pill.active {
+  background-color: var(--eco-primary);
+  color: #ffffff;
+  border-color: var(--eco-primary);
+}
+
+/* ---------------------------------------------------------
+   Form Styling
+--------------------------------------------------------- */
+.form-card {
+  background: #ffffff;
+  border: 1px solid var(--eco-border);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  padding: 2.25rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--eco-primary-dark);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--eco-primary-light);
+  box-shadow: 0 0 0 0.25rem rgba(82, 183, 136, 0.25);
+}
+
+.btn-eco {
+  background-color: var(--eco-primary);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.65rem 1.4rem;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-eco:hover {
+  background-color: var(--eco-primary-dark);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.badge-id {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 0.88rem;
+  background-color: #e9ecef;
+  color: #212529;
+  border: 1px solid #ced4da;
+  padding: 0.3rem 0.55rem;
+  border-radius: 6px;
+}
+
+/* ---------------------------------------------------------
+   Footer Styling
+--------------------------------------------------------- */
+footer {
+  background-color: #ffffff;
+  border-top: 1px solid var(--eco-border);
+  padding: 2rem 0;
+  color: var(--eco-text-muted);
+  font-size: 0.9rem;
+  margin-top: 4rem;
+}

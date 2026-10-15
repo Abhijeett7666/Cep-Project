@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Waste Segregation Guide - Community Cleanliness System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <!-- Page Header -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+      <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-semibold mb-2">
+        <i class="bi bi-recycle me-1"></i> Feature 1: Community Education
+      </span>
+      <h2 class="fw-bold mb-1">Waste Segregation Guide</h2>
+      <p class="text-muted mb-0">Learn how to separate waste at source to support community hygiene and circular recycling.</p>
+    </div>
+    <div>
+      <a href="{{ url_for('report_issue') }}" class="btn btn-outline-success">
+        <i class="bi bi-megaphone me-1"></i> Report an Unsegregated Hotspot
+      </a>
+    </div>
+  </div>
+
+  <!-- Mandatory Municipal Variance Alert -->
+  <div class="alert alert-warning border-0 shadow-sm d-flex align-items-start gap-3 p-3 rounded-3 mb-4">
+    <i class="bi bi-exclamation-diamond-fill fs-3 text-warning mt-1"></i>
+    <div>
+      <h6 class="fw-bold mb-1">Municipal Notice & Variance Disclaimer</h6>
+      <p class="small mb-0 text-dark">
+        Not all materials are universally recyclable in every region. Collection frequency, bin color coding, and processing
+        facilities vary by municipality and city council. Always verify and comply with your local municipal guidelines.
+      </p>
+    </div>
+  </div>
+
+  <!-- Category Filter Tabs -->
+  <ul class="nav nav-pills justify-content-center gap-2 mb-4" id="categoryTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active rounded-pill px-3 py-2 fw-semibold" id="tab-all-btn" data-bs-toggle="pill" data-bs-target="#tab-all" type="button" role="tab">
+        <i class="bi bi-grid-fill me-1"></i> All 5 Categories
+      </button>
+    </li>
+    {% for cat in categories %}
+      <li class="nav-item" role="presentation">
+        <button class="nav-link rounded-pill px-3 py-2 fw-semibold" id="tab-{{ cat.id }}-btn" data-bs-toggle="pill" data-bs-target="#tab-{{ cat.id }}" type="button" role="tab">
+          <i class="bi {{ cat.icon }} me-1"></i> {{ cat.title.split(' ')[0] }}
+        </button>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <!-- Tab Contents -->
+  <div class="tab-content" id="categoryTabsContent">
+    
+    <!-- All Categories View -->
+    <div class="tab-pane fade show active" id="tab-all" role="tabpanel">
+      <div class="row g-4">
+        {% for cat in categories %}
+          <div class="col-12">
+            <div class="eco-card p-4 category-card cat-{{ cat.id.split('-')[0] }}">
+              <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="fs-3 text-{{ cat.color }}"><i class="bi {{ cat.icon }}"></i></span>
+                  <h4 class="fw-bold mb-0">{{ cat.title }}</h4>
+                </div>
+                <span class="badge bg-{{ cat.color }} px-3 py-2 rounded-pill">{{ cat.badge }}</span>
+              </div>
+
+              <!-- Definition -->
+              <div class="mb-3">
+                <div class="section-tag mb-1"><i class="bi bi-info-circle me-1"></i> Definition</div>
+                <p class="text-secondary mb-0">{{ cat.definition }}</p>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <!-- Examples -->
+                <div class="col-md-6">
+                  <div class="p-3 rounded-3 bg-light h-100">
+                    <div class="section-tag mb-2 text-dark"><i class="bi bi-check2-circle text-success me-1"></i> Common Examples</div>
+                    <ul class="list-unstyled mb-0 small text-secondary">
+                      {% for ex in cat.examples %}
+                        <li class="mb-1"><i class="bi bi-dot text-success fs-5 align-middle"></i> {{ ex }}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Handling & Safety -->
+                <div class="col-md-6">
+                  <div class="p-3 rounded-3 bg-light h-100">
+                    <div class="section-tag mb-2 text-dark"><i class="bi bi-gear-wide-connected text-primary me-1"></i> Handling & Disposal Method</div>
+                    <p class="small text-secondary mb-2">{{ cat.handling }}</p>
+                    
+                    <div class="section-tag mb-1 text-danger"><i class="bi bi-shield-exclamation text-danger me-1"></i> Safety Precautions</div>
+                    <p class="small text-danger mb-0">{{ cat.precautions }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Municipal Specifics -->
+              <div class="p-2 px-3 rounded-2 bg-light border-start border-3 border-secondary small text-muted">
+                <strong><i class="bi bi-buildings me-1"></i> Local Municipal Guideline:</strong> {{ cat.municipal_note }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Individual Tab Panes -->
+    {% for cat in categories %}
+      <div class="tab-pane fade" id="tab-{{ cat.id }}" role="tabpanel">
+        <div class="eco-card p-4 p-md-5 category-card cat-{{ cat.id.split('-')[0] }} mx-auto" style="max-width: 900px;">
+          <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-3">
+              <span class="fs-1 text-{{ cat.color }}"><i class="bi {{ cat.icon }}"></i></span>
+              <div>
+                <h3 class="fw-bold mb-0">{{ cat.title }}</h3>
+                <span class="badge bg-{{ cat.color }} mt-1">{{ cat.badge }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="my-4">
+            <h5 class="fw-bold text-dark mb-2">Definition</h5>
+            <p class="lead fs-6 text-secondary">{{ cat.definition }}</p>
+          </div>
+
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <div class="card h-100 border-0 bg-light p-3 rounded-3">
+                <h6 class="fw-bold text-success mb-2"><i class="bi bi-box-seam me-1"></i> What Goes Here?</h6>
+                <ul class="list-unstyled mb-0 small">
+                  {% for ex in cat.examples %}
+                    <li class="py-1 border-bottom border-white"><i class="bi bi-check-circle-fill text-success me-2"></i>{{ ex }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card h-100 border-0 bg-light p-3 rounded-3">
+                <h6 class="fw-bold text-primary mb-2"><i class="bi bi-arrow-repeat me-1"></i> How to Dispose Properly</h6>
+                <p class="small text-secondary mb-3">{{ cat.handling }}</p>
+                <h6 class="fw-bold text-danger mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Worker & Environmental Safety</h6>
+                <p class="small text-danger mb-0">{{ cat.precautions }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-secondary small mb-0">
+            <strong>Municipal Regulation:</strong> {{ cat.municipal_note }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}

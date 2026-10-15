@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Report a Cleanliness Issue - Community Cleanliness System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <!-- Page Header -->
+      <div class="text-center mb-4">
+        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-semibold mb-2">
+          <i class="bi bi-megaphone-fill me-1"></i> Feature 3: Community Engagement
+        </span>
+        <h2 class="fw-bold text-dark">Report a Cleanliness or Environmental Issue</h2>
+        <p class="text-muted">
+          Log local litter hotspots, overflowing bins, or drainage issues to keep campus grounds clean.
+        </p>
+      </div>
+
+      <!-- Academic Prototype Disclaimer Banner -->
+      <div class="alert alert-light border border-secondary border-opacity-25 shadow-sm p-3 rounded-3 mb-4">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-info-circle-fill text-primary fs-5"></i>
+          <div class="small text-muted">
+            <strong>Local Academic Prototype:</strong> All submitted reports are safely stored locally in <code>reports.csv</code>.
+            Reports are <em>not</em> automatically submitted to municipal authorities.
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Form Card -->
+      <div class="form-card mb-4">
+        <form method="POST" action="{{ url_for('report_issue') }}" id="reportIssueForm" novalidate>
+          
+          <!-- Location Input -->
+          <div class="mb-4">
+            <label for="location" class="form-label d-flex justify-content-between">
+              <span><i class="bi bi-geo-alt-fill text-danger me-1"></i> Location or Area Name <span class="text-danger">*</span></span>
+              <span class="small text-muted fw-normal">Required</span>
+            </label>
+            <input 
+              type="text" 
+              class="form-control form-control-lg {% if form_data.location and form_data.location|trim|length < 2 %}is-invalid{% endif %}" 
+              id="location" 
+              name="location" 
+              placeholder="e.g. Science Block Canteen, Library Lawn, North Gate..." 
+              value="{{ form_data.location if form_data else '' }}"
+              required
+              minlength="2"
+            >
+            <div class="invalid-feedback" id="locationFeedback">
+              Please enter a valid location (at least 2 characters).
+            </div>
+            <div class="form-text text-muted">
+              Be specific about landmarks so community volunteers or campus maintenance can locate the problem.
+            </div>
+          </div>
+
+          <!-- Issue Type Dropdown -->
+          <div class="mb-4">
+            <label for="issue_type" class="form-label d-flex justify-content-between">
+              <span><i class="bi bi-tag-fill text-primary me-1"></i> Issue Category <span class="text-danger">*</span></span>
+              <span class="small text-muted fw-normal">Required</span>
+            </label>
+            <select class="form-select form-select-lg" id="issue_type" name="issue_type" required>
+              <option value="" disabled {% if not form_data.issue_type %}selected{% endif %}>-- Select Issue Category --</option>
+              {% for itype in issue_types %}
+                <option value="{{ itype }}" {% if form_data.issue_type == itype %}selected{% endif %}>
+                  {{ itype }}
+                </option>
+              {% endfor %}
+            </select>
+            <div class="form-text text-muted">
+              Choose the category that best describes the environmental concern.
+            </div>
+          </div>
+
+          <!-- Optional Description -->
+          <div class="mb-4">
+            <label for="description" class="form-label d-flex justify-content-between">
+              <span><i class="bi bi-pencil-square text-success me-1"></i> Additional Description</span>
+              <span class="small text-muted fw-normal">Optional</span>
+            </label>
+            <textarea 
+              class="form-control" 
+              id="description" 
+              name="description" 
+              rows="4" 
+              placeholder="Describe the severity, quantity of waste, or any hazard (e.g. broken glass near walkway)..."
+            >{{ form_data.description if form_data else '' }}</textarea>
+            <div class="form-text text-muted">
+              You can leave this blank if the location and issue type are self-explanatory.
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex flex-wrap gap-3 align-items-center justify-content-between pt-3 border-top">
+            <a href="{{ url_for('view_reports') }}" class="btn btn-outline-secondary px-3">
+              <i class="bi bi-arrow-left me-1"></i> Cancel & View Reports
+            </a>
+            <button type="submit" class="btn btn-eco btn-lg px-4 shadow-sm" id="submitReportBtn">
+              <i class="bi bi-check2-circle me-1"></i> Submit Report
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

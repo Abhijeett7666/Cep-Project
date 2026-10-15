@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Environmental Tips Hub - Community Cleanliness System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <!-- Page Header -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+      <span class="badge bg-warning bg-opacity-25 text-dark px-3 py-2 rounded-pill fw-semibold mb-2">
+        <i class="bi bi-lightbulb-fill text-warning me-1"></i> Feature 2: Practical Habits
+      </span>
+      <h2 class="fw-bold mb-1">Environmental Tips Hub</h2>
+      <p class="text-muted mb-0">Practical, everyday actions to minimize waste and promote campus sustainability.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <span class="badge bg-light text-dark border px-3 py-2 d-flex align-items-center fs-6">
+        <i class="bi bi-card-checklist text-success me-2"></i> {{ tips|length }} Actionable Tips
+      </span>
+    </div>
+  </div>
+
+  <!-- Interactive "Tip of the Day" Spotlight Card -->
+  <div class="tip-highlight-box mb-5 shadow-sm">
+    <div class="row align-items-center gy-3">
+      <div class="col-md-9">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge bg-success text-white px-2 py-1 small">
+            <i class="bi bi-stars me-1"></i> Featured Action
+          </span>
+          <span id="dailyTipArea" class="small fw-bold text-success">General Conservation</span>
+        </div>
+        <h4 id="dailyTipText" class="fw-bold text-dark mb-1 fst-italic">
+          "Carry a durable cloth or canvas tote bag whenever you step out to avoid plastic bags."
+        </h4>
+        <span class="small text-muted">A small daily habit makes a massive community difference.</span>
+      </div>
+      <div class="col-md-3 text-md-end">
+        <div class="btn-group shadow-sm">
+          <button id="prevTipBtn" class="btn btn-outline-success btn-sm px-3" title="Previous Tip">
+            <i class="bi bi-chevron-left"></i> Prev
+          </button>
+          <button id="nextTipBtn" class="btn btn-success btn-sm px-3" title="Next Tip">
+            Next <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters & Search Bar -->
+  <div class="row g-3 align-items-center mb-4">
+    <div class="col-lg-7">
+      <div class="d-flex flex-wrap gap-2">
+        {% for cat in categories %}
+          <button type="button" class="filter-pill {% if cat.slug == 'all' %}active{% endif %}" data-filter="{{ cat.slug }}">
+            {{ cat.name }}
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="input-group">
+        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+        <input type="text" id="tipSearchInput" class="form-control border-start-0" placeholder="Search tips by keyword (e.g. water, plastic)...">
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid of Tips Cards -->
+  <div class="row g-4" id="tipsGrid">
+    {% for item in tips %}
+      <div class="col-md-6 col-lg-4 tip-item" data-category="{{ item.category_slug }}">
+        <div class="tip-card">
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="badge bg-light text-success border small">
+                <i class="bi {{ item.icon }} me-1"></i> {{ item.area }}
+              </span>
+              <span class="text-muted small">#{{ item.id }}</span>
+            </div>
+            <p class="card-text text-dark mt-2 mb-3">
+              {{ item.tip }}
+            </p>
+          </div>
+          <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+            <span class="small text-muted"><i class="bi bi-check-circle text-success me-1"></i> Verified Habit</span>
+            <button class="btn btn-link btn-sm text-decoration-none p-0 text-success" onclick="navigator.clipboard.writeText('{{ item.tip }}'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Share', 1500)">
+              <i class="bi bi-share me-1"></i>Share
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Empty State if search matches nothing -->
+  <div id="tipsEmptyNotice" class="text-center py-5" style="display: none;">
+    <i class="bi bi-search fs-1 text-muted d-block mb-2"></i>
+    <h5 class="fw-bold text-dark">No tips matched your search query</h5>
+    <p class="text-muted small">Try searching for broader keywords such as 'plastic', 'water', or 'energy'.</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Expose tips data array to JavaScript for the interactive Tip of the Day cycler
+  window.APP_TIPS_DATA = {{ tips | tojson }};
+</script>
+{% endblock %}
