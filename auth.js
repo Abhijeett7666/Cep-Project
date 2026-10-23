@@ -4,13 +4,14 @@
  * Supports Firebase Authentication with fallback session management.
  */
 
-const AUTH_KEYS = {
+var AUTH_KEYS = window.AUTH_KEYS || {
   CURRENT_USER: 'swachh_current_session',
   USERS_REGISTRY: 'swachh_registered_users'
 };
+window.AUTH_KEYS = AUTH_KEYS;
 
 // Seed Authorized Administrative and Demo Citizen Accounts
-const DEFAULT_ACCOUNTS = [
+var DEFAULT_ACCOUNTS = window.DEFAULT_ACCOUNTS || [
   {
     uid: 'usr_admin_official',
     fullName: 'Municipal Commissioner Desk',
@@ -34,6 +35,7 @@ const DEFAULT_ACCOUNTS = [
     createdAt: '2026-10-15 10:00:00'
   }
 ];
+window.DEFAULT_ACCOUNTS = DEFAULT_ACCOUNTS;
 
 // Initialize local users registry if not present
 function initializeUsersRegistry() {
@@ -57,7 +59,7 @@ function initializeUsersRegistry() {
 }
 initializeUsersRegistry();
 
-const Auth = {
+var Auth = window.Auth || {
   // Get active session
   getCurrentUser: function() {
     try {
@@ -342,3 +344,4 @@ const Auth = {
     return user;
   }
 };
+window.Auth = Auth;

@@ -4,13 +4,14 @@
  * Supports Cloud Firestore with automatic offline/demo fallback across browser tabs.
  */
 
-const DB_KEYS = {
+var DB_KEYS = window.DB_KEYS || {
   USERS: 'swachh_users',
   COMPLAINTS: 'swachh_complaints',
   HISTORY: 'swachh_history',
   WORKERS: 'swachh_workers',
   CURRENT_USER: 'swachh_current_session'
 };
+window.DB_KEYS = DB_KEYS;
 
 // Default seed data for initial workers
 const DEFAULT_WORKERS = [
@@ -163,7 +164,7 @@ function initializeLocalDatabase() {
 initializeLocalDatabase();
 
 // Centralized Data Access Object (DAO)
-const DB = {
+var DB = window.DB || {
   // Generate a collision-free sequential Complaint ID (e.g. CMP-2026-005)
   generateComplaintId: async function() {
     if (isFirebaseConfigured() && firestoreDb) {
@@ -605,3 +606,4 @@ const DB = {
     }
   }
 };
+window.DB = DB;
