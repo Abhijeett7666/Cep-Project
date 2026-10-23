@@ -91,7 +91,7 @@
               </div>
 
               <div class="mb-4 form-check">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <input type="checkbox" class="form-check-input" id="rememberMe" checked>
                 <label class="form-check-label text-muted small" for="rememberMe">Remember this terminal session</label>
               </div>
 
@@ -184,11 +184,16 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // If already logged in as admin, redirect to admin-dashboard.html
-      const currentUser = Auth.getCurrentUser();
-      if (currentUser && currentUser.role === 'admin') {
-        window.location.href = 'admin-dashboard.html';
-        return;
+      // Check if already logged in as admin (skip redirect if switching)
+      const urlParams = new URLSearchParams(window.location.search);
+      const isSwitchAction = urlParams.get('action') === 'switch';
+
+      if (!isSwitchAction) {
+        const currentUser = Auth.getCurrentUser();
+        if (currentUser && currentUser.role === 'admin') {
+          window.location.replace('admin-dashboard.html');
+          return;
+        }
       }
 
       const form = document.getElementById('adminLoginForm');
@@ -200,7 +205,8 @@
       const togglePasswordBtn = document.getElementById('togglePasswordBtn');
       const togglePasswordIcon = document.getElementById('togglePasswordIcon');
       const forgotLink = document.getElementById('adminForgotLink');
-      const forgotModal = new bootstrap.Modal(document.getElementById('adminForgotModal'));
+      const forgotModalEl = document.getElementById('adminForgotModal');
+      const forgotModal = new bootstrap.Modal(forgotModalEl);
       const sendResetBtn = document.getElementById('sendAdminResetBtn');
       const resetAlertBox = document.getElementById('resetAlertBox');
 
@@ -218,15 +224,16 @@
         showAlert('Autofilled authorized municipal administrator credentials.', 'info');
       });
 
-      // Alert helper
+      // Alert helper with smooth scroll
       function showAlert(message, type = 'danger') {
         alertContainer.innerHTML = `
           <div class="alert alert-${type} alert-dismissible fade show rounded-3 shadow-sm d-flex align-items-center gap-2 mb-3" role="alert">
             <i class="bi bi-${type === 'success' ? 'check-circle-fill' : type === 'info' ? 'info-circle-fill' : 'exclamation-triangle-fill'} fs-5"></i>
             <div>${message}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
         `;
+        alertContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
       // Form submission
@@ -245,10 +252,10 @@
 
         try {
           const adminUser = await Auth.loginAdmin(email, password);
-          showAlert(`Welcome, ${adminUser.fullName || 'Commissioner Desk'}! Access granted. Redirecting to operations portal...`, 'success');
+          showAlert(`Welcome, ${adminUser.fullName || 'Commissioner Desk'}! Access granted. Opening operations portal...`, 'success');
           setTimeout(() => {
-            window.location.href = 'admin-dashboard.html';
-          }, 900);
+            window.location.replace('admin-dashboard.html');
+          }, 300);
         } catch (err) {
           showAlert(err.message || 'Authentication failed. Please verify credentials.', 'danger');
           submitBtn.disabled = false;
@@ -259,7 +266,7 @@
       // Forgot password handling
       forgotLink.addEventListener('click', (e) => {
         e.preventDefault();
-        document.getElementById('resetAdminEmail').value = emailInput.value || '';
+        document.getElementById('resetAdminEmail').value = emailInput.value.trim() || '';
         resetAlertBox.innerHTML = '';
         forgotModal.show();
       });

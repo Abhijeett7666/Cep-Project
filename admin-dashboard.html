@@ -1157,7 +1157,7 @@
       // Logout handler
       document.getElementById('adminLogoutBtn').addEventListener('click', async () => {
         if (confirm("Sign out of Municipal Corporation Operations Desk?")) {
-          await Auth.logout('admin-login.html');
+          await Auth.logout('admin-login.html?action=switch');
         }
       });
 

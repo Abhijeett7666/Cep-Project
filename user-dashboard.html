@@ -599,14 +599,15 @@
       const citizen = Auth.requireCitizen();
       if (!citizen) return;
 
-      // Display citizen identity in UI
-      document.getElementById('navCitizenName').textContent = citizen.fullName;
+      // Display citizen identity in UI safely
+      const safeName = citizen.fullName || 'Citizen User';
+      document.getElementById('navCitizenName').textContent = safeName;
       document.getElementById('navCitizenLocality').textContent = citizen.locality || 'General Ward';
-      document.getElementById('welcomeCitizenName').textContent = citizen.fullName.split(' ')[0];
+      document.getElementById('welcomeCitizenName').textContent = safeName.split(' ')[0] || 'Citizen';
       document.getElementById('liveFormDate').textContent = new Date().toISOString().substring(0, 10);
 
       // Populate profile tab
-      document.getElementById('profileFullName').value = citizen.fullName || '';
+      document.getElementById('profileFullName').value = safeName;
       document.getElementById('profileEmail').value = citizen.email || '';
       document.getElementById('profileMobile').value = citizen.mobile || '';
       document.getElementById('profileLocality').value = citizen.locality || '';
@@ -626,7 +627,7 @@
 
       // Logout handler
       document.getElementById('citizenLogoutBtn')?.addEventListener('click', () => {
-        Auth.logout('user-login.html');
+        Auth.logout('user-login.html?action=switch');
       });
 
       // 2. Load User Statistics (Section 4A)

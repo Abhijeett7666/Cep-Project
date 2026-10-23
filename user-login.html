@@ -27,32 +27,35 @@
         <i class="bi bi-recycle fs-4 text-warning"></i>
         <span>EcoClean Citizen Portal</span>
       </a>
-      <div class="ms-auto">
-        <a href="index.html" class="btn btn-outline-light btn-sm rounded-pill">
-          <i class="bi bi-arrow-left me-1"></i> Back to Home
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <a href="admin-login.html" class="btn btn-outline-light btn-sm rounded-pill d-none d-sm-inline-block">
+          <i class="bi bi-shield-lock me-1"></i> Admin Portal
+        </a>
+        <a href="index.html" class="btn btn-light btn-sm rounded-pill">
+          <i class="bi bi-house me-1"></i> Home
         </a>
       </div>
     </div>
   </nav>
 
-  <main class="container py-5">
+  <main class="container py-4 py-md-5">
     <div class="row justify-content-center">
       <div class="col-lg-7 col-md-9">
 
         <!-- Portal Header -->
-        <div class="text-center mb-4">
+        <div class="text-center mb-3">
           <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1.5 rounded-pill mb-2">
-            <i class="bi bi-person-badge-fill me-1"></i> Citizen Authentication
+            <i class="bi bi-person-badge-fill me-1"></i> Citizen Services Gateway
           </span>
-          <h2 class="fw-bold text-dark">Welcome to Citizen Services</h2>
-          <p class="text-muted small">Sign in to lodge cleanliness complaints, track active reports, and access eco guides.</p>
+          <h2 class="fw-bold text-dark">Citizen Sign In & Registration</h2>
+          <p class="text-muted small">Lodge cleanliness complaints, upload photos, track resolution timelines, and access waste segregation guides.</p>
         </div>
 
-        <!-- Alert Container -->
+        <!-- Alert Notification Box -->
         <div id="authAlertContainer"></div>
 
         <!-- Auth Card with Tab Navigation -->
-        <div class="eco-card p-4 p-md-5 shadow-lg">
+        <div class="eco-card p-4 p-md-5 shadow-lg bg-white rounded-4 border-0">
           
           <ul class="nav nav-pills nav-fill gap-2 p-1 bg-light rounded-pill mb-4" id="authTabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -74,36 +77,37 @@
               <form id="citizenLoginForm" novalidate>
                 
                 <div class="mb-3">
-                  <label for="loginEmail" class="form-label">
-                    <i class="bi bi-envelope-fill text-success me-1"></i> Email Address
+                  <label for="loginEmail" class="form-label fw-semibold text-secondary small">
+                    <i class="bi bi-envelope-fill text-success me-1"></i> EMAIL ADDRESS
                   </label>
-                  <input type="email" class="form-control" id="loginEmail" placeholder="e.g. citizen@example.com" required>
+                  <input type="email" class="form-control form-control-lg fs-6" id="loginEmail" placeholder="e.g. citizen@example.com" required autocomplete="username">
                 </div>
 
                 <div class="mb-3">
                   <div class="d-flex justify-content-between align-items-center">
-                    <label for="loginPassword" class="form-label mb-0">
-                      <i class="bi bi-key-fill text-success me-1"></i> Password
+                    <label for="loginPassword" class="form-label fw-semibold text-secondary small mb-0">
+                      <i class="bi bi-key-fill text-success me-1"></i> PASSWORD
                     </label>
                     <a href="#" id="forgotPasswordLink" class="small text-success fw-semibold text-decoration-none">
                       Forgot Password?
                     </a>
                   </div>
-                  <input type="password" class="form-control mt-2" id="loginPassword" placeholder="••••••••" required>
+                  <input type="password" class="form-control form-control-lg fs-6 mt-1" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
                 </div>
 
                 <div class="d-grid mt-4">
-                  <button type="submit" class="btn btn-eco btn-lg" id="loginSubmitBtn">
-                    <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Dashboard
+                  <button type="submit" class="btn btn-eco btn-lg fw-bold rounded-3 shadow-sm" id="loginSubmitBtn">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Citizen Dashboard
                   </button>
                 </div>
 
-                <!-- Viva / Quick Demo Account Auto-Fill -->
+                <!-- Academic Viva / Demo Shortcut -->
                 <div class="mt-4 pt-3 border-top text-center">
-                  <span class="small text-muted d-block mb-2">Academic Viva &amp; Demo Shortcut:</span>
-                  <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" id="fillDemoCitizenBtn">
+                  <span class="small text-muted d-block mb-2">College Viva &amp; Demo Testing Shortcut:</span>
+                  <button type="button" class="btn btn-outline-success btn-sm rounded-pill px-3" id="fillDemoCitizenBtn">
                     <i class="bi bi-lightning-charge-fill text-warning me-1"></i> Auto-Fill Demo Citizen Account
                   </button>
+                  <div class="text-muted mt-1" style="font-size: 0.76rem;">Email: <code>citizen@example.com</code> | Password: <code>Citizen@123</code></div>
                 </div>
 
               </form>
@@ -115,56 +119,56 @@
                 
                 <div class="row g-3">
                   <div class="col-md-12">
-                    <label for="regFullName" class="form-label">Full Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="regFullName" placeholder="e.g. Aditya Patil" required minlength="3">
+                    <label for="regFullName" class="form-label fw-semibold text-secondary small">Full Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="regFullName" placeholder="e.g. Aditya Patil" required minlength="2">
                   </div>
 
                   <div class="col-md-6">
-                    <label for="regEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
+                    <label for="regEmail" class="form-label fw-semibold text-secondary small">Email Address <span class="text-danger">*</span></label>
                     <input type="email" class="form-control" id="regEmail" placeholder="e.g. citizen@example.com" required>
                   </div>
 
                   <div class="col-md-6">
-                    <label for="regMobile" class="form-label">Mobile Number <span class="text-danger">*</span></label>
-                    <input type="tel" class="form-control" id="regMobile" placeholder="10-digit mobile number" required pattern="[0-9]{10}">
+                    <label for="regMobile" class="form-label fw-semibold text-secondary small">Mobile Number <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" id="regMobile" placeholder="e.g. 9876543210" required>
                   </div>
 
                   <div class="col-md-6">
-                    <label for="regPassword" class="form-label">Password <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" id="regPassword" placeholder="Min. 6 characters" required minlength="6">
+                    <label for="regPassword" class="form-label fw-semibold text-secondary small">Password <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="regPassword" placeholder="Min. 4 characters" required minlength="4">
                   </div>
 
                   <div class="col-md-6">
-                    <label for="regConfirmPassword" class="form-label">Confirm Password <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" id="regConfirmPassword" placeholder="Re-enter password" required minlength="6">
+                    <label for="regConfirmPassword" class="form-label fw-semibold text-secondary small">Confirm Password <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="regConfirmPassword" placeholder="Re-enter password" required minlength="4">
                   </div>
 
                   <div class="col-md-6">
-                    <label for="regLocality" class="form-label">Area / Locality / Ward <span class="text-danger">*</span></label>
+                    <label for="regLocality" class="form-label fw-semibold text-secondary small">Area / Locality / Ward <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="regLocality" placeholder="e.g. North Campus, Ward 1" required>
                   </div>
 
                   <div class="col-md-6">
-                    <label for="regCity" class="form-label">City <span class="text-danger">*</span></label>
+                    <label for="regCity" class="form-label fw-semibold text-secondary small">City <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="regCity" value="Pune" required>
                   </div>
 
                   <div class="col-md-12">
-                    <label for="regPhoto" class="form-label">Profile Photo <span class="small text-muted fw-normal">(Optional)</span></label>
+                    <label for="regPhoto" class="form-label fw-semibold text-secondary small">Profile Photo <span class="text-muted fw-normal">(Optional)</span></label>
                     <input type="file" class="form-control" id="regPhoto" accept="image/*">
-                    <div class="form-text">Upload JPEG or PNG photo (Max 1MB).</div>
+                    <div class="form-text small">JPEG or PNG image (Max 1MB).</div>
                   </div>
                 </div>
 
                 <div class="d-grid mt-4">
-                  <button type="submit" class="btn btn-eco btn-lg" id="registerSubmitBtn">
+                  <button type="submit" class="btn btn-eco btn-lg fw-bold rounded-3 shadow-sm" id="registerSubmitBtn">
                     <i class="bi bi-person-check-fill me-1"></i> Register Citizen Account
                   </button>
                 </div>
 
                 <div class="text-center mt-3 small text-muted">
                   Already have an account? 
-                  <a href="#" onclick="document.getElementById('tab-login-btn').click(); return false;" class="text-success fw-bold">Sign In here</a>.
+                  <a href="#" id="switchLoginLink" class="text-success fw-bold text-decoration-none">Sign In here</a>.
                 </div>
 
               </form>
@@ -172,6 +176,12 @@
 
           </div>
 
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="index.html" class="text-muted small text-decoration-none">
+            <i class="bi bi-arrow-left me-1"></i> Return to Main Public Home
+          </a>
         </div>
 
       </div>
@@ -183,11 +193,11 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow">
         <div class="modal-header border-0 pb-0">
-          <h5 class="modal-title fw-bold"><i class="bi bi-shield-lock text-success me-2"></i>Reset Your Password</h5>
+          <h5 class="modal-title fw-bold"><i class="bi bi-shield-lock text-success me-2"></i>Reset Citizen Password</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body py-4">
-          <p class="text-muted small">Enter your registered email address. We will verify your account and dispatch password reset instructions.</p>
+          <p class="text-muted small">Enter your registered email address to receive password reset instructions.</p>
           <div class="mb-3">
             <label class="form-label small fw-bold">Registered Email</label>
             <input type="email" id="forgotEmailInput" class="form-control" placeholder="citizen@example.com">
@@ -195,8 +205,8 @@
           <div id="forgotPasswordAlert" class="small mt-2" style="display: none;"></div>
         </div>
         <div class="modal-footer border-0 pt-0">
-          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-eco" id="submitForgotBtn">Send Reset Link</button>
+          <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-eco rounded-pill fw-semibold" id="submitForgotBtn">Send Reset Link</button>
         </div>
       </div>
     </div>
@@ -214,69 +224,116 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Check if URL has ?tab=register
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('tab') === 'register') {
+      const isRegisterTab = urlParams.get('tab') === 'register';
+      const isSwitchAction = urlParams.get('action') === 'switch';
+
+      // Switch to registration tab if requested via URL
+      if (isRegisterTab) {
         const regTab = document.getElementById('tab-register-btn');
-        if (regTab) regTab.click();
+        if (regTab) {
+          const tabTrigger = new bootstrap.Tab(regTab);
+          tabTrigger.show();
+        }
       }
 
-      // If citizen already logged in, redirect to dashboard
-      const existingUser = Auth.getCurrentUser();
-      if (existingUser && existingUser.role === 'citizen') {
-        window.location.href = 'user-dashboard.html';
-        return;
+      // Check if already logged in as citizen (skip redirect if explicitly creating account or switching)
+      if (!isRegisterTab && !isSwitchAction) {
+        const existingUser = Auth.getCurrentUser();
+        if (existingUser && existingUser.role === 'citizen') {
+          window.location.replace('user-dashboard.html');
+          return;
+        }
       }
 
       const alertBox = document.getElementById('authAlertContainer');
       function showAlert(msg, type = 'danger') {
+        const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'info' ? 'bi-info-circle-fill' : 'bi-exclamation-triangle-fill';
         alertBox.innerHTML = `
-          <div class="alert alert-${type} alert-dismissible fade show shadow-sm" role="alert">
-            <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'} me-2"></i> ${msg}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          <div class="alert alert-${type} alert-dismissible fade show shadow-sm d-flex align-items-center gap-2 mb-3" role="alert">
+            <i class="bi ${icon} fs-5"></i>
+            <div>${msg}</div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
           </div>
         `;
+        alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
-      // Auto-fill demo citizen
-      document.getElementById('fillDemoCitizenBtn')?.addEventListener('click', () => {
-        document.getElementById('loginEmail').value = 'citizen@example.com';
-        document.getElementById('loginPassword').value = 'Citizen@123';
-      });
-
-      // Login handler
-      document.getElementById('citizenLoginForm')?.addEventListener('submit', async (e) => {
+      // Switch login link in registration tab
+      document.getElementById('switchLoginLink')?.addEventListener('click', (e) => {
         e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const pass = document.getElementById('loginPassword').value;
-        const btn = document.getElementById('loginSubmitBtn');
-        
-        try {
-          btn.disabled = true;
-          btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Authenticating...';
-          const user = await Auth.loginCitizen(email, pass);
-          showAlert(`Welcome back, ${user.fullName}! Redirecting to dashboard...`, 'success');
-          setTimeout(() => {
-            window.location.href = 'user-dashboard.html';
-          }, 800);
-        } catch (err) {
-          showAlert(err.message, 'danger');
-          btn.disabled = false;
-          btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Dashboard';
+        const loginTab = document.getElementById('tab-login-btn');
+        if (loginTab) {
+          const tabTrigger = new bootstrap.Tab(loginTab);
+          tabTrigger.show();
         }
       });
 
-      // Registration handler
+      // Auto-fill demo citizen shortcut
+      document.getElementById('fillDemoCitizenBtn')?.addEventListener('click', () => {
+        document.getElementById('loginEmail').value = 'citizen@example.com';
+        document.getElementById('loginPassword').value = 'Citizen@123';
+        showAlert("Autofilled demo citizen credentials. Click 'Sign In' to proceed.", "info");
+      });
+
+      // 1. Login Handler
+      document.getElementById('citizenLoginForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const emailInput = document.getElementById('loginEmail');
+        const passInput = document.getElementById('loginPassword');
+        const email = emailInput.value.trim();
+        const pass = passInput.value;
+        const btn = document.getElementById('loginSubmitBtn');
+        
+        if (!email || !pass) {
+          showAlert("Please enter both your email address and password.", "danger");
+          return;
+        }
+
+        try {
+          btn.disabled = true;
+          btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Signing In...';
+          const user = await Auth.loginCitizen(email, pass);
+          showAlert(`Welcome, ${user.fullName}! Authentication successful. Opening dashboard...`, 'success');
+          setTimeout(() => {
+            window.location.replace('user-dashboard.html');
+          }, 300);
+        } catch (err) {
+          showAlert(err.message || "Failed to sign in. Please verify your credentials.", 'danger');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Citizen Dashboard';
+        }
+      });
+
+      // 2. Registration Handler
       document.getElementById('citizenRegisterForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('registerSubmitBtn');
         const photoInput = document.getElementById('regPhoto');
         let photoBase64 = '';
 
-        if (photoInput.files && photoInput.files[0]) {
+        const fullName = document.getElementById('regFullName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const mobile = document.getElementById('regMobile').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const confirmPassword = document.getElementById('regConfirmPassword').value;
+        const locality = document.getElementById('regLocality').value.trim();
+        const city = document.getElementById('regCity').value.trim();
+
+        if (!fullName || !email || !mobile || !password || !confirmPassword || !locality) {
+          showAlert("Please fill in all mandatory fields marked with an asterisk (*).", 'danger');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showAlert("Password confirmation does not match. Please re-type your password.", 'danger');
+          return;
+        }
+
+        if (photoInput && photoInput.files && photoInput.files[0]) {
           const file = photoInput.files[0];
           if (file.size > 1048576) {
-            showAlert("Profile photo exceeds 1MB limit. Please choose a smaller image.", 'danger');
+            showAlert("Profile photo exceeds 1MB limit. Please select a smaller photo.", 'danger');
             return;
           }
           photoBase64 = await new Promise((res) => {
@@ -287,46 +344,49 @@
         }
 
         const formData = {
-          fullName: document.getElementById('regFullName').value,
-          email: document.getElementById('regEmail').value,
-          mobile: document.getElementById('regMobile').value,
-          password: document.getElementById('regPassword').value,
-          confirmPassword: document.getElementById('regConfirmPassword').value,
-          locality: document.getElementById('regLocality').value,
-          city: document.getElementById('regCity').value,
-          photoBase64: photoBase64
+          fullName,
+          email,
+          mobile,
+          password,
+          confirmPassword,
+          locality,
+          city: city || 'Pune',
+          photoBase64
         };
 
         try {
           btn.disabled = true;
-          btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Registering Account...';
+          btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Registering Account...';
           const user = await Auth.registerCitizen(formData);
-          showAlert(`Account registered successfully! Welcome, ${user.fullName}. Redirecting...`, 'success');
+          showAlert(`Account registered successfully! Welcome, ${user.fullName}. Redirecting to your dashboard...`, 'success');
           setTimeout(() => {
-            window.location.href = 'user-dashboard.html';
-          }, 1000);
+            window.location.replace('user-dashboard.html');
+          }, 400);
         } catch (err) {
-          showAlert(err.message, 'danger');
+          showAlert(err.message || "Registration failed. Please check your inputs.", 'danger');
           btn.disabled = false;
           btn.innerHTML = '<i class="bi bi-person-check-fill me-1"></i> Register Citizen Account';
         }
       });
 
-      // Forgot Password Modal
-      const forgotModal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
+      // 3. Forgot Password Modal
+      const forgotModalEl = document.getElementById('forgotPasswordModal');
+      const forgotModal = new bootstrap.Modal(forgotModalEl);
       document.getElementById('forgotPasswordLink')?.addEventListener('click', (e) => {
         e.preventDefault();
+        document.getElementById('forgotEmailInput').value = document.getElementById('loginEmail').value.trim();
         forgotModal.show();
       });
 
       document.getElementById('submitForgotBtn')?.addEventListener('click', async () => {
-        const email = document.getElementById('forgotEmailInput').value;
+        const email = document.getElementById('forgotEmailInput').value.trim();
         const msgDiv = document.getElementById('forgotPasswordAlert');
         try {
           const res = await Auth.forgotPassword(email);
           msgDiv.className = 'alert alert-success py-2 mt-2';
           msgDiv.textContent = res;
           msgDiv.style.display = 'block';
+          setTimeout(() => { forgotModal.hide(); }, 2500);
         } catch (err) {
           msgDiv.className = 'alert alert-danger py-2 mt-2';
           msgDiv.textContent = err.message;

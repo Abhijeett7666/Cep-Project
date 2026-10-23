@@ -9,7 +9,7 @@ const AUTH_KEYS = {
   USERS_REGISTRY: 'swachh_registered_users'
 };
 
-// Seed Authorized Administrative Account (Never registered publicly)
+// Seed Authorized Administrative and Demo Citizen Accounts
 const DEFAULT_ACCOUNTS = [
   {
     uid: 'usr_admin_official',
@@ -19,6 +19,7 @@ const DEFAULT_ACCOUNTS = [
     locality: 'Corporation Head Office',
     city: 'Pune',
     role: 'admin',
+    password: 'Admin@2026',
     createdAt: '2026-01-01 00:00:00'
   },
   {
@@ -29,14 +30,29 @@ const DEFAULT_ACCOUNTS = [
     locality: 'North Campus Housing',
     city: 'Pune',
     role: 'citizen',
+    password: 'Citizen@123',
     createdAt: '2026-10-15 10:00:00'
   }
 ];
 
 // Initialize local users registry if not present
 function initializeUsersRegistry() {
-  if (!localStorage.getItem(AUTH_KEYS.USERS_REGISTRY)) {
-    localStorage.setItem(AUTH_KEYS.USERS_REGISTRY, JSON.stringify(DEFAULT_ACCOUNTS));
+  try {
+    const raw = localStorage.getItem(AUTH_KEYS.USERS_REGISTRY);
+    if (!raw) {
+      localStorage.setItem(AUTH_KEYS.USERS_REGISTRY, JSON.stringify(DEFAULT_ACCOUNTS));
+    } else {
+      const existing = JSON.parse(raw);
+      // Ensure default accounts are present
+      DEFAULT_ACCOUNTS.forEach(defAcc => {
+        if (!existing.some(u => u.email.toLowerCase() === defAcc.email.toLowerCase())) {
+          existing.push(defAcc);
+        }
+      });
+      localStorage.setItem(AUTH_KEYS.USERS_REGISTRY, JSON.stringify(existing));
+    }
+  } catch (e) {
+    console.warn("Registry init error:", e);
   }
 }
 initializeUsersRegistry();
@@ -54,12 +70,16 @@ const Auth = {
 
   // Save session
   setCurrentUser: function(userObj) {
-    localStorage.setItem(AUTH_KEYS.CURRENT_USER, JSON.stringify(userObj));
+    if (!userObj) {
+      localStorage.removeItem(AUTH_KEYS.CURRENT_USER);
+    } else {
+      localStorage.setItem(AUTH_KEYS.CURRENT_USER, JSON.stringify(userObj));
+    }
   },
 
   // Clear session & log out
   logout: async function(redirectUrl = 'index.html') {
-    if (isFirebaseConfigured() && firebaseAuth) {
+    if (typeof isFirebaseConfigured === 'function' && isFirebaseConfigured() && typeof firebaseAuth !== 'undefined' && firebaseAuth) {
       try {
         await firebaseAuth.signOut();
       } catch (e) {
@@ -67,7 +87,7 @@ const Auth = {
       }
     }
     localStorage.removeItem(AUTH_KEYS.CURRENT_USER);
-    window.location.href = redirectUrl;
+    window.location.replace(redirectUrl);
   },
 
   // Citizen Registration
@@ -75,23 +95,23 @@ const Auth = {
     const { fullName, email, mobile, password, confirmPassword, locality, city, photoBase64 } = formData;
 
     // Strict validation
-    if (!fullName || fullName.trim().length < 3) {
-      throw new Error("Full name must be at least 3 characters long.");
+    if (!fullName || fullName.trim().length < 2) {
+      throw new Error("Please enter your full name (at least 2 characters).");
     }
+    const cleanEmail = (email || '').trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email.trim())) {
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
       throw new Error("Please enter a valid email address.");
     }
-    const mobileRegex = /^[6-9]\d{9}$/;
-    const cleanMobile = mobile.replace(/[^0-9]/g, '').slice(-10);
-    if (!mobileRegex.test(cleanMobile)) {
-      throw new Error("Please enter a valid 10-digit mobile number.");
+    const cleanMobile = (mobile || '').replace(/[^0-9]/g, '');
+    if (!cleanMobile || cleanMobile.length < 7) {
+      throw new Error("Please enter a valid phone number (minimum 7 digits).");
     }
-    if (!password || password.length < 6) {
-      throw new Error("Password must be at least 6 characters long.");
+    if (!password || password.length < 4) {
+      throw new Error("Password must be at least 4 characters long.");
     }
     if (password !== confirmPassword) {
-      throw new Error("Password confirmation does not match.");
+      throw new Error("Passwords do not match. Please re-enter your password.");
     }
     if (!locality || !locality.trim()) {
       throw new Error("Please enter your area or locality.");
@@ -101,21 +121,22 @@ const Auth = {
     const newUser = {
       uid: 'usr_' + Date.now(),
       fullName: fullName.trim(),
-      email: email.trim().toLowerCase(),
-      mobile: '+91 ' + cleanMobile,
+      email: cleanEmail,
+      mobile: '+91 ' + cleanMobile.slice(-10),
       locality: locality.trim(),
       city: city ? city.trim() : 'Pune',
+      password: password, // Persist password for authentication
       photoUrl: photoBase64 || '',
       role: 'citizen',
       createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19)
     };
 
-    // If Firebase Auth is configured
-    if (isFirebaseConfigured() && firebaseAuth) {
+    // If Firebase Auth is configured with live production credentials
+    if (typeof isFirebaseConfigured === 'function' && isFirebaseConfigured() && typeof firebaseAuth !== 'undefined' && firebaseAuth) {
       try {
-        const userCredential = await firebaseAuth.createUserWithEmailAndPassword(email, password);
+        const userCredential = await firebaseAuth.createUserWithEmailAndPassword(cleanEmail, password);
         newUser.uid = userCredential.user.uid;
-        if (firestoreDb) {
+        if (typeof firestoreDb !== 'undefined' && firestoreDb) {
           await firestoreDb.collection('users').doc(newUser.uid).set(newUser);
         }
       } catch (fbErr) {
@@ -125,14 +146,14 @@ const Auth = {
 
     // Check duplicate email in local registry
     const users = this.getRegisteredUsers();
-    if (users.some(u => u.email === newUser.email)) {
-      throw new Error("An account with this email address already exists.");
+    if (users.some(u => u.email.toLowerCase() === cleanEmail)) {
+      throw new Error("An account with this email address already exists. Please log in instead.");
     }
 
     users.push(newUser);
     localStorage.setItem(AUTH_KEYS.USERS_REGISTRY, JSON.stringify(users));
 
-    // Auto-login registered citizen
+    // Auto-login newly registered citizen
     this.setCurrentUser(newUser);
     return newUser;
   },
@@ -140,17 +161,17 @@ const Auth = {
   // Citizen Login
   loginCitizen: async function(email, password) {
     if (!email || !password) {
-      throw new Error("Please enter both email and password.");
+      throw new Error("Please enter both email address and password.");
     }
 
     const cleanEmail = email.trim().toLowerCase();
 
     // Firebase Auth attempt
-    if (isFirebaseConfigured() && firebaseAuth) {
+    if (typeof isFirebaseConfigured === 'function' && isFirebaseConfigured() && typeof firebaseAuth !== 'undefined' && firebaseAuth) {
       try {
         const cred = await firebaseAuth.signInWithEmailAndPassword(cleanEmail, password);
         let userDoc = null;
-        if (firestoreDb) {
+        if (typeof firestoreDb !== 'undefined' && firestoreDb) {
           const snap = await firestoreDb.collection('users').doc(cred.user.uid).get();
           if (snap.exists) userDoc = snap.data();
         }
@@ -159,25 +180,30 @@ const Auth = {
           return userDoc;
         }
       } catch (err) {
-        console.warn("Firebase Auth failed, checking local registry:", err.message);
+        console.warn("Firebase Auth check note:", err.message);
       }
     }
 
     // Local registry check
     const users = this.getRegisteredUsers();
-    const user = users.find(u => u.email === cleanEmail);
+    const user = users.find(u => u.email.toLowerCase() === cleanEmail);
 
-    // Demonstration credentials support: 'Citizen@123' or any matching password
     if (!user) {
-      throw new Error("No citizen account found with this email. Please create an account.");
+      throw new Error("No account found with this email. Click 'Create Account' to register.");
     }
     if (user.role !== 'citizen') {
-      throw new Error("This account is registered under administrative services. Please use the Municipal Admin Portal.");
+      throw new Error("This account is registered for Municipal Administrators. Please use the Municipal Admin Portal.");
     }
 
-    // Password validation for local demo
-    if (password !== 'Citizen@123' && password.length < 6) {
-      throw new Error("Invalid password credentials.");
+    // Password validation: match saved password or demo master password 'Citizen@123'
+    if (user.password) {
+      if (user.password !== password && password !== 'Citizen@123') {
+        throw new Error("Incorrect password. Please verify and try again.");
+      }
+    } else {
+      if (password !== 'Citizen@123' && password.length < 4) {
+        throw new Error("Invalid password credentials.");
+      }
     }
 
     this.setCurrentUser(user);
@@ -187,16 +213,16 @@ const Auth = {
   // Municipal Corporation Administrator Login
   loginAdmin: async function(email, password) {
     if (!email || !password) {
-      throw new Error("Please enter both administrator email and password.");
+      throw new Error("Please enter both administrator email and security password.");
     }
 
     const cleanEmail = email.trim().toLowerCase();
 
     // Firebase Auth check
-    if (isFirebaseConfigured() && firebaseAuth) {
+    if (typeof isFirebaseConfigured === 'function' && isFirebaseConfigured() && typeof firebaseAuth !== 'undefined' && firebaseAuth) {
       try {
         const cred = await firebaseAuth.signInWithEmailAndPassword(cleanEmail, password);
-        if (firestoreDb) {
+        if (typeof firestoreDb !== 'undefined' && firestoreDb) {
           const snap = await firestoreDb.collection('users').doc(cred.user.uid).get();
           if (snap.exists) {
             const data = snap.data();
@@ -209,21 +235,25 @@ const Auth = {
           }
         }
       } catch (err) {
-        console.warn("Firebase admin auth error, checking authorized list:", err);
+        console.warn("Firebase admin auth error:", err);
       }
     }
 
     // Verified administrator check
     // Default authorized account: admin@municipal.gov.in / Admin@2026
     const users = this.getRegisteredUsers();
-    const admin = users.find(u => u.email === cleanEmail && u.role === 'admin');
+    let admin = users.find(u => u.email.toLowerCase() === cleanEmail && u.role === 'admin');
 
-    if (!admin) {
-      throw new Error("Unauthorized: No municipal administrator account found for this email.");
+    if (!admin && cleanEmail === 'admin@municipal.gov.in') {
+      admin = DEFAULT_ACCOUNTS.find(u => u.role === 'admin');
     }
 
-    if (password !== 'Admin@2026') {
-      throw new Error("Incorrect administrator password.");
+    if (!admin) {
+      throw new Error("Unauthorized: No municipal administrator account found for this email. Use 'admin@municipal.gov.in'.");
+    }
+
+    if (admin.password && admin.password !== password && password !== 'Admin@2026') {
+      throw new Error("Incorrect administrator password. (Default demo password is 'Admin@2026').");
     }
 
     this.setCurrentUser(admin);
@@ -235,11 +265,11 @@ const Auth = {
     if (!email || !email.includes('@')) {
       throw new Error("Please enter a valid email address.");
     }
-    if (isFirebaseConfigured() && firebaseAuth) {
+    if (typeof isFirebaseConfigured === 'function' && isFirebaseConfigured() && typeof firebaseAuth !== 'undefined' && firebaseAuth) {
       await firebaseAuth.sendPasswordResetEmail(email.trim());
-      return "Password reset link sent to your registered email address.";
+      return "Password reset link dispatched to your registered email address.";
     }
-    return "Password reset instructions have been dispatched to " + email.trim() + " (For demo, default password is 'Citizen@123').";
+    return "Password reset instructions dispatched to " + email.trim() + " (For demo, default password is 'Citizen@123').";
   },
 
   // Update citizen profile
@@ -247,16 +277,14 @@ const Auth = {
     const user = this.getCurrentUser();
     if (!user) throw new Error("No active session found.");
 
-    // Update fields
     if (updatedFields.fullName) user.fullName = updatedFields.fullName.trim();
     if (updatedFields.mobile) user.mobile = updatedFields.mobile.trim();
     if (updatedFields.locality) user.locality = updatedFields.locality.trim();
     if (updatedFields.city) user.city = updatedFields.city.trim();
     if (updatedFields.photoUrl) user.photoUrl = updatedFields.photoUrl;
 
-    // Update in registry
     const users = this.getRegisteredUsers();
-    const idx = users.findIndex(u => u.uid === user.uid || u.email === user.email);
+    const idx = users.findIndex(u => u.uid === user.uid || u.email.toLowerCase() === user.email.toLowerCase());
     if (idx !== -1) {
       users[idx] = { ...users[idx], ...user };
       localStorage.setItem(AUTH_KEYS.USERS_REGISTRY, JSON.stringify(users));
@@ -264,8 +292,7 @@ const Auth = {
 
     this.setCurrentUser(user);
 
-    // Update in Firestore
-    if (isFirebaseConfigured() && firestoreDb) {
+    if (typeof isFirebaseConfigured === 'function' && isFirebaseConfigured() && typeof firestoreDb !== 'undefined' && firestoreDb) {
       try {
         await firestoreDb.collection('users').doc(user.uid).update(user);
       } catch (e) {
@@ -290,11 +317,11 @@ const Auth = {
   requireCitizen: function() {
     const user = this.getCurrentUser();
     if (!user) {
-      window.location.href = 'user-login.html';
+      window.location.replace('user-login.html');
       return null;
     }
     if (user.role !== 'citizen') {
-      window.location.href = 'admin-dashboard.html';
+      window.location.replace('admin-dashboard.html');
       return null;
     }
     return user;
@@ -304,12 +331,12 @@ const Auth = {
   requireAdmin: function() {
     const user = this.getCurrentUser();
     if (!user) {
-      window.location.href = 'admin-login.html';
+      window.location.replace('admin-login.html');
       return null;
     }
     if (user.role !== 'admin') {
       alert("Access Denied: You must be signed in as an authorized Municipal Corporation Official to access this panel.");
-      window.location.href = 'user-dashboard.html';
+      window.location.replace('user-dashboard.html');
       return null;
     }
     return user;
