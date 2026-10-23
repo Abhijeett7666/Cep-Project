@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Municipal Corporation Admin Panel - Cleanliness & Waste Operations</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom Prototype Theme CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .admin-sidebar {
+      background-color: #1e293b;
+      color: #cbd5e1;
+      min-height: calc(100vh - 65px);
+    }
+    .admin-sidebar .nav-link {
+      color: #94a3b8;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      transition: all 0.2s ease;
+    }
+    .admin-sidebar .nav-link:hover,
+    .admin-sidebar .nav-link.active {
+      color: #ffffff;
+      background-color: #0f172a;
+    }
+    .admin-sidebar .nav-link.active {
+      border-left: 4px solid #0d6efd;
+    }
+    .kpi-card {
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .priority-badge-Urgent { background-color: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+    .priority-badge-High { background-color: #ffedd5; color: #ea580c; border: 1px solid #fed7aa; }
+    .priority-badge-Medium { background-color: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+    .priority-badge-Low { background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- Admin Top Navbar -->
+  <header class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-2">
+    <div class="container-fluid px-3 px-md-4">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <span class="badge bg-primary px-2 py-1 fs-6"><i class="bi bi-buildings-fill"></i></span>
+        <div>
+          <span class="fw-bold tracking-tight text-white d-block lh-1">MUNICIPAL CORPORATION</span>
+          <span class="text-secondary small fw-normal" style="font-size: 0.75rem;">Department of Solid Waste & Sanitation Operations</span>
+        </div>
+      </a>
+      
+      <!-- Right Side Actions -->
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <span class="badge bg-primary bg-opacity-25 text-primary-emphasis px-3 py-1.5 rounded-pill border border-primary border-opacity-25 d-none d-md-inline-block">
+          <i class="bi bi-shield-check me-1"></i> Authorized Desk: <strong id="adminNameDisplay">Official Desk</strong>
+        </span>
+        <button class="btn btn-outline-light btn-sm rounded-pill" id="adminLogoutBtn">
+          <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container-fluid px-0">
+    <div class="row g-0">
+      
+      <!-- Left Sidebar Navigation -->
+      <nav class="col-lg-2 col-md-3 d-none d-md-block admin-sidebar p-3">
+        <div class="text-uppercase text-secondary fw-bold px-2 mb-2" style="font-size: 0.72rem; letter-spacing: 0.08em;">
+          Operations Menu
+        </div>
+        <ul class="nav flex-column mb-auto">
+          <li class="nav-item">
+            <a href="#section-overview" class="nav-link active" data-section="overview">
+              <i class="bi bi-speedometer2 me-2 text-primary"></i> Operations Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#section-complaints" class="nav-link" data-section="complaints">
+              <i class="bi bi-list-check me-2 text-warning"></i> Citizen Complaints
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#section-analytics" class="nav-link" data-section="analytics">
+              <i class="bi bi-pie-chart-fill me-2 text-info"></i> Waste Analytics
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#section-workers" class="nav-link" data-section="workers">
+              <i class="bi bi-people-fill me-2 text-success"></i> Sanitation Workers
+            </a>
+          </li>
+        </ul>
+
+        <hr class="border-secondary opacity-25 my-4">
+
+        <div class="text-uppercase text-secondary fw-bold px-2 mb-2" style="font-size: 0.72rem; letter-spacing: 0.08em;">
+          Data & Dispatch
+        </div>
+        <div class="px-2">
+          <button class="btn btn-sm btn-outline-light w-100 mb-2 rounded-3 text-start" id="sidebarExportBtn">
+            <i class="bi bi-file-earmark-spreadsheet me-2 text-success"></i> Export CSV Report
+          </button>
+          <a href="index.html" class="btn btn-sm btn-outline-secondary w-100 rounded-3 text-start">
+            <i class="bi bi-box-arrow-up-right me-2"></i> View Citizen Portal
+          </a>
+        </div>
+      </nav>
+
+      <!-- Main Admin Content Area -->
+      <main class="col-lg-10 col-md-9 ms-auto p-3 p-md-4">
+        
+        <!-- Welcome & Breadcrumb Bar -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+          <div>
+            <h4 class="fw-bold text-dark mb-1">Cleanliness Operations Command Center</h4>
+            <p class="text-muted small mb-0">Review citizen reports, triage complaints, dispatch sanitation units, and inspect ward analytics.</p>
+          </div>
+          <div class="d-flex gap-2 mt-2 mt-md-0">
+            <button class="btn btn-sm btn-outline-secondary rounded-pill" id="refreshDataBtn">
+              <i class="bi bi-arrow-clockwise me-1"></i> Refresh Feed
+            </button>
+            <button class="btn btn-sm btn-success rounded-pill fw-semibold" id="topExportBtn">
+              <i class="bi bi-download me-1"></i> Export Master CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Notification Banner Area -->
+        <div id="adminGlobalAlert"></div>
+
+        <!-- ========================================== -->
+        <!-- SECTION 1: OVERVIEW KPI CARDS              -->
+        <!-- ========================================== -->
+        <section id="section-overview" class="mb-5">
+          <div class="row g-3">
+            
+            <!-- Total Complaints -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+              <div class="card kpi-card p-3 bg-white h-100">
+                <div class="d-flex justify-content-between align-items-center text-secondary small fw-semibold">
+                  <span>TOTAL COMPLAINTS</span>
+                  <i class="bi bi-folder2-open text-primary fs-5"></i>
+                </div>
+                <div class="fs-2 fw-bold text-dark mt-2" id="kpiTotal">0</div>
+                <div class="text-muted small mt-1" style="font-size: 0.78rem;">All citizen reports logged</div>
+              </div>
+            </div>
+
+            <!-- Pending Review -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+              <div class="card kpi-card p-3 bg-white h-100 border-warning border-opacity-50">
+                <div class="d-flex justify-content-between align-items-center text-warning small fw-semibold">
+                  <span>PENDING ACTION</span>
+                  <i class="bi bi-hourglass-split text-warning fs-5"></i>
+                </div>
+                <div class="fs-2 fw-bold text-warning mt-2" id="kpiPending">0</div>
+                <div class="text-muted small mt-1" style="font-size: 0.78rem;">Requires triage/dispatch</div>
+              </div>
+            </div>
+
+            <!-- In Progress -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+              <div class="card kpi-card p-3 bg-white h-100 border-info border-opacity-50">
+                <div class="d-flex justify-content-between align-items-center text-info small fw-semibold">
+                  <span>IN PROGRESS</span>
+                  <i class="bi bi-gear-fill text-info fs-5"></i>
+                </div>
+                <div class="fs-2 fw-bold text-info mt-2" id="kpiInProgress">0</div>
+                <div class="text-muted small mt-1" style="font-size: 0.78rem;">Sanitation crew assigned</div>
+              </div>
+            </div>
+
+            <!-- Resolved -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+              <div class="card kpi-card p-3 bg-white h-100 border-success border-opacity-50">
+                <div class="d-flex justify-content-between align-items-center text-success small fw-semibold">
+                  <span>RESOLVED</span>
+                  <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                </div>
+                <div class="fs-2 fw-bold text-success mt-2" id="kpiResolved">0</div>
+                <div class="text-muted small mt-1" style="font-size: 0.78rem;">Work verified & closed</div>
+              </div>
+            </div>
+
+            <!-- Rejected / Invalid -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+              <div class="card kpi-card p-3 bg-white h-100">
+                <div class="d-flex justify-content-between align-items-center text-secondary small fw-semibold">
+                  <span>REJECTED</span>
+                  <i class="bi bi-x-circle text-danger fs-5"></i>
+                </div>
+                <div class="fs-2 fw-bold text-secondary mt-2" id="kpiRejected">0</div>
+                <div class="text-muted small mt-1" style="font-size: 0.78rem;">Duplicate or invalid</div>
+              </div>
+            </div>
+
+            <!-- Today's Intake -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+              <div class="card kpi-card p-3 bg-white h-100 border-primary border-opacity-50">
+                <div class="d-flex justify-content-between align-items-center text-primary small fw-semibold">
+                  <span>TODAY'S INTAKE</span>
+                  <i class="bi bi-calendar-event text-primary fs-5"></i>
+                </div>
+                <div class="fs-2 fw-bold text-primary mt-2" id="kpiToday">0</div>
+                <div class="text-muted small mt-1" style="font-size: 0.78rem;">Reported in last 24h</div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECTION 2: COMPLAINTS MASTER TABLE & TRIAGE -->
+        <!-- ========================================== -->
+        <section id="section-complaints" class="mb-5">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-header bg-white py-3 px-4 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <div>
+                <h5 class="fw-bold mb-0 text-dark">
+                  <i class="bi bi-clipboard2-data-fill text-primary me-2"></i> Citizen Cleanliness Complaints
+                </h5>
+                <span class="text-muted small">Live triage queue across all wards and civic zones</span>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-secondary rounded-pill" id="clearFiltersBtn">
+                  <i class="bi bi-x-circle me-1"></i> Reset Filters
+                </button>
+              </div>
+            </div>
+
+            <!-- Multi-Criteria Filters Bar -->
+            <div class="p-3 bg-light border-bottom">
+              <div class="row g-2">
+                <!-- Keyword search -->
+                <div class="col-md-3">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" id="filterSearch" class="form-control" placeholder="Search ID, name, location...">
+                  </div>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="col-md-2 col-6">
+                  <select id="filterStatus" class="form-select form-select-sm">
+                    <option value="">Status: All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="col-md-2 col-6">
+                  <select id="filterCategory" class="form-select form-select-sm">
+                    <option value="">Category: All</option>
+                    <option value="Wet Waste">Wet Waste</option>
+                    <option value="Dry Waste">Dry Waste</option>
+                    <option value="E-Waste">E-Waste</option>
+                    <option value="Hazardous Waste">Hazardous Waste</option>
+                    <option value="Special Waste">Special Waste</option>
+                    <option value="Littering">Littering</option>
+                    <option value="Garbage Overflow">Garbage Overflow</option>
+                    <option value="Plastic Pollution">Plastic Pollution</option>
+                    <option value="Drainage / Stagnant Water Issue">Drainage / Stagnant Water</option>
+                    <option value="Construction Waste">Construction Waste</option>
+                  </select>
+                </div>
+
+                <!-- Ward Filter -->
+                <div class="col-md-2 col-6">
+                  <select id="filterWard" class="form-select form-select-sm">
+                    <option value="">Ward: All Zones</option>
+                    <option value="Ward 1 - North Campus">Ward 1 - North Campus</option>
+                    <option value="Ward 2 - Central Market">Ward 2 - Central Market</option>
+                    <option value="Ward 3 - West Housing">Ward 3 - West Housing</option>
+                    <option value="Ward 4 - East District">Ward 4 - East District</option>
+                  </select>
+                </div>
+
+                <!-- Priority Filter -->
+                <div class="col-md-2 col-6">
+                  <select id="filterPriority" class="form-select form-select-sm">
+                    <option value="">Priority: All</option>
+                    <option value="Urgent">Urgent</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+
+                <!-- Sort Order -->
+                <div class="col-md-1 col-12">
+                  <select id="filterSort" class="form-select form-select-sm">
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Table Body -->
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0" id="adminComplaintsTable">
+                <thead class="table-light text-secondary small fw-semibold">
+                  <tr>
+                    <th>REPORT ID</th>
+                    <th>CITIZEN</th>
+                    <th>CATEGORY & TITLE</th>
+                    <th>WARD & LOCATION</th>
+                    <th>DATE LOGGED</th>
+                    <th>PRIORITY</th>
+                    <th>STATUS</th>
+                    <th>ASSIGNED CREW</th>
+                    <th class="text-end">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="complaintsTableBody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Empty State / Loading State -->
+            <div id="tableEmptyState" class="text-center py-5 d-none">
+              <div class="text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary opacity-50"></i>
+                <h6 class="fw-bold">No complaints match your criteria</h6>
+                <p class="small text-secondary mb-0">Try clearing filters or search keywords.</p>
+              </div>
+            </div>
+
+            <!-- Table Footer -->
+            <div class="card-footer bg-white py-3 px-4 d-flex justify-content-between align-items-center">
+              <span class="small text-muted" id="tableRecordCount">Showing 0 records</span>
+              <button class="btn btn-sm btn-outline-primary rounded-pill fw-semibold" id="tableExportBtn">
+                <i class="bi bi-download me-1"></i> Export Filtered Table (.CSV)
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECTION 3: ANALYTICS & VISUAL CHARTS       -->
+        <!-- ========================================== -->
+        <section id="section-analytics" class="mb-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0">
+              <i class="bi bi-graph-up-arrow text-info me-2"></i> Waste Management Analytics
+            </h5>
+            <span class="badge bg-light text-secondary border px-3 py-1.5 rounded-pill">
+              Real-time Chart Visualizations
+            </span>
+          </div>
+
+          <div class="row g-4">
+            
+            <!-- Chart 1: Categories Doughnut -->
+            <div class="col-lg-4 col-md-6">
+              <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="fw-bold text-dark mb-0">Waste Categories</h6>
+                  <span class="badge bg-light text-muted border">Distribution</span>
+                </div>
+                <div class="position-relative" style="min-height: 250px;">
+                  <canvas id="categoryChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart 2: Status Breakdown -->
+            <div class="col-lg-4 col-md-6">
+              <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="fw-bold text-dark mb-0">Complaints Status</h6>
+                  <span class="badge bg-light text-muted border">Resolution Funnel</span>
+                </div>
+                <div class="position-relative" style="min-height: 250px;">
+                  <canvas id="statusChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart 3: Ward Hotspots -->
+            <div class="col-lg-4 col-md-12">
+              <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6 class="fw-bold text-dark mb-0">Ward Hotspots</h6>
+                  <span class="badge bg-light text-muted border">Area Density</span>
+                </div>
+                <div class="position-relative" style="min-height: 250px;">
+                  <canvas id="wardChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECTION 4: SANITATION WORKERS MANAGEMENT   -->
+        <!-- ========================================== -->
+        <section id="section-workers" class="mb-5">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-header bg-white py-3 px-4 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <div>
+                <h5 class="fw-bold mb-0 text-dark">
+                  <i class="bi bi-people-fill text-success me-2"></i> Field Workers & Sanitation Squads
+                </h5>
+                <span class="text-muted small">Manage municipal sanitation personnel and check assigned load</span>
+              </div>
+              <button class="btn btn-sm btn-success rounded-pill fw-semibold" data-bs-toggle="modal" data-bs-target="#addWorkerModal">
+                <i class="bi bi-person-plus-fill me-1"></i> Register New Field Worker
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light text-secondary small fw-semibold">
+                  <tr>
+                    <th>WORKER ID</th>
+                    <th>FULL NAME</th>
+                    <th>DEPARTMENT</th>
+                    <th>ASSIGNED WARD</th>
+                    <th>CONTACT NUMBER</th>
+                    <th>ACTIVE LOAD</th>
+                    <th>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody id="workersTableBody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: COMPLAINT TRIAGE & MANAGEMENT       -->
+  <!-- ========================================== -->
+  <div class="modal fade" id="triageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content rounded-4 border-0 shadow-lg">
+        
+        <div class="modal-header bg-light border-bottom py-3 px-4">
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-primary px-2 py-1 fs-6" id="modalComplaintId">CMP-2026-000</span>
+            <h5 class="modal-title fw-bold text-dark mb-0">Complaint Triage & Dispatch Desk</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          
+          <!-- Alert Box inside modal -->
+          <div id="modalAlertBox"></div>
+
+          <!-- Section A: Complaint Details Header -->
+          <div class="p-3 bg-light rounded-3 mb-4 border">
+            <div class="row g-2">
+              <div class="col-md-8">
+                <h5 class="fw-bold text-dark mb-1" id="modalTitle">Complaint Title</h5>
+                <div class="text-muted small mb-2">
+                  <i class="bi bi-geo-alt-fill text-danger me-1"></i> <span id="modalLocation">Location</span>
+                  &bull; <strong id="modalWard">Ward</strong>
+                </div>
+                <div class="p-2 bg-white rounded border small text-secondary" id="modalDescription">
+                  Description of the cleanliness issue.
+                </div>
+              </div>
+              <div class="col-md-4 text-md-end">
+                <span class="badge bg-secondary mb-2" id="modalCategory">Category</span>
+                <div class="small text-muted" id="modalDate">Logged: --</div>
+                <div class="small text-muted" id="modalCitizen">By: --</div>
+              </div>
+            </div>
+
+            <!-- Optional Image Preview -->
+            <div id="modalImageContainer" class="mt-3 text-center d-none">
+              <div class="p-2 border rounded bg-white d-inline-block">
+                <img id="modalImagePreview" src="" alt="Citizen Evidence" class="img-fluid rounded" style="max-height: 220px; object-fit: cover;">
+                <div class="small text-muted mt-1"><i class="bi bi-camera me-1"></i> Citizen Submitted Photo Evidence</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section B: Triage & Action Form -->
+          <form id="triageForm">
+            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+              <i class="bi bi-sliders me-1 text-primary"></i> Administrative Actions
+            </h6>
+
+            <div class="row g-3 mb-3">
+              <!-- Status Select -->
+              <div class="col-md-6">
+                <label for="triageStatus" class="form-label fw-semibold small">Complaint Status <span class="text-danger">*</span></label>
+                <select id="triageStatus" class="form-select" required>
+                  <option value="Pending">Pending</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved (Closes complaint)</option>
+                  <option value="Rejected">Rejected (Invalid/Duplicate)</option>
+                </select>
+              </div>
+
+              <!-- Priority Select -->
+              <div class="col-md-6">
+                <label for="triagePriority" class="form-label fw-semibold small">Priority Level</label>
+                <select id="triagePriority" class="form-select">
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                  <option value="Urgent">Urgent (Immediate hazard)</option>
+                </select>
+              </div>
+
+              <!-- Worker Assignment -->
+              <div class="col-md-6">
+                <label for="triageWorker" class="form-label fw-semibold small">Assign Sanitation Worker / Lead</label>
+                <select id="triageWorker" class="form-select">
+                  <option value="">-- Select Sanitation Worker --</option>
+                </select>
+              </div>
+
+              <!-- Department Select -->
+              <div class="col-md-6">
+                <label for="triageDepartment" class="form-label fw-semibold small">Responsible Department</label>
+                <select id="triageDepartment" class="form-select">
+                  <option value="Solid Waste Management">Solid Waste Management</option>
+                  <option value="Public Health & Sanitation">Public Health & Sanitation</option>
+                  <option value="Drainage & Sewage Dept">Drainage & Sewage Dept</option>
+                  <option value="Special Bio-Waste Unit">Special Bio-Waste Unit</option>
+                  <option value="E-Waste Recovery Cell">E-Waste Recovery Cell</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Admin Internal Notes -->
+            <div class="mb-3">
+              <label for="triageNotes" class="form-label fw-semibold small">Internal Administrative Notes / Instructions</label>
+              <textarea class="form-control" id="triageNotes" rows="2" placeholder="e.g. Dispatched 240L bins and assigned 2 sweepers for immediate clearance..."></textarea>
+            </div>
+
+            <!-- Resolution Details (Shown especially when resolving) -->
+            <div class="mb-3" id="resolutionGroup">
+              <label for="triageResolution" class="form-label fw-semibold small">
+                Resolution Report / Feedback to Citizen
+              </label>
+              <textarea class="form-control" id="triageResolution" rows="2" placeholder="Describe the resolution actions taken (visible to citizen upon checking complaint)..."></textarea>
+            </div>
+          </form>
+
+          <!-- Section C: Status Audit Timeline -->
+          <div class="mt-4 pt-3 border-top">
+            <h6 class="fw-bold text-dark mb-3">
+              <i class="bi bi-clock-history text-secondary me-1"></i> Audit Trail & Status History
+            </h6>
+            <div id="modalTimeline" class="small">
+              <!-- History timeline items injected here -->
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer bg-light border-top py-3 px-4">
+          <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary rounded-pill fw-semibold px-4" id="saveTriageBtn">
+            <i class="bi bi-check2-circle me-1"></i> Update & Save Complaint
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: ADD NEW SANITATION FIELD WORKER     -->
+  <!-- ========================================== -->
+  <div class="modal fade" id="addWorkerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        
+        <div class="modal-header bg-light border-bottom py-3 px-4">
+          <h5 class="modal-title fw-bold text-dark mb-0">
+            <i class="bi bi-person-plus-fill text-success me-2"></i> Register Sanitation Worker
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <form id="addWorkerForm">
+            <div class="mb-3">
+              <label for="workerName" class="form-label small fw-semibold">Worker Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="workerName" placeholder="e.g. Santosh Gaikwad" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="workerDept" class="form-label small fw-semibold">Department <span class="text-danger">*</span></label>
+              <select id="workerDept" class="form-select" required>
+                <option value="Solid Waste Management">Solid Waste Management</option>
+                <option value="Public Health & Sanitation">Public Health & Sanitation</option>
+                <option value="Drainage & Sewage Dept">Drainage & Sewage Dept</option>
+                <option value="Special Bio-Waste Unit">Special Bio-Waste Unit</option>
+                <option value="E-Waste Recovery Cell">E-Waste Recovery Cell</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="workerWard" class="form-label small fw-semibold">Primary Ward Assigned <span class="text-danger">*</span></label>
+              <select id="workerWard" class="form-select" required>
+                <option value="Ward 1 - North Campus">Ward 1 - North Campus</option>
+                <option value="Ward 2 - Central Market">Ward 2 - Central Market</option>
+                <option value="Ward 3 - West Housing">Ward 3 - West Housing</option>
+                <option value="Ward 4 - East District">Ward 4 - East District</option>
+                <option value="City-Wide Rapid Response">City-Wide Rapid Response</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="workerContact" class="form-label small fw-semibold">Contact Phone Number <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" id="workerContact" placeholder="e.g. +91 98220 12345" required>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer bg-light border-top py-3 px-4">
+          <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success rounded-pill fw-semibold px-4" id="saveWorkerBtn">
+            <i class="bi bi-save me-1"></i> Register Worker
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Firebase Compat Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+  <!-- App Architecture Scripts -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+
+  <!-- Admin Controller Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Enforce RBAC: Administrator Only
+      const adminUser = Auth.requireAdmin();
+      if (!adminUser) return; // redirect performed by requireAdmin
+
+      document.getElementById('adminNameDisplay').textContent = adminUser.fullName || 'Commissioner Desk';
+
+      // Elements
+      const tableBody = document.getElementById('complaintsTableBody');
+      const tableEmptyState = document.getElementById('tableEmptyState');
+      const recordCountDisplay = document.getElementById('tableRecordCount');
+      const workersTableBody = document.getElementById('workersTableBody');
+      const alertContainer = document.getElementById('adminGlobalAlert');
+
+      // Modals
+      const triageModalEl = document.getElementById('triageModal');
+      const triageModal = new bootstrap.Modal(triageModalEl);
+      const addWorkerModal = new bootstrap.Modal(document.getElementById('addWorkerModal'));
+
+      // Filter elements
+      const filterSearch = document.getElementById('filterSearch');
+      const filterStatus = document.getElementById('filterStatus');
+      const filterCategory = document.getElementById('filterCategory');
+      const filterWard = document.getElementById('filterWard');
+      const filterPriority = document.getElementById('filterPriority');
+      const filterSort = document.getElementById('filterSort');
+      const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+
+      // State
+      let allComplaints = [];
+      let currentFilteredComplaints = [];
+      let activeComplaint = null;
+
+      // Chart instances
+      let categoryChartInstance = null;
+      let statusChartInstance = null;
+      let wardChartInstance = null;
+
+      // Helper: Show global alert
+      function showBanner(message, type = 'success') {
+        alertContainer.innerHTML = `
+          <div class="alert alert-${type} alert-dismissible fade show rounded-3 shadow-sm d-flex align-items-center gap-2 mb-4" role="alert">
+            <i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill'} fs-5"></i>
+            <div>${message}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        `;
+      }
+
+      // 2. Load and refresh master data
+      async function loadMasterData() {
+        allComplaints = await DB.getAllComplaints();
+        await updateKPICards();
+        populateWorkersTable();
+        populateWorkerDropdown();
+        applyFilters();
+        await renderAnalytics();
+      }
+
+      // 3. Update KPI cards
+      async function updateKPICards() {
+        const stats = await DB.getAdminStats();
+        document.getElementById('kpiTotal').textContent = stats.total;
+        document.getElementById('kpiPending').textContent = stats.pending;
+        document.getElementById('kpiInProgress').textContent = stats.inProgress;
+        document.getElementById('kpiResolved').textContent = stats.resolved;
+        document.getElementById('kpiRejected').textContent = stats.rejected;
+        document.getElementById('kpiToday').textContent = stats.today;
+      }
+
+      // 4. Apply Filters and Render Table
+      function applyFilters() {
+        const query = filterSearch.value.trim().toLowerCase();
+        const status = filterStatus.value;
+        const category = filterCategory.value;
+        const ward = filterWard.value;
+        const priority = filterPriority.value;
+        const sort = filterSort.value;
+
+        currentFilteredComplaints = allComplaints.filter(c => {
+          // Search query
+          if (query) {
+            const matchId = (c.complaintId || '').toLowerCase().includes(query);
+            const matchName = (c.citizenName || '').toLowerCase().includes(query);
+            const matchLoc = (c.location || '').toLowerCase().includes(query);
+            const matchTitle = (c.title || '').toLowerCase().includes(query);
+            if (!matchId && !matchName && !matchLoc && !matchTitle) return false;
+          }
+          // Status
+          if (status && c.status !== status) return false;
+          // Category
+          if (category && c.category !== category) return false;
+          // Ward
+          if (ward && c.ward !== ward) return false;
+          // Priority
+          if (priority && (c.priority || 'Medium') !== priority) return false;
+
+          return true;
+        });
+
+        // Sorting
+        currentFilteredComplaints.sort((a, b) => {
+          const dateA = new Date(a.createdAt || 0);
+          const dateB = new Date(b.createdAt || 0);
+          return sort === 'newest' ? dateB - dateA : dateA - dateB;
+        });
+
+        renderTable(currentFilteredComplaints);
+      }
+
+      // 5. Render Complaints Table
+      function renderTable(complaints) {
+        tableBody.innerHTML = '';
+        recordCountDisplay.textContent = `Showing ${complaints.length} of ${allComplaints.length} total reports`;
+
+        if (complaints.length === 0) {
+          tableEmptyState.classList.remove('d-none');
+          return;
+        }
+        tableEmptyState.classList.add('d-none');
+
+        complaints.forEach(c => {
+          const tr = document.createElement('tr');
+
+          // Status Badge Class
+          let statusBadge = 'status-pending';
+          if (c.status === 'In Progress') statusBadge = 'status-investigating';
+          else if (c.status === 'Resolved') statusBadge = 'status-resolved';
+          else if (c.status === 'Rejected') statusBadge = 'bg-secondary text-white';
+
+          // Priority Badge Class
+          const priorityVal = c.priority || 'Medium';
+
+          tr.innerHTML = `
+            <td>
+              <span class="badge bg-dark bg-opacity-75 font-monospace">${c.complaintId}</span>
+            </td>
+            <td>
+              <div class="fw-bold text-dark">${c.citizenName || 'Citizen'}</div>
+              <div class="small text-muted"><i class="bi bi-telephone text-secondary me-1"></i>${c.citizenMobile || 'N/A'}</div>
+            </td>
+            <td>
+              <div class="fw-semibold text-dark text-truncate" style="max-width: 200px;" title="${c.title}">${c.title}</div>
+              <span class="badge bg-light text-dark border mt-1" style="font-size: 0.72rem;">${c.category}</span>
+            </td>
+            <td>
+              <div class="text-truncate small" style="max-width: 180px;" title="${c.location}">${c.location}</div>
+              <div class="text-muted" style="font-size: 0.72rem;"><i class="bi bi-compass me-1"></i>${c.ward || 'General Zone'}</div>
+            </td>
+            <td class="small text-muted font-monospace">${c.createdAt ? c.createdAt.substring(0, 16) : 'N/A'}</td>
+            <td>
+              <span class="badge priority-badge-${priorityVal} px-2 py-1 rounded-pill fw-semibold">${priorityVal}</span>
+            </td>
+            <td>
+              <span class="badge ${statusBadge} px-2 py-1 rounded-pill">${c.status}</span>
+            </td>
+            <td>
+              <div class="small fw-semibold text-dark">${c.assignedWorkerName || 'Unassigned'}</div>
+              <div class="text-muted" style="font-size: 0.72rem;">${c.assignedDepartment || 'Sanitation'}</div>
+            </td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary rounded-pill fw-semibold triage-btn" data-id="${c.complaintId}">
+                <i class="bi bi-sliders me-1"></i> Triage
+              </button>
+            </td>
+          `;
+
+          tableBody.appendChild(tr);
+        });
+
+        // Attach triage buttons
+        document.querySelectorAll('.triage-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const cid = e.currentTarget.getAttribute('data-id');
+            openTriageModal(cid);
+          });
+        });
+      }
+
+      // 6. Open Complaint Triage Modal
+      async function openTriageModal(complaintId) {
+        activeComplaint = allComplaints.find(c => c.complaintId === complaintId);
+        if (!activeComplaint) return;
+
+        document.getElementById('modalComplaintId').textContent = activeComplaint.complaintId;
+        document.getElementById('modalTitle').textContent = activeComplaint.title;
+        document.getElementById('modalLocation').textContent = activeComplaint.location;
+        document.getElementById('modalWard').textContent = activeComplaint.ward || 'Zone';
+        document.getElementById('modalCategory').textContent = activeComplaint.category;
+        document.getElementById('modalDate').textContent = 'Logged: ' + (activeComplaint.createdAt || 'N/A');
+        document.getElementById('modalCitizen').textContent = `By: ${activeComplaint.citizenName || 'Citizen'} (${activeComplaint.citizenMobile || ''})`;
+        document.getElementById('modalDescription').textContent = activeComplaint.description || 'No additional description provided.';
+        document.getElementById('modalAlertBox').innerHTML = '';
+
+        // Image preview
+        const imgContainer = document.getElementById('modalImageContainer');
+        const imgPreview = document.getElementById('modalImagePreview');
+        if (activeComplaint.imageUrl) {
+          imgPreview.src = activeComplaint.imageUrl;
+          imgContainer.classList.remove('d-none');
+        } else {
+          imgContainer.classList.add('d-none');
+        }
+
+        // Form fields
+        document.getElementById('triageStatus').value = activeComplaint.status;
+        document.getElementById('triagePriority').value = activeComplaint.priority || 'Medium';
+        document.getElementById('triageWorker').value = activeComplaint.assignedWorkerId || '';
+        document.getElementById('triageDepartment').value = activeComplaint.assignedDepartment || 'Solid Waste Management';
+        document.getElementById('triageNotes').value = activeComplaint.adminNotes || '';
+        document.getElementById('triageResolution').value = activeComplaint.resolutionDetails || '';
+
+        // Load timeline history
+        await renderComplaintTimeline(complaintId);
+
+        triageModal.show();
+      }
+
+      // Render timeline in modal
+      async function renderComplaintTimeline(complaintId) {
+        const timelineContainer = document.getElementById('modalTimeline');
+        timelineContainer.innerHTML = '<div class="text-muted small">Loading status history audit...</div>';
+
+        const history = await DB.getComplaintHistory(complaintId);
+        if (!history || history.length === 0) {
+          timelineContainer.innerHTML = `
+            <div class="p-2 border-start border-3 border-secondary ps-3 bg-light rounded">
+              <div class="fw-semibold text-dark">Complaint Registered</div>
+              <div class="text-muted" style="font-size: 0.75rem;">Submitted by citizen. Awaiting review.</div>
+            </div>
+          `;
+          return;
+        }
+
+        timelineContainer.innerHTML = history.map(h => {
+          let badgeColor = 'bg-primary';
+          if (h.newStatus === 'Resolved') badgeColor = 'bg-success';
+          else if (h.newStatus === 'Rejected') badgeColor = 'bg-danger';
+          else if (h.newStatus === 'In Progress') badgeColor = 'bg-info';
+
+          return `
+            <div class="position-relative ps-4 pb-3 border-start border-2 border-primary-subtle">
+              <span class="position-absolute top-0 start-0 translate-middle p-1.5 ${badgeColor} border border-light rounded-circle"></span>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-dark">${h.newStatus}</span>
+                <span class="text-muted font-monospace" style="font-size: 0.72rem;">${h.timestamp}</span>
+              </div>
+              <div class="text-secondary small">${h.note || 'Status updated.'}</div>
+              <div class="text-muted" style="font-size: 0.72rem;"><i class="bi bi-person-fill"></i> ${h.updatedBy || 'Officer'}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 7. Save Triage Changes
+      document.getElementById('saveTriageBtn').addEventListener('click', async () => {
+        if (!activeComplaint) return;
+
+        const newStatus = document.getElementById('triageStatus').value;
+        const newPriority = document.getElementById('triagePriority').value;
+        const newWorkerId = document.getElementById('triageWorker').value;
+        const newDepartment = document.getElementById('triageDepartment').value;
+        const adminNotes = document.getElementById('triageNotes').value.trim();
+        const resolution = document.getElementById('triageResolution').value.trim();
+
+        // Confirmation guard if resolving or rejecting
+        if ((newStatus === 'Resolved' || newStatus === 'Rejected') && newStatus !== activeComplaint.status) {
+          const confirmMsg = newStatus === 'Resolved' 
+            ? "Are you sure you want to mark this complaint as RESOLVED? This indicates field work has been verified and closes the ticket for the citizen."
+            : "Are you sure you want to REJECT this complaint? Please ensure notes explain the reason for the citizen.";
+          
+          if (!confirm(confirmMsg)) return;
+        }
+
+        const saveBtn = document.getElementById('saveTriageBtn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Saving...';
+
+        try {
+          // Priority update
+          if (newPriority !== activeComplaint.priority) {
+            await DB.updatePriority(activeComplaint.complaintId, newPriority);
+          }
+
+          // Worker assignment
+          if (newWorkerId && newWorkerId !== activeComplaint.assignedWorkerId) {
+            await DB.assignWorker(activeComplaint.complaintId, newWorkerId, newDepartment, adminUser.fullName || 'Admin Desk');
+          }
+
+          // Status & notes update
+          await DB.updateComplaintStatus(
+            activeComplaint.complaintId, 
+            newStatus, 
+            adminNotes, 
+            adminUser.fullName || 'Sanitation Admin', 
+            resolution
+          );
+
+          triageModal.hide();
+          showBanner(`Complaint ${activeComplaint.complaintId} has been successfully updated to '${newStatus}'.`, 'success');
+          await loadMasterData();
+        } catch (err) {
+          document.getElementById('modalAlertBox').innerHTML = `
+            <div class="alert alert-danger py-2 small mb-3">${err.message || 'Failed to update complaint.'}</div>
+          `;
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = '<i class="bi bi-check2-circle me-1"></i> Update & Save Complaint';
+        }
+      });
+
+      // 8. Worker management helpers
+      function populateWorkerDropdown() {
+        const select = document.getElementById('triageWorker');
+        const workers = DB.getWorkers();
+        select.innerHTML = '<option value="">-- Select Sanitation Worker --</option>';
+        workers.forEach(w => {
+          const opt = document.createElement('option');
+          opt.value = w.id;
+          opt.textContent = `${w.name} (${w.department} - ${w.ward})`;
+          select.appendChild(opt);
+        });
+      }
+
+      function populateWorkersTable() {
+        const workers = DB.getWorkers();
+        workersTableBody.innerHTML = '';
+
+        workers.forEach(w => {
+          // Calculate active load (complaints currently In Progress or Pending assigned to this worker)
+          const activeLoad = allComplaints.filter(c => c.assignedWorkerId === w.id && c.status !== 'Resolved' && c.status !== 'Rejected').length;
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><span class="badge bg-secondary font-monospace">${w.id}</span></td>
+            <td><strong class="text-dark">${w.name}</strong></td>
+            <td><span class="small text-secondary">${w.department}</span></td>
+            <td><span class="small">${w.ward}</span></td>
+            <td class="small font-monospace">${w.contact}</td>
+            <td>
+              <span class="badge ${activeLoad > 2 ? 'bg-warning text-dark' : 'bg-light text-dark border'} px-2 py-1 rounded-pill">
+                ${activeLoad} Active Tasks
+              </span>
+            </td>
+            <td>
+              <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1">
+                <i class="bi bi-check-circle me-1"></i> Available
+              </span>
+            </td>
+          `;
+          workersTableBody.appendChild(tr);
+        });
+      }
+
+      // Add Worker Form Submission
+      document.getElementById('saveWorkerBtn').addEventListener('click', async () => {
+        const name = document.getElementById('workerName').value.trim();
+        const dept = document.getElementById('workerDept').value;
+        const ward = document.getElementById('workerWard').value;
+        const contact = document.getElementById('workerContact').value.trim();
+
+        if (!name || !contact) {
+          alert('Please fill in both worker name and contact number.');
+          return;
+        }
+
+        DB.addWorker({ name, department: dept, ward, contact });
+        addWorkerModal.hide();
+        document.getElementById('addWorkerForm').reset();
+        showBanner(`Sanitation Worker ${name} successfully registered.`, 'success');
+        populateWorkersTable();
+        populateWorkerDropdown();
+      });
+
+      // 9. Chart.js Analytics Visualization
+      async function renderAnalytics() {
+        const analytics = await DB.getAnalyticsData();
+
+        // 1. Category Chart
+        const catCtx = document.getElementById('categoryChart').getContext('2d');
+        if (categoryChartInstance) categoryChartInstance.destroy();
+        categoryChartInstance = new Chart(catCtx, {
+          type: 'doughnut',
+          data: {
+            labels: analytics.categories.labels,
+            datasets: [{
+              data: analytics.categories.data,
+              backgroundColor: ['#10b981', '#0284c7', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#64748b', '#14b8a6', '#f97316', '#6366f1']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+            }
+          }
+        });
+
+        // 2. Status Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        if (statusChartInstance) statusChartInstance.destroy();
+        statusChartInstance = new Chart(statusCtx, {
+          type: 'bar',
+          data: {
+            labels: analytics.statuses.labels,
+            datasets: [{
+              label: 'Complaints',
+              data: analytics.statuses.data,
+              backgroundColor: ['#f59e0b', '#0284c7', '#10b981', '#64748b']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+          }
+        });
+
+        // 3. Ward Chart
+        const wardCtx = document.getElementById('wardChart').getContext('2d');
+        if (wardChartInstance) wardChartInstance.destroy();
+        wardChartInstance = new Chart(wardCtx, {
+          type: 'bar',
+          data: {
+            labels: analytics.wards.labels,
+            datasets: [{
+              label: 'Reports by Ward',
+              data: analytics.wards.data,
+              backgroundColor: '#3b82f6'
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
+          }
+        });
+      }
+
+      // 10. Filter event listeners
+      [filterSearch, filterStatus, filterCategory, filterWard, filterPriority, filterSort].forEach(el => {
+        el.addEventListener('input', applyFilters);
+        el.addEventListener('change', applyFilters);
+      });
+
+      clearFiltersBtn.addEventListener('click', () => {
+        filterSearch.value = '';
+        filterStatus.value = '';
+        filterCategory.value = '';
+        filterWard.value = '';
+        filterPriority.value = '';
+        filterSort.value = 'newest';
+        applyFilters();
+      });
+
+      // 11. CSV Export Handlers
+      function handleExport(complaintsToExport) {
+        const dateStr = new Date().toISOString().substring(0, 10);
+        DB.exportToCSV(complaintsToExport, `municipal_cleanliness_report_${dateStr}.csv`);
+      }
+
+      document.getElementById('topExportBtn').addEventListener('click', () => handleExport(allComplaints));
+      document.getElementById('sidebarExportBtn').addEventListener('click', () => handleExport(allComplaints));
+      document.getElementById('tableExportBtn').addEventListener('click', () => handleExport(currentFilteredComplaints));
+
+      // Refresh Button
+      document.getElementById('refreshDataBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('refreshDataBtn');
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Refreshing...';
+        await loadMasterData();
+        btn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i> Refresh Feed';
+        showBanner('Dashboard feed synced with live municipal database.', 'info');
+      });
+
+      // Logout handler
+      document.getElementById('adminLogoutBtn').addEventListener('click', async () => {
+        if (confirm("Sign out of Municipal Corporation Operations Desk?")) {
+          await Auth.logout('admin-login.html');
+        }
+      });
+
+      // 12. Initial Load
+      await loadMasterData();
+    });
+  </script>
+</body>
+</html>

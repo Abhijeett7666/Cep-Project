@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Municipal Corporation Admin Login - Swachh Cleanliness Portal</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Custom Prototype Theme CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Government / Municipal Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-2">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <span class="badge bg-primary px-2 py-1 fs-6"><i class="bi bi-shield-lock-fill"></i></span>
+        <span class="fw-bold tracking-tight">Municipal Corporation Operations Desk</span>
+      </a>
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <span class="badge bg-secondary d-none d-sm-inline-block">OFFICIAL PORTAL</span>
+        <a href="index.html" class="btn btn-outline-light btn-sm rounded-pill">
+          <i class="bi bi-arrow-left me-1"></i> Public Portal
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-8">
+
+        <!-- Header Crest & Badge -->
+        <div class="text-center mb-4">
+          <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3 shadow-sm" style="width: 72px; height: 72px;">
+            <i class="bi bi-buildings-fill fs-1"></i>
+          </div>
+          <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill mb-2 d-block mx-auto" style="width: fit-content;">
+            <i class="bi bi-shield-check me-1"></i> Department of Solid Waste & Sanitation
+          </span>
+          <h3 class="fw-bold text-dark mb-1">Administrative Login</h3>
+          <p class="text-muted small">Access authorized municipal operations, complaints triage, and field worker dispatch.</p>
+        </div>
+
+        <!-- Alert Notification Box -->
+        <div id="adminAlertContainer"></div>
+
+        <!-- Login Card -->
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
+          <div class="bg-primary py-2 px-4 text-white text-center small fw-semibold">
+            <i class="bi bi-lock-fill me-1"></i> Secured Municipal Access Gateway
+          </div>
+          <div class="p-4 p-sm-5 bg-white">
+            
+            <form id="adminLoginForm" novalidate>
+              
+              <div class="mb-3">
+                <label for="adminEmail" class="form-label fw-semibold text-secondary small">
+                  <i class="bi bi-envelope-fill text-primary me-1"></i> OFFICIAL EMAIL / USERNAME
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person-fill"></i></span>
+                  <input type="email" class="form-control border-start-0 ps-0" id="adminEmail" placeholder="admin@municipal.gov.in" required autocomplete="username">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="adminPassword" class="form-label fw-semibold text-secondary small mb-0">
+                    <i class="bi bi-key-fill text-primary me-1"></i> SECURITY PASSWORD
+                  </label>
+                  <a href="#" id="adminForgotLink" class="small text-primary fw-semibold text-decoration-none">Forgot Key?</a>
+                </div>
+                <div class="input-group mt-2">
+                  <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-shield-lock"></i></span>
+                  <input type="password" class="form-control border-start-0 border-end-0 ps-0" id="adminPassword" placeholder="••••••••" required autocomplete="current-password">
+                  <button class="btn btn-outline-secondary border-start-0" type="button" id="togglePasswordBtn">
+                    <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-4 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label text-muted small" for="rememberMe">Remember this terminal session</label>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg fw-bold rounded-3 shadow-sm" id="adminSubmitBtn">
+                  <i class="bi bi-shield-lock-fill me-1"></i> Authenticate & Enter Portal
+                </button>
+              </div>
+
+            </form>
+
+            <div class="alert alert-secondary border-0 bg-light p-3 rounded-3 mt-4 mb-0 small text-muted">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-info-circle-fill text-primary mt-0.5"></i>
+                <div>
+                  <strong>Restricted System:</strong> Self-registration is strictly disabled for administrative roles. New accounts must be provisioned through the Municipal IT Directorate.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- College Viva / Demo Helper Card -->
+        <div class="card border border-primary border-opacity-25 bg-primary bg-opacity-10 rounded-4 p-3 shadow-sm">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+              <div class="fw-bold text-primary small"><i class="bi bi-lightning-charge-fill me-1"></i> Demo / Viva Evaluation Credentials</div>
+              <div class="text-muted" style="font-size: 0.78rem;">
+                Username: <code>admin@municipal.gov.in</code> &nbsp;|&nbsp; Password: <code>Admin@2026</code>
+              </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary fw-semibold rounded-pill" id="fillDemoAdminBtn">
+              <i class="bi bi-magic me-1"></i> Autofill Credentials
+            </button>
+          </div>
+        </div>
+
+        <!-- Back to Home Link -->
+        <div class="text-center mt-4">
+          <a href="index.html" class="text-decoration-none text-muted small">
+            <i class="bi bi-arrow-left me-1"></i> Return to Public Citizen Portal
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal fade" id="adminForgotModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-dark">
+            <i class="bi bi-shield-exclamation text-primary me-2"></i> Reset Admin Access
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-3">
+          <p class="text-muted small">Enter your authorized municipal email address to receive password reset protocol instructions.</p>
+          <div class="mb-3">
+            <label for="resetAdminEmail" class="form-label small fw-semibold">Official Email</label>
+            <input type="email" class="form-control" id="resetAdminEmail" placeholder="admin@municipal.gov.in">
+          </div>
+          <div id="resetAlertBox"></div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary rounded-pill fw-semibold" id="sendAdminResetBtn">
+            <i class="bi bi-send-fill me-1"></i> Send Recovery Link
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Firebase Compat Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <!-- App Architecture Scripts -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // If already logged in as admin, redirect to admin-dashboard.html
+      const currentUser = Auth.getCurrentUser();
+      if (currentUser && currentUser.role === 'admin') {
+        window.location.href = 'admin-dashboard.html';
+        return;
+      }
+
+      const form = document.getElementById('adminLoginForm');
+      const emailInput = document.getElementById('adminEmail');
+      const passwordInput = document.getElementById('adminPassword');
+      const submitBtn = document.getElementById('adminSubmitBtn');
+      const alertContainer = document.getElementById('adminAlertContainer');
+      const demoBtn = document.getElementById('fillDemoAdminBtn');
+      const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+      const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+      const forgotLink = document.getElementById('adminForgotLink');
+      const forgotModal = new bootstrap.Modal(document.getElementById('adminForgotModal'));
+      const sendResetBtn = document.getElementById('sendAdminResetBtn');
+      const resetAlertBox = document.getElementById('resetAlertBox');
+
+      // Toggle password visibility
+      togglePasswordBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        togglePasswordIcon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+      });
+
+      // Autofill demo button
+      demoBtn.addEventListener('click', () => {
+        emailInput.value = 'admin@municipal.gov.in';
+        passwordInput.value = 'Admin@2026';
+        showAlert('Autofilled authorized municipal administrator credentials.', 'info');
+      });
+
+      // Alert helper
+      function showAlert(message, type = 'danger') {
+        alertContainer.innerHTML = `
+          <div class="alert alert-${type} alert-dismissible fade show rounded-3 shadow-sm d-flex align-items-center gap-2 mb-3" role="alert">
+            <i class="bi bi-${type === 'success' ? 'check-circle-fill' : type === 'info' ? 'info-circle-fill' : 'exclamation-triangle-fill'} fs-5"></i>
+            <div>${message}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        `;
+      }
+
+      // Form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+          showAlert('Please provide both administrator email and security password.', 'warning');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Verifying Credentials...';
+
+        try {
+          const adminUser = await Auth.loginAdmin(email, password);
+          showAlert(`Welcome, ${adminUser.fullName || 'Commissioner Desk'}! Access granted. Redirecting to operations portal...`, 'success');
+          setTimeout(() => {
+            window.location.href = 'admin-dashboard.html';
+          }, 900);
+        } catch (err) {
+          showAlert(err.message || 'Authentication failed. Please verify credentials.', 'danger');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="bi bi-shield-lock-fill me-1"></i> Authenticate & Enter Portal';
+        }
+      });
+
+      // Forgot password handling
+      forgotLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('resetAdminEmail').value = emailInput.value || '';
+        resetAlertBox.innerHTML = '';
+        forgotModal.show();
+      });
+
+      sendResetBtn.addEventListener('click', async () => {
+        const resetEmail = document.getElementById('resetAdminEmail').value.trim();
+        if (!resetEmail) {
+          resetAlertBox.innerHTML = '<div class="alert alert-danger py-2 small mb-0">Please enter your official email.</div>';
+          return;
+        }
+
+        sendResetBtn.disabled = true;
+        sendResetBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Sending...';
+
+        try {
+          const msg = await Auth.forgotPassword(resetEmail);
+          resetAlertBox.innerHTML = `<div class="alert alert-success py-2 small mb-0">${msg}</div>`;
+          setTimeout(() => {
+            forgotModal.hide();
+            sendResetBtn.disabled = false;
+            sendResetBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i> Send Recovery Link';
+          }, 2500);
+        } catch (err) {
+          resetAlertBox.innerHTML = `<div class="alert alert-danger py-2 small mb-0">${err.message}</div>`;
+          sendResetBtn.disabled = false;
+          sendResetBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i> Send Recovery Link';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

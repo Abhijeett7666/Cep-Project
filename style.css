@@ -1,25 +1,37 @@
 /*
-  Community Cleanliness & Waste Awareness System - Custom Styling
-  Eco-conscious, modern, and accessible color palette
+  Community Cleanliness & Waste Intelligence System - Prototype v2.4
+  High-end Civic Tech UI Theme with Glassmorphism, Micro-interactions & Accessible Contrast
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --eco-primary: #2d6a4f;
-  --eco-primary-dark: #1b4332;
-  --eco-primary-light: #52b788;
-  --eco-accent: #74c69d;
-  --eco-mint: #d8f3dc;
-  --eco-bg: #f8faf9;
-  --eco-card-bg: #ffffff;
-  --eco-text-main: #212529;
-  --eco-text-muted: #6c757d;
+  --eco-darkest: #0a1f16;
+  --eco-dark: #12372a;
+  --eco-primary: #198754;
+  --eco-primary-hover: #146c43;
+  --eco-emerald: #10b981;
+  --eco-accent: #34d399;
+  --eco-mint: #e8f5e9;
+  --eco-mint-border: #c8e6c9;
+  --eco-bg: #f8fafc;
+  --eco-surface: #ffffff;
   --eco-border: #e2e8f0;
+  --eco-text: #0f172a;
+  --eco-muted: #64748b;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 12px 32px -4px rgba(15, 23, 42, 0.08);
+  --shadow-hover: 0 20px 35px -5px rgba(18, 55, 42, 0.12);
+  --radius-lg: 16px;
+  --radius-md: 12px;
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--eco-bg);
-  color: var(--eco-text-main);
+  color: var(--eco-text);
+  line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -30,248 +42,432 @@ main {
 }
 
 /* ---------------------------------------------------------
-   Navbar Styling
+   Navbar Styling with Civic Prototype Indicator
 --------------------------------------------------------- */
 .navbar-eco {
-  background: linear-gradient(135deg, var(--eco-primary-dark) 0%, var(--eco-primary) 100%);
-  box-shadow: 0 4px 15px rgba(27, 67, 50, 0.15);
+  background: rgba(10, 31, 22, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.85rem 0;
+  transition: all 0.3s ease;
 }
 
 .navbar-eco .navbar-brand {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1.25rem;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.4px;
   color: #ffffff !important;
 }
 
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.badge-prototype {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
 .navbar-eco .nav-link {
-  color: rgba(255, 255, 255, 0.88) !important;
+  color: #cbd5e1 !important;
   font-weight: 500;
+  font-size: 0.92rem;
   padding: 0.5rem 0.85rem;
-  border-radius: 6px;
-  transition: all 0.2s ease-in-out;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .navbar-eco .nav-link:hover,
 .navbar-eco .nav-link.active {
   color: #ffffff !important;
-  background-color: rgba(255, 255, 255, 0.16);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 .nav-btn-highlight {
-  background-color: var(--eco-primary-light) !important;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
   color: #ffffff !important;
   font-weight: 600 !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transition: all 0.2s ease;
 }
 
 .nav-btn-highlight:hover {
-  background-color: var(--eco-accent) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
 }
 
 /* ---------------------------------------------------------
    Hero Section
 --------------------------------------------------------- */
 .hero-section {
-  background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%);
+  background: radial-gradient(circle at 80% 20%, #1e4a38 0%, #0d281e 60%, #071912 100%);
   color: #ffffff;
-  padding: 4rem 1rem 3.5rem;
-  border-radius: 0 0 24px 24px;
-  margin-bottom: 2.5rem;
-  box-shadow: 0 10px 25px rgba(27, 67, 50, 0.12);
+  padding: 5rem 1rem 4.5rem;
+  border-radius: 0 0 28px 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(10, 31, 22, 0.15);
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 10% 90%, rgba(52, 211, 153, 0.08) 0%, transparent 40%);
+  pointer-events: none;
 }
 
 .hero-title {
   font-weight: 800;
-  letter-spacing: -0.5px;
+  font-size: 3rem;
+  letter-spacing: -1px;
+  line-height: 1.15;
+}
+
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.1rem; }
+  .hero-section { padding: 3.5rem 1rem 3rem; }
 }
 
 .hero-subtitle {
-  font-size: 1.15rem;
-  color: var(--eco-mint);
-  max-width: 720px;
+  font-size: 1.18rem;
+  color: #cbd5e1;
+  max-width: 760px;
   margin: 0 auto;
+  font-weight: 400;
 }
 
 /* ---------------------------------------------------------
-   Stat Cards & Feature Cards
+   Quick Search Waste Item Finder Widget
+--------------------------------------------------------- */
+.finder-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--eco-border);
+  box-shadow: var(--shadow-lg);
+  padding: 1.75rem;
+  margin-top: -2.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.finder-result-badge {
+  font-size: 0.95rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ---------------------------------------------------------
+   Stat Cards & Glass Cards
 --------------------------------------------------------- */
 .stat-card {
-  background: var(--eco-card-bg);
+  background: var(--eco-surface);
   border: 1px solid var(--eco-border);
-  border-radius: 14px;
-  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.25rem;
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: var(--shadow-sm);
+  height: 100%;
 }
 
 .stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: #cbd5e1;
 }
 
 .stat-icon {
-  font-size: 2rem;
-  color: var(--eco-primary);
+  font-size: 2.2rem;
   margin-bottom: 0.5rem;
+  display: inline-block;
 }
 
 .stat-number {
-  font-size: 1.85rem;
-  font-weight: 700;
-  color: var(--eco-primary-dark);
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--eco-darkest);
   line-height: 1.1;
+  letter-spacing: -0.5px;
 }
 
 .stat-label {
-  font-size: 0.85rem;
-  color: var(--eco-text-muted);
+  font-size: 0.8rem;
+  color: var(--eco-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  margin-top: 0.35rem;
 }
 
 .eco-card {
-  background: var(--eco-card-bg);
+  background: var(--eco-surface);
   border: 1px solid var(--eco-border);
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   overflow: hidden;
 }
 
 .eco-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
-}
-
-.eco-card-header {
-  border-bottom: 1px solid var(--eco-border);
-  background-color: #ffffff;
-  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-hover);
+  border-color: #cbd5e1;
 }
 
 /* ---------------------------------------------------------
-   Waste Segregation Tabs & Cards
+   3-Step Civic Workflow
+--------------------------------------------------------- */
+.step-number-badge {
+  width: 40px;
+  height: 40px;
+  background-color: var(--eco-dark);
+  color: #ffffff;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px rgba(18, 55, 42, 0.2);
+}
+
+/* ---------------------------------------------------------
+   Waste Segregation Tabs & Visual Indicators
 --------------------------------------------------------- */
 .category-card {
   border-left: 6px solid;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  box-shadow: var(--shadow-sm);
   margin-bottom: 1.5rem;
   overflow: hidden;
+  transition: all 0.25s ease;
 }
 
-.cat-wet { border-left-color: #2d6a4f; }
-.cat-dry { border-left-color: #0d6efd; }
-.cat-ewaste { border-left-color: #ff9f1c; }
-.cat-hazardous { border-left-color: #e63946; }
-.cat-special { border-left-color: #6c757d; }
+.category-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.cat-wet { border-left-color: #10b981; }
+.cat-dry { border-left-color: #2563eb; }
+.cat-ewaste { border-left-color: #f59e0b; }
+.cat-hazardous { border-left-color: #ef4444; }
+.cat-special { border-left-color: #64748b; }
 
 .section-tag {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--eco-text-muted);
+  letter-spacing: 0.8px;
+  color: var(--eco-muted);
 }
 
 /* ---------------------------------------------------------
-   Tip of the Day Card
+   Interactive Tip Cards & Cycler
 --------------------------------------------------------- */
 .tip-highlight-box {
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-  border: 1px solid #a5d6a7;
-  border-radius: 16px;
-  padding: 1.75rem;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
   position: relative;
+  box-shadow: var(--shadow-sm);
 }
 
 .tip-card {
   background: #ffffff;
   border: 1px solid var(--eco-border);
-  border-radius: 12px;
-  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .tip-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: #cbd5e1;
 }
 
-/* Filter pills */
 .filter-pill {
-  border-radius: 20px;
+  border-radius: 30px;
   font-size: 0.85rem;
-  padding: 0.35rem 0.95rem;
+  font-weight: 600;
+  padding: 0.45rem 1.1rem;
   cursor: pointer;
   border: 1px solid var(--eco-border);
   background-color: #ffffff;
-  color: var(--eco-text-main);
+  color: #334155;
   transition: all 0.2s ease;
 }
 
 .filter-pill:hover,
 .filter-pill.active {
-  background-color: var(--eco-primary);
+  background-color: var(--eco-dark);
   color: #ffffff;
-  border-color: var(--eco-primary);
+  border-color: var(--eco-dark);
+  box-shadow: 0 4px 10px rgba(18, 55, 42, 0.15);
 }
 
 /* ---------------------------------------------------------
-   Form Styling
+   Issue Reporting Form & Radio Selectors
 --------------------------------------------------------- */
 .form-card {
   background: #ffffff;
   border: 1px solid var(--eco-border);
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-  padding: 2.25rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .form-card { padding: 1.5rem; }
+}
+
+.issue-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.issue-option-card {
+  border: 1.5px solid var(--eco-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #ffffff;
+}
+
+.issue-option-card:hover {
+  border-color: #94a3b8;
+  background-color: #f8fafc;
+}
+
+.issue-option-card.selected {
+  border-color: var(--eco-primary);
+  background-color: var(--eco-mint);
+  color: var(--eco-dark);
+  font-weight: 600;
+  box-shadow: 0 0 0 1px var(--eco-primary);
+}
+
+.quick-loc-pill {
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 0.25rem 0.65rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.quick-loc-pill:hover {
+  background: #e2e8f0;
+  color: #0f172a;
 }
 
 .form-label {
-  font-weight: 600;
-  color: var(--eco-primary-dark);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1e293b;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--eco-primary-light);
-  box-shadow: 0 0 0 0.25rem rgba(82, 183, 136, 0.25);
+.form-control, .form-select {
+  border-radius: 10px;
+  border: 1.5px solid var(--eco-border);
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  color: #0f172a;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--eco-primary);
+  box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.15);
 }
 
 .btn-eco {
-  background-color: var(--eco-primary);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 0.65rem 1.4rem;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 0.75rem 1.6rem;
   border: none;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
   transition: all 0.2s ease;
 }
 
 .btn-eco:hover {
-  background-color: var(--eco-primary-dark);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
   color: #ffffff;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .badge-id {
-  font-family: 'Consolas', 'Courier New', monospace;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
   font-weight: 700;
-  font-size: 0.88rem;
-  background-color: #e9ecef;
-  color: #212529;
-  border: 1px solid #ced4da;
-  padding: 0.3rem 0.55rem;
+  font-size: 0.85rem;
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  padding: 0.35rem 0.6rem;
   border-radius: 6px;
+  letter-spacing: 0.3px;
 }
+
+.badge-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pending { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.status-investigating { background: #e0f2fe; color: #075985; border: 1px solid #bae6fd; }
+.status-resolved { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
 
 /* ---------------------------------------------------------
    Footer Styling
@@ -279,8 +475,8 @@ main {
 footer {
   background-color: #ffffff;
   border-top: 1px solid var(--eco-border);
-  padding: 2rem 0;
-  color: var(--eco-text-muted);
+  padding: 2.5rem 0;
+  color: var(--eco-muted);
   font-size: 0.9rem;
-  margin-top: 4rem;
+  margin-top: 5rem;
 }

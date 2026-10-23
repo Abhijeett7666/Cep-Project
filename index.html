@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - Community Cleanliness & Waste Awareness System</title>
+  <title>Community Cleanliness & Waste Management System - Smart Civic Portals</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Bootstrap 5 CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- Custom Eco Theme CSS (supports both root and css/ folder) -->
-  <link rel="stylesheet" href="style.css">
+  
+  <!-- Custom Prototype Theme CSS -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -20,10 +26,17 @@
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
         <i class="bi bi-recycle fs-4 text-warning"></i>
-        <span>EcoClean Community</span>
+        <span>EcoClean Municipal Portal</span>
       </a>
+
+      <!-- Civic Indicator Badge -->
+      <div class="d-none d-md-flex align-items-center ms-3">
+        <span class="badge-prototype">
+          <span class="pulse-dot"></span> Dual Civic Portal • Live Shared DB
+        </span>
+      </div>
       
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -36,7 +49,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="segregation.html">
-              <i class="bi bi-trash-fill me-1"></i> Waste Segregation
+              <i class="bi bi-trash-fill me-1"></i> Segregation Guide
             </a>
           </li>
           <li class="nav-item">
@@ -44,14 +57,14 @@
               <i class="bi bi-lightbulb me-1"></i> Eco Tips
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="view_reports.html">
-              <i class="bi bi-journal-text me-1"></i> Saved Reports
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="user-login.html">
+              <i class="bi bi-person-fill me-1"></i> Citizen Portal
             </a>
           </li>
           <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-            <a class="btn nav-btn-highlight btn-sm px-3 py-2 rounded-pill d-flex align-items-center gap-1" href="report_issue.html">
-              <i class="bi bi-plus-circle-fill"></i> Report Issue
+            <a class="btn nav-btn-highlight btn-sm px-3 rounded-pill d-flex align-items-center gap-1" href="admin-login.html">
+              <i class="bi bi-shield-lock-fill"></i> Municipal Admin
             </a>
           </li>
         </ul>
@@ -61,178 +74,190 @@
 
   <!-- Main Content -->
   <main>
-    <!-- Hero Section -->
+    <!-- Hero Banner -->
     <div class="hero-section text-center">
       <div class="container">
-        <h1 class="display-5 hero-title mb-3">Community Cleanliness &<br>Waste Awareness System</h1>
+        <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-10 px-3 py-1.5 rounded-pill mb-3">
+          <span class="pulse-dot"></span>
+          <span class="small fw-semibold text-white">Smart Municipal Cleanliness &amp; Waste Management System</span>
+        </div>
+
+        <h1 class="display-5 hero-title mb-3">Community Cleanliness &amp;<br>Municipal Waste Intelligence</h1>
+        
         <p class="hero-subtitle mb-4">
-          Promoting sustainable waste segregation, daily environmental conservation habits,
-          and structured local issue reporting across campuses and residential communities.
+          A shared, collaborative civic technology platform connecting conscious citizens with Municipal Corporation sanitation authorities for cleaner neighborhoods and accountable waste operations.
         </p>
+
+        <!-- Quick Jump Links -->
         <div class="d-flex flex-wrap justify-content-center gap-3">
-          <a href="report_issue.html" class="btn btn-warning btn-lg px-4 fw-bold shadow-sm">
-            <i class="bi bi-plus-circle-fill me-1"></i> Report an Issue
+          <a href="#portalSelection" class="btn btn-warning btn-lg px-4 fw-bold shadow-sm">
+            <i class="bi bi-door-open-fill me-1"></i> Select Portal &amp; Login
           </a>
           <a href="segregation.html" class="btn btn-outline-light btn-lg px-4">
-            <i class="bi bi-book-half me-1"></i> Segregation Guide
+            <i class="bi bi-book-half me-1"></i> Waste Segregation Guide
           </a>
-          <a href="view_reports.html" class="btn btn-light btn-lg px-4 text-success fw-semibold">
-            <i class="bi bi-table me-1"></i> View Reports
+          <a href="tips.html" class="btn btn-light btn-lg px-4 text-success fw-semibold">
+            <i class="bi bi-lightbulb-fill me-1"></i> 19 Eco Tips
           </a>
         </div>
       </div>
     </div>
 
-    <div class="container my-4">
-      <!-- Key Statistics Row -->
-      <div class="row g-3 mb-5">
-        <div class="col-6 col-md-3">
-          <div class="stat-card">
-            <i class="bi bi-file-earmark-text stat-icon"></i>
-            <div class="stat-number" id="homeReportCount">0</div>
-            <div class="stat-label">Logged Reports</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="stat-card">
-            <i class="bi bi-trash3 stat-icon text-success"></i>
-            <div class="stat-number">5</div>
-            <div class="stat-label">Waste Categories</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="stat-card">
-            <i class="bi bi-lightbulb stat-icon text-warning"></i>
-            <div class="stat-number">19</div>
-            <div class="stat-label">Practical Tips</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="stat-card">
-            <i class="bi bi-database-check stat-icon text-primary"></i>
-            <div class="stat-number">CSV</div>
-            <div class="stat-label">Browser &amp; CSV</div>
-          </div>
-        </div>
-      </div>
+    <!-- Section 2: Two Distinct Portal Selection Cards -->
+    <section id="portalSelection" class="container" style="margin-top: -3.5rem; position: relative; z-index: 10;">
+      <div class="row g-4 justify-content-center">
+        
+        <!-- Portal Card 1: Citizen / User Portal -->
+        <div class="col-lg-6 col-md-12">
+          <div class="eco-card p-4 p-md-5 h-100 border-start border-4 border-success shadow-lg" style="background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1.5 rounded-pill">
+                <i class="bi bi-people-fill me-1"></i> Public Citizen Portal
+              </span>
+              <span class="fs-1 text-success"><i class="bi bi-person-circle"></i></span>
+            </div>
 
-      <!-- Core Capabilities Grid -->
-      <div class="text-center mb-4">
-        <h3 class="fw-bold text-dark mb-1">System Capabilities</h3>
-        <p class="text-muted">Explore how simple, modular software drives environmental action and awareness.</p>
-      </div>
+            <h3 class="fw-bold text-dark mb-2">Citizen / User Portal</h3>
+            <p class="text-secondary mb-4">
+              Report local waste accumulation, overflowing dustbins, or drainage issues with photographic evidence. Access personalized status tracking, browse 19 eco tips, and master segregation guidelines.
+            </p>
 
-      <div class="row g-4 mb-5">
-        <!-- Card 1 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-inline-flex p-3 rounded-circle bg-success bg-opacity-10 text-success mb-3 fs-3">
-                <i class="bi bi-recycle"></i>
+            <div class="p-3 bg-white rounded-3 border mb-4">
+              <div class="small fw-bold text-dark mb-2"><i class="bi bi-check2-circle text-success me-1"></i> Citizen Capabilities:</div>
+              <ul class="list-unstyled mb-0 small text-secondary">
+                <li class="mb-1"><i class="bi bi-arrow-right-short text-success"></i> Lodge cleanliness complaints with image uploads</li>
+                <li class="mb-1"><i class="bi bi-arrow-right-short text-success"></i> Live tracking: Pending &rarr; In Progress &rarr; Resolved</li>
+                <li class="mb-1"><i class="bi bi-arrow-right-short text-success"></i> Interactive Waste Segregation &amp; Eco Tips Hub</li>
+                <li class="mb-0"><i class="bi bi-arrow-right-short text-success"></i> View assigned ward sanitation worker details</li>
+              </ul>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 pt-2">
+              <a href="user-login.html" class="btn btn-eco px-4 flex-grow-1">
+                <i class="bi bi-box-arrow-in-right me-1"></i> User Login
+              </a>
+              <a href="user-login.html?tab=register" class="btn btn-outline-success px-4 flex-grow-1">
+                <i class="bi bi-person-plus-fill me-1"></i> Create User Account
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portal Card 2: Municipal Corporation Admin Portal -->
+        <div class="col-lg-6 col-md-12">
+          <div class="eco-card p-4 p-md-5 h-100 border-start border-4 border-primary shadow-lg" style="background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill">
+                <i class="bi bi-building-fill-gear me-1"></i> Municipal Authority
+              </span>
+              <span class="fs-1 text-primary"><i class="bi bi-shield-shaded"></i></span>
+            </div>
+
+            <h3 class="fw-bold text-dark mb-2">Municipal Corporation Admin</h3>
+            <p class="text-secondary mb-4">
+              Authorized municipal official console to monitor real-time community complaints, inspect uploaded photographic evidence, assign sanitation workers, and manage ward-level cleanliness operations.
+            </p>
+
+            <div class="p-3 bg-white rounded-3 border mb-4">
+              <div class="small fw-bold text-dark mb-2"><i class="bi bi-shield-check text-primary me-1"></i> Administrator Controls:</div>
+              <ul class="list-unstyled mb-0 small text-secondary">
+                <li class="mb-1"><i class="bi bi-arrow-right-short text-primary"></i> Review &amp; prioritize incoming citizen complaints</li>
+                <li class="mb-1"><i class="bi bi-arrow-right-short text-primary"></i> Assign tasks to ward sanitation personnel &amp; departments</li>
+                <li class="mb-1"><i class="bi bi-arrow-right-short text-primary"></i> Transition complaint statuses with internal audit logs</li>
+                <li class="mb-0"><i class="bi bi-arrow-right-short text-primary"></i> Real-time analytics charts &amp; filtered CSV report export</li>
+              </ul>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 pt-2">
+              <a href="admin-login.html" class="btn btn-primary btn-lg w-100 shadow-sm fw-bold">
+                <i class="bi bi-shield-lock-fill me-1"></i> Admin Login
+              </a>
+              <div class="small text-muted text-center w-100 mt-2">
+                <i class="bi bi-lock-fill me-1"></i> Restricted Access: Authorized municipal officers only.
               </div>
-              <h5 class="fw-bold mb-2">Waste Segregation Guide</h5>
-              <p class="text-muted small">
-                Master proper categorization for wet, dry, e-waste, hazardous, and special waste with handling and safety rules.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Smart Waste Item Finder Widget -->
+    <section class="container my-5 pt-3">
+      <div class="finder-card">
+        <div class="row align-items-center gy-3">
+          <div class="col-lg-5">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <span class="badge bg-success bg-opacity-10 text-success fw-bold px-2.5 py-1 small">
+                <i class="bi bi-magic me-1"></i> Public Waste Intelligence
+              </span>
+              <span class="small text-muted">Instant Classification</span>
+            </div>
+            <h5 class="fw-bold mb-1 text-dark">Where does this item go?</h5>
+            <p class="small text-muted mb-0">Type any daily item to instantly check its designated bin and disposal tip.</p>
+          </div>
+          
+          <div class="col-lg-7">
+            <div class="input-group input-group-lg shadow-sm">
+              <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-success"></i></span>
+              <input type="text" id="itemFinderInput" class="form-control border-start-0" placeholder="Type an item (e.g., banana peel, battery, plastic bottle, pizza box)...">
+            </div>
+            
+            <div class="d-flex flex-wrap gap-2 mt-2 align-items-center">
+              <span class="small text-muted me-1">Quick Select:</span>
+              <span class="quick-loc-pill quick-finder-tag" data-item="Banana Peel">🍌 Banana Peel</span>
+              <span class="quick-loc-pill quick-finder-tag" data-item="Plastic Water Bottle">🧴 Plastic Bottle</span>
+              <span class="quick-loc-pill quick-finder-tag" data-item="Mobile Phone / Smartphone">📱 Phone</span>
+              <span class="quick-loc-pill quick-finder-tag" data-item="AA / AAA Dry Cell Batteries">🔋 Batteries</span>
+              <span class="quick-loc-pill quick-finder-tag" data-item="Sanitary Napkins / Pads">🩹 Sanitary Pad</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="itemFinderResult" class="mt-3" style="display: none;"></div>
+      </div>
+    </section>
+
+    <!-- 3-Step Civic Operational Framework -->
+    <section class="container my-5">
+      <div class="text-center mb-5">
+        <span class="badge bg-success bg-opacity-10 text-success px-3 py-1.5 rounded-pill fw-semibold mb-2">
+          <i class="bi bi-diagram-3 me-1"></i> Seamless Workflow
+        </span>
+        <h3 class="fw-bold text-dark mb-1">How The System Operates</h3>
+        <p class="text-muted">A closed-loop civic accountability mechanism from citizen reporting to municipal resolution.</p>
+        
+        <div class="row g-4 mt-2 text-start">
+          <div class="col-md-4">
+            <div class="eco-card p-4 h-100">
+              <div class="step-number-badge">1</div>
+              <h5 class="fw-bold mb-2">Citizen Reports with Evidence</h5>
+              <p class="text-muted small mb-0">
+                A resident logs in, specifies the location and ward, selects the waste category, attaches a photo, and submits a complaint.
               </p>
             </div>
-            <a href="segregation.html" class="btn btn-outline-success btn-sm w-100 fw-semibold mt-3">
-              Explore Guide <i class="bi bi-arrow-right ms-1"></i>
-            </a>
           </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-inline-flex p-3 rounded-circle bg-warning bg-opacity-10 text-warning mb-3 fs-3">
-                <i class="bi bi-lightbulb-fill"></i>
-              </div>
-              <h5 class="fw-bold mb-2">Environmental Tips Hub</h5>
-              <p class="text-muted small">
-                Access 19 actionable tips on single-use plastics, water saving, energy conservation, and home composting.
+          <div class="col-md-4">
+            <div class="eco-card p-4 h-100">
+              <div class="step-number-badge" style="background-color: #0284c7;">2</div>
+              <h5 class="fw-bold mb-2">Admin Triages &amp; Assigns</h5>
+              <p class="text-muted small mb-0">
+                Municipal corporation officers review complaints in real-time, prioritize urgency, and dispatch designated ward sanitation workers.
               </p>
             </div>
-            <a href="tips.html" class="btn btn-outline-warning btn-sm w-100 fw-semibold text-dark mt-3">
-              Read Eco Tips <i class="bi bi-arrow-right ms-1"></i>
-            </a>
           </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-inline-flex p-3 rounded-circle bg-primary bg-opacity-10 text-primary mb-3 fs-3">
-                <i class="bi bi-megaphone-fill"></i>
-              </div>
-              <h5 class="fw-bold mb-2">Report Community Issue</h5>
-              <p class="text-muted small">
-                Report overflowing dustbins, litter hotspots, or drainage issues with validated forms and automatic IDs.
+          <div class="col-md-4">
+            <div class="eco-card p-4 h-100">
+              <div class="step-number-badge" style="background-color: #059669;">3</div>
+              <h5 class="fw-bold mb-2">Resolution &amp; Audit Trail</h5>
+              <p class="text-muted small mb-0">
+                Field teams clear the waste, administrators mark the issue as Resolved with notes, and the citizen receives transparent live updates.
               </p>
             </div>
-            <a href="report_issue.html" class="btn btn-primary btn-sm w-100 fw-semibold mt-3">
-              Submit Report <i class="bi bi-arrow-right ms-1"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="eco-card h-100 p-4 d-flex flex-column justify-content-between">
-            <div>
-              <div class="d-inline-flex p-3 rounded-circle bg-info bg-opacity-10 text-info mb-3 fs-3">
-                <i class="bi bi-table"></i>
-              </div>
-              <h5 class="fw-bold mb-2">Saved Reports Dashboard</h5>
-              <p class="text-muted small">
-                Filter and review all submitted issues stored locally with instant CSV export capabilities.
-              </p>
-            </div>
-            <a href="view_reports.html" class="btn btn-outline-info btn-sm w-100 fw-semibold text-dark mt-3">
-              Open Dashboard <i class="bi bi-arrow-right ms-1"></i>
-            </a>
           </div>
         </div>
       </div>
-
-      <!-- Recent Submissions Banner -->
-      <div id="homeRecentSection" class="eco-card p-4" style="display: none;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            <h5 class="fw-bold mb-0"><i class="bi bi-clock-history text-success me-2"></i>Recently Logged Community Issues</h5>
-            <span class="small text-muted">Latest submissions stored in local database</span>
-          </div>
-          <a href="view_reports.html" class="btn btn-sm btn-outline-secondary">View All</a>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Date & Time</th>
-                <th scope="col">Location</th>
-                <th scope="col">Issue Type</th>
-                <th scope="col">Description</th>
-              </tr>
-            </thead>
-            <tbody id="homeRecentReportsBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Empty State on Home -->
-      <div id="homeNoReportsAlert" class="alert alert-light border p-4 text-center rounded-4">
-        <i class="bi bi-check2-circle fs-1 text-success d-block mb-2"></i>
-        <h5 class="fw-bold">No community reports logged yet!</h5>
-        <p class="text-muted small mb-3">Be the first to submit a local cleanliness issue to initialize your local database.</p>
-        <a href="report_issue.html" class="btn btn-eco btn-sm px-3">
-          <i class="bi bi-plus-circle me-1"></i> Submit First Report
-        </a>
-      </div>
-
-    </div>
+    </section>
   </main>
 
   <!-- Footer -->
@@ -240,29 +265,35 @@
     <div class="container">
       <div class="row align-items-center gy-3">
         <div class="col-md-6 text-center text-md-start">
-          <h6 class="fw-bold mb-1 text-dark"><i class="bi bi-recycle text-success me-1"></i> Community Cleanliness & Waste Awareness System</h6>
-          <p class="small mb-0 text-muted">A community engagement project promoting sustainable waste management.</p>
+          <h6 class="fw-bold mb-1 text-dark"><i class="bi bi-recycle text-success me-1"></i> Community Cleanliness &amp; Waste Management System</h6>
+          <p class="small mb-0 text-muted">A comprehensive civic engagement and municipal operations management project.</p>
         </div>
         <div class="col-md-6 text-center text-md-end">
           <span class="badge bg-light text-dark border p-2 me-2">
-            <i class="bi bi-filetype-csv text-primary me-1"></i> Exportable to <code>reports.csv</code>
+            <i class="bi bi-database-check text-primary me-1"></i> Shared Cloud Database &amp; LocalStorage
           </span>
           <span class="badge bg-light text-success border p-2">
-            <i class="bi bi-shield-check me-1"></i> Academic Prototype
+            <i class="bi bi-shield-check me-1"></i> Multi-Role RBAC
           </span>
         </div>
       </div>
       <hr class="my-3 opacity-25">
       <div class="text-center small text-muted">
-        Academic disclaimer: Reports are saved locally for campus tracking and are not automatically submitted to civic municipal departments.
+        Municipal Corporation Environmental Operations Prototype &bull; Designed for academic defense &amp; civic deployment.
       </div>
     </div>
   </footer>
 
-  <!-- Bootstrap 5 JS Bundle -->
+  <!-- Firebase & App Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom JS (supports both root and js/ folder) -->
-  <script src="main.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,262 +1,281 @@
-# Community Cleanliness & Waste Awareness Web Application
-### A Full-Stack College Mini-Project in Python, Flask, and Responsive Modern Web UI
+# Community Cleanliness & Waste Awareness System
+### Dual-Portal Civic Intelligence Platform (Citizen User Portal & Municipal Corporation Admin Panel)
 
-A responsive, beginner-friendly web application designed to promote municipal waste segregation awareness, practical everyday environmental habits, and structured community cleanliness issue reporting with local CSV persistence.
+A modern civic technology web application designed to promote waste segregation awareness, practical environmental habits, and real-time municipal grievance resolution. Built with clean responsive UI, full Role-Based Access Control (RBAC), and dual deployment support: **Python Flask Web App** and **GitHub Pages Serverless Architecture with Firebase / Local Shared Storage**.
+
+**Live Demo URL:** [https://abhijeett7666.github.io/Cep-Project/](https://abhijeett7666.github.io/Cep-Project/)
 
 ---
 
 ## Table of Contents
 
 1. [Project Overview & Key Objectives](#project-overview--key-objectives)
-2. [Technology Stack](#technology-stack)
-3. [Architecture & Project Structure](#architecture--project-structure)
-4. [Core Features](#core-features)
-5. [Prerequisites & Environment Setup](#prerequisites--environment-setup)
-6. [Step-by-Step Execution Guide (Windows / VS Code)](#step-by-step-execution-guide-windows--vs-code)
-7. [CSV Data Persistence Mechanism](#csv-data-persistence-mechanism)
-8. [Automated Testing & Results](#automated-testing--results)
-9. [College Viva & Defense Guide (Q&A)](#college-viva--defense-guide-qa)
-10. [Current Limitations & Future Enhancements](#current-limitations--future-enhancements)
+2. [Dual-Portal Architecture](#dual-portal-architecture)
+3. [Technology Stack](#technology-stack)
+4. [Portal Features & Capabilities](#portal-features--capabilities)
+   - [Landing Page & Authentication Gateway](#1-landing-page--authentication-gateway)
+   - [Citizen User Portal](#2-citizen-user-portal)
+   - [Municipal Corporation Admin Panel](#3-municipal-corporation-admin-panel)
+   - [Waste Segregation & Eco Tips Hub](#4-waste-segregation--eco-tips-hub)
+5. [Pre-configured Demonstration Accounts (For College Viva)](#pre-configured-demonstration-accounts-for-college-viva)
+6. [Data Persistence Architecture: Dual-Mode (Firebase & Offline Local Storage)](#data-persistence-architecture)
+7. [Step-by-Step GitHub Pages Deployment Guide](#step-by-step-github-pages-deployment-guide)
+8. [Firebase Setup Guide (Optional for Live Production Cloud DB)](#firebase-setup-guide)
+9. [Local Python Flask Execution Guide](#local-python-flask-execution-guide)
+10. [College Viva & Defense Q&A](#college-viva--defense-qa)
 11. [Academic Disclaimer](#academic-disclaimer)
 
 ---
 
 ## Project Overview & Key Objectives
 
-The **Community Cleanliness & Waste Awareness System** has been refactored from a console prototype into an intuitive full-stack web application. It addresses campus hygiene and community waste segregation challenges through four core pillars:
+Traditional municipal complaints and awareness systems often suffer from two major problems:
+1. **Lack of accountability & visibility:** Citizens report garbage or waterlogging issues but have no visibility into who is assigned, what actions are taken, or when the complaint is resolved.
+2. **Disconnected education:** Citizens are instructed to segregate waste, but lack quick reference guides and practical habit tips in the same interface where they report issues.
 
-- **Interactive Waste Education**: Educates users on the 5 municipal waste streams (Wet, Dry, E-Waste, Hazardous, Special).
-- **Behavioral Tips Hub**: Provides 19 actionable sustainability practices across 7 key environmental categories.
-- **Structured Community Reporting**: Enables students and residents to report cleanliness concerns with validation, automatic timestamping, and collision-free sequential IDs (`ENV-0001`, `ENV-0002`...).
-- **Transparent Local Dashboard**: Displays logged reports in a searchable, filterable data dashboard backed by local CSV storage.
+The **Community Cleanliness & Waste Awareness System** bridges this gap by providing:
+- **Two Dedicated Portals**: A clean citizen interface for reporting and tracking, alongside a secure operations console for Municipal Corporation sanitation officials.
+- **Complete Complaint Lifecycle Management**: From submission (`Pending`) to crew dispatch (`In Progress`) to verified cleanup (`Resolved` / `Rejected`) with full audit history.
+- **Interactive Educational Modules**: 5-stream waste segregation guide and 19 categorized sustainability tips.
+- **Data Export & Visual Analytics**: Dynamic Chart.js visualizations (categories, ward hotspots, status funnels) and filter-aware CSV report generation.
+
+---
+
+## Dual-Portal Architecture
+
+```text
+                            +-------------------------------------------+
+                            |       Landing Page (index.html)           |
+                            |  Dual Portal Gateways & Waste Finder      |
+                            +--------------------+----------------------+
+                                                 |
+                     +---------------------------+---------------------------+
+                     |                                                       |
+                     v                                                       v
+        +-------------------------+                             +-------------------------+
+        |   Citizen User Portal   |                             | Municipal Admin Portal  |
+        |   (user-login.html)     |                             |   (admin-login.html)    |
+        +------------+------------+                             +------------+------------+
+                     |                                                       |
+                     v                                                       v
+        +-------------------------+                             +-------------------------+
+        |  Citizen User Dashboard |                             | Municipal Admin Console |
+        |  (user-dashboard.html)  |                             |  (admin-dashboard.html) |
+        +------------+------------+                             +------------+------------+
+                     |                                                       |
+                     |  • Raise Complaints with Photos                       |  • Triage & Priority Setting
+                     |  • Real-Time Timeline Tracking                        |  • Assign Sanitation Squads
+                     |  • Personal Statistics                                |  • Status Updates & Notes
+                     |  • Segregation Guide & Tips                           |  • Chart.js Visual Analytics
+                     |  • Profile & Ward Settings                            |  • Filtered CSV Data Export
+                     |                                                       |
+                     +---------------------------+---------------------------+
+                                                 |
+                                                 v
+                            +-------------------------------------------+
+                            |         Shared Database Layer             |
+                            |       (js/db.js & js/auth.js)             |
+                            |                                           |
+                            |  [Mode A] Cloud Firestore & Storage       |
+                            |  [Mode B] Instant LocalStorage Sync       |
+                            +-------------------------------------------+
+```
 
 ---
 
 ## Technology Stack
 
-| Layer | Technology | Purpose |
+| Layer | Technology | Description |
 |---|---|---|
-| **Backend** | Python 3 + Flask | Modular controller routes, session management, and server-side validation |
-| **Data Storage** | Standard Library `csv` | Lightweight, collision-free local persistence in `reports.csv` |
-| **Frontend Layout** | Semantic HTML5 & Jinja2 | Dynamic server-side templating with template inheritance (`base.html`) |
-| **Styling** | Custom CSS3 + Bootstrap 5.3 CDN | Eco-conscious palette, responsive grid, and mobile-first card layouts |
-| **Interactivity** | Vanilla JavaScript | Instant client-side search, category filter pills, and "Tip of the Day" carousel |
-| **Testing** | Standard Library `unittest` | 18 automated tests verifying route responses, form validation, and CSV safety |
-
-> **No Node.js, Webpack, or heavy JavaScript build steps required.** Runs instantly with standard Python.
+| **Frontend Framework** | HTML5, Bootstrap 5.3 CDN, Bootstrap Icons | Responsive, mobile-first layouts with accessible components |
+| **Typography & Theme** | Google Fonts (Plus Jakarta Sans, Inter), Custom CSS3 | Modern environmental green & municipal navy blue color scheme |
+| **Data Visualizations** | Chart.js 4.x CDN | Real-time doughnut, bar, and area density analytics |
+| **Authentication & RBAC** | Firebase Auth + Custom Session Engine (`auth.js`) | Role-Based Access Control distinguishing citizens from admins |
+| **Database & Cloud Storage** | Cloud Firestore + Firebase Storage (`db.js`) | Scalable document DB and image upload storage with offline fallback |
+| **Fallback Persistence** | Synchronized Browser `localStorage` | Zero-configuration demo mode working across browser tabs out-of-the-box |
+| **Python Backend (Optional)** | Python 3 + Flask + `unittest` | Server-rendered alternative running locally in VS Code |
 
 ---
 
-## Architecture & Project Structure
+## Portal Features & Capabilities
 
-```text
-community-cleanliness-web/
-├── app.py                  # Flask routes, form handlers, CSV helper functions
-├── reports.csv             # Local CSV storage database
-├── requirements.txt        # Flask dependency specification
-├── static/
-│   ├── css/
-│   │   └── style.css       # Custom eco-friendly styling and responsive cards
-│   └── js/
-│       └── main.js         # Vanilla JS: instant search, tip cycler, form feedback
-├── templates/
-│   ├── base.html           # Master layout: Navbar, flash messages, footer
-│   ├── index.html          # Hero section, statistics, and module cards
-│   ├── segregation.html    # 5-category segregation guide with tabs & warnings
-│   ├── tips.html           # 19 environmental tips with category filters & cycler
-│   ├── report_issue.html   # Validated community reporting form
-│   └── view_reports.html   # Searchable & filterable reports table/cards
-├── tests/
-│   └── test_web_app.py     # Automated test suite (18 unit/route tests)
-└── README.md               # Project documentation and viva defense notes
+### 1. Landing Page & Authentication Gateway (`index.html`)
+- **Portal Selection Cards**: Distinct cards with green styling for Citizens and official municipal blue styling for Administrators.
+- **Smart Waste Item Finder**: Instant interactive widget ("Where does this item go?") allowing visitors to check item classifications before logging in.
+- **3-Step Civic Process**: Educational guide illustrating the workflow (Report Issue &rarr; Municipal Dispatch &rarr; Verified Resolution).
+- **Security Notice**: Restricts administrator self-registration and clearly states official policy.
+
+### 2. Citizen User Portal (`user-login.html` & `user-dashboard.html`)
+- **Citizen Registration & Login**: Comprehensive 8-field registration (Full Name, Email, Mobile Number, Password, Ward/Locality, City, Profile Photo).
+- **Personalized KPI Cards**: Overview of citizen's own submitted reports, pending items, active investigations, and resolved tickets.
+- **Complaint Submission Engine**:
+  - 9 structured categories (Wet Waste, Dry Waste, E-Waste, Hazardous, Special, Littering, Garbage Overflow, Plastic Pollution, Drainage).
+  - Landmark and location input with Ward selector.
+  - Photographic evidence attachment with client-side preview.
+  - Anti-spam submission locking to prevent duplicate tickets.
+- **Live Complaint Tracking**: Tabular and card views of submitted complaints with real-time status badges (`Pending`, `In Progress`, `Resolved`, `Rejected`).
+- **Detailed Audit Timeline Modal**: Chronological history showing exactly who updated the ticket, timestamp, and official municipal remarks.
+- **Integrated Knowledge Base**: Direct in-dashboard access to the Waste Segregation Guide and 19 Eco Tips.
+- **Citizen Profile Settings**: Update locality, phone number, and avatar photo.
+
+### 3. Municipal Corporation Admin Panel (`admin-login.html` & `admin-dashboard.html`)
+- **Restricted Government Login**: Dedicated login gateway strictly requiring provisioned administrator credentials. Public sign-up is disabled.
+- **Operations Command Center KPIs**:
+  - Total complaints intake
+  - Pending review count (requiring triage)
+  - In Progress counter (assigned to field crews)
+  - Resolved complaints (closed and verified)
+  - Rejected tickets (invalid or duplicates)
+  - Today's complaints intake count
+- **Master Complaints Management Table**:
+  - Real-time search across Complaint ID, citizen name, location, and keywords.
+  - Multi-criteria filter dropdowns: Status, Category, Ward Zone, Priority level, and Date sort.
+  - Triage button opening the **Complaint Management Modal**.
+- **Interactive Triage Modal**:
+  - Full view of citizen report details, address, contact, and submitted photograph.
+  - Status transitions (`Pending` &rarr; `In Progress` &rarr; `Resolved` / `Rejected`).
+  - Safeguard confirmation dialogs when closing or rejecting complaints.
+  - Field Worker assignment dropdown dynamically populated from active sanitation personnel.
+  - Responsible Department selector (Solid Waste, Drainage, Health & Sanitation, E-Waste Cell).
+  - Internal administrative notes and citizen-facing resolution reports.
+- **Real-Time Visual Analytics (Chart.js)**:
+  - Waste Category Distribution (Doughnut chart)
+  - Complaint Status Funnel (Bar chart)
+  - Ward Hotspot Density (Horizontal bar chart)
+- **Sanitation Personnel Management**:
+  - Directory of field workers with IDs, department, assigned ward, and contact numbers.
+  - Active task counter showing assigned workload per worker.
+  - "Register New Field Worker" modal for adding sanitation staff.
+- **Filter-Aware CSV Report Exporter**:
+  - One-click export to download official `.csv` reports for record-keeping and external analysis.
+
+### 4. Waste Segregation & Eco Tips Hub
+- **Segregation Guide (`segregation.html`)**: Interactive tabs for 5 waste streams (Wet, Dry, E-Waste, Hazardous, Special) with definitions, common examples, safe handling techniques, and municipal advisories.
+- **Eco Tips Hub (`tips.html`)**: 19 categorized tips with "Tip of the Day" carousel, category filter pills, and instant search.
+
+---
+
+## Pre-configured Demonstration Accounts (For College Viva)
+
+For testing and viva demonstrations, the system includes pre-seeded demonstration accounts that work out of the box without needing Firebase credentials:
+
+| Role | Portal Link | Username / Email | Password |
+|---|---|---|---|
+| **Municipal Admin** | `admin-login.html` | `admin@municipal.gov.in` | `Admin@2026` |
+| **Citizen User** | `user-login.html` | `citizen@example.com` | `Citizen@123` |
+
+> Both login pages include a one-click **"Autofill Credentials"** button for quick demonstration during project evaluations.
+
+---
+
+## Data Persistence Architecture
+
+The application implements an **adaptive dual-mode data layer** in `js/db.js` and `js/auth.js`:
+
+1. **Production Mode (Cloud Firestore & Firebase Storage)**:
+   - When Firebase API keys are supplied in `js/firebase-config.js`, all citizen complaints, photo uploads, user profiles, and status audit logs are synchronized in real-time to Google Cloud Firestore.
+   - Enforced by production security rules (`firestore.rules` and `storage.rules`).
+
+2. **Demonstration / Offline Mode (Local Storage Synchronizer)**:
+   - If Firebase keys remain placeholders, the application seamlessly activates an internal storage layer using browser `localStorage`.
+   - Seeded with sample complaints (`CMP-2026-001` through `CMP-2026-004`) and field workers (`WRK-101` through `WRK-105`).
+   - Any report submitted in the Citizen Portal appears immediately in the Municipal Corporation Admin Panel when opened in another browser tab.
+
+---
+
+## Step-by-Step GitHub Pages Deployment Guide
+
+Follow these steps to deploy all changes to your GitHub Pages repository:
+
+### 1. Open Terminal in the GitHub Pages Folder
+```powershell
+cd "C:\Users\Abhijeet Thorat\.gemini\antigravity\scratch\community-cleanliness-web\github-pages"
 ```
 
----
+### 2. Copy the Files to Your Local Git Clone of `Cep-Project`
+```powershell
+# Assuming your local clone of Cep-Project is located at C:\Users\Abhijeet Thorat\Desktop\Cep-Project (or similar path)
+# Copy all files from github-pages into your repo:
+Copy-Item -Path ".\*" -Destination "<PATH_TO_YOUR_CEP_PROJECT_REPO>" -Recurse -Force
+```
 
-## Core Features
+### 3. Commit and Push to GitHub
+```bash
+git add .
+git commit -m "Add User Login, Citizen Dashboard, and Municipal Corporation Admin Panel with Analytics"
+git push origin main
+```
 
-### 1. Interactive Waste Segregation Guide (`/segregation`)
-- Visual overview of 5 critical waste categories:
-  1. **Wet Waste** (food scraps, fruit rinds, organic compostables)
-  2. **Dry Recyclable Waste** (paper, clean plastic, cardboard, glass, tins)
-  3. **E-Waste** (gadgets, chargers, batteries, electrical peripherals)
-  4. **Hazardous Household Waste** (paints, solvents, pesticides, engine oil)
-  5. **Special Waste** (sanitary hygiene items, bulky furniture, rubble)
-- Detailed breakdown per category: Definition, Common Examples, Disposal Methods, and Safety Notes.
-- **Municipal Notice**: Clear alert noting that recycling capabilities and schedules depend on local municipal infrastructure.
-
-### 2. Environmental Tips Hub (`/tips`)
-- 19 practical tips across 7 critical sustainability categories:
-  - Reducing single-use plastics
-  - Saving clean water
-  - Conserving electrical energy
-  - Reusing and repurposing items
-  - Keeping campus/neighborhood grounds clean
-  - Composting organic kitchen scraps
-  - Responsible e-waste recycling
-- **Tip of the Day Spotlight**: Interactive carousel box with Previous/Next buttons.
-- **Client-Side Filter Pills & Live Search**: Filter by category or search by keyword instantly without page reloads.
-
-### 3. Community Issue Reporting Form (`/report`)
-- Clean user-friendly input fields:
-  - **Location / Area Name**: Required, validated client-side and server-side (rejects empty/whitespace-only input; min 2 chars).
-  - **Issue Category Dropdown**: 6 standardized categories (`Littering`, `Overflowing Dustbin`, `Improper Waste Segregation`, `Plastic Pollution`, `Drainage / Stagnant Water Issue`, `Other Environmental Issue`).
-  - **Description**: Optional multi-line textarea.
-- Auto-generates unique sequential IDs (`ENV-0001`, `ENV-0002`...) and system timestamps (`YYYY-MM-DD HH:MM:SS`).
-- Stores data in `reports.csv` and displays a success alert with the generated Report ID.
-- **Local Prototype Disclaimer**: Transparently clarifies that reports are saved locally for campus tracking and not automatically sent to civic municipal servers.
-
-### 4. Saved Reports Dashboard (`/reports`)
-- Responsive data table for desktops and card grid for mobile devices.
-- Dynamic search bar matching Report ID, Location, or Description.
-- Dropdown filter by Issue Category.
-- Gracefully handles empty states ("No reports submitted yet") and corrupt/malformed CSV rows.
-- Bonus JSON API endpoint: `GET /api/reports`.
+### 4. Enable GitHub Pages in Repository Settings
+1. Go to your repository on GitHub: `https://github.com/abhijeett7666/Cep-Project`.
+2. Navigate to **Settings** &rarr; **Pages**.
+3. Under **Branch**, select `main` and folder `/ (root)`.
+4. Click **Save**.
+5. Your updated website will be live in 1-2 minutes at: `https://abhijeett7666.github.io/Cep-Project/`.
 
 ---
 
-## Prerequisites & Environment Setup
+## Firebase Setup Guide
 
-- **Python**: Python 3.8 or higher.
-- **Operating System**: Windows, macOS, or Linux.
-- **Editor**: Visual Studio Code (recommended).
+To connect the application to your own live Firebase project:
 
----
-
-## Step-by-Step Execution Guide (Windows / VS Code)
-
-### 1. Open the Project Folder in VS Code
-1. Launch **Visual Studio Code**.
-2. Click **File > Open Folder...** and select:
-   ```text
-   C:\Users\Abhijeet Thorat\.gemini\antigravity\scratch\community-cleanliness-web
+1. Go to [Firebase Console](https://console.firebase.google.com/) and create a project (e.g. `swachh-community`).
+2. Enable **Authentication** &rarr; Sign-in method &rarr; Enable **Email/Password**.
+3. Enable **Cloud Firestore** in test or production mode.
+4. Enable **Firebase Storage** for photos.
+5. In Project Settings &rarr; General &rarr; **Your apps**, register a Web App (`</>`).
+6. Copy the `firebaseConfig` object and paste it into `js/firebase-config.js`:
+   ```javascript
+   const firebaseConfig = {
+     apiKey: "YOUR_API_KEY",
+     authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+     projectId: "YOUR_PROJECT_ID",
+     storageBucket: "YOUR_PROJECT_ID.appspot.com",
+     messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+     appId: "YOUR_APP_ID"
+   };
    ```
-3. Open the integrated terminal with `` Ctrl + ` `` (Backtick).
+7. Deploy the provided `firestore.rules` and `storage.rules` to enforce role-based access control.
 
-### 2. (Optional but Recommended) Create a Virtual Environment
-```powershell
-py -m venv venv
-.\venv\Scripts\Activate.ps1
-```
+---
 
-### 3. Install Dependencies
-```powershell
-pip install -r requirements.txt
-```
-*(Or with the Python launcher: `py -m pip install -r requirements.txt`)*
+## Local Python Flask Execution Guide
 
-### 4. Launch the Web Server
+If presenting as a Python full-stack application:
+
 ```powershell
+cd "C:\Users\Abhijeet Thorat\.gemini\antigravity\scratch\community-cleanliness-web"
+python -m pip install -r requirements.txt
 python app.py
 ```
-*(Or `py app.py`)*
+Open your browser at `http://127.0.0.1:5000`.
 
-### 5. Access the Web Application
-Open your web browser and navigate to:
-```text
-http://127.0.0.1:5000
-```
-
----
-
-## CSV Data Persistence Mechanism
-
-Reports are stored in `reports.csv` in the root folder.
-
-### Header Format:
-```csv
-Report ID,Timestamp,Location,Issue Type,Description
-```
-
-### Sample Record:
-```csv
-ENV-0001,2026-10-15 19:55:00,Chemistry Lab Backyard,Improper Waste Segregation,Reagent bottles mixed with dry cardboard
-```
-
-### Key Safety Guarantees:
-- **Collision-Free IDs**: `get_next_report_id()` inspects existing CSV records to find the highest numerical ID before generating the next sequence number.
-- **Malformed Line Tolerance**: `get_all_reports()` skips corrupted rows (< 5 columns) and blank lines without crashing the server.
-- **Safe Escaping**: Python's `csv.writer` handles commas, quotes, and newlines in user text automatically.
-
----
-
-## Automated Testing & Results
-
-The project includes 18 automated unit and integration tests in `tests/test_web_app.py` utilizing temporary directories so your actual `reports.csv` database remains untouched.
-
-### Running the Test Suite:
+To run the automated test suite:
 ```powershell
-py -m unittest discover -s tests -p "test_*.py" -v
-```
-
-### Test Results:
-```text
-test_ensure_csv_file_creation (test_web_app.TestCSVHelpers.test_ensure_csv_file_creation) ... ok
-test_read_malformed_csv_graceful (test_web_app.TestCSVHelpers.test_read_malformed_csv_graceful) ... ok
-test_save_report_invalid_issue_type (test_web_app.TestCSVHelpers.test_save_report_invalid_issue_type) ... ok
-test_save_report_invalid_location (test_web_app.TestCSVHelpers.test_save_report_invalid_location) ... ok
-test_save_report_validation_and_writing (test_web_app.TestCSVHelpers.test_save_report_validation_and_writing) ... ok
-test_sequential_id_generation (test_web_app.TestCSVHelpers.test_sequential_id_generation) ... ok
-test_environmental_tips_count_and_areas (test_web_app.TestDataAndConstants.test_environmental_tips_count_and_areas) ... ok
-test_issue_types_list (test_web_app.TestDataAndConstants.test_issue_types_list) ... ok
-test_waste_categories_coverage (test_web_app.TestDataAndConstants.test_waste_categories_coverage) ... ok
-test_api_reports_endpoint (test_web_app.TestFlaskWebRoutes.test_api_reports_endpoint) ... ok
-test_index_route (test_web_app.TestFlaskWebRoutes.test_index_route) ... ok
-test_report_issue_get_form (test_web_app.TestFlaskWebRoutes.test_report_issue_get_form) ... ok
-test_report_issue_post_empty_location_rejects (test_web_app.TestFlaskWebRoutes.test_report_issue_post_empty_location_rejects) ... ok
-test_report_issue_post_valid_redirects_and_persists (test_web_app.TestFlaskWebRoutes.test_report_issue_post_valid_redirects_and_persists) ... ok
-test_segregation_guide_route (test_web_app.TestFlaskWebRoutes.test_segregation_guide_route) ... ok
-test_tips_route (test_web_app.TestFlaskWebRoutes.test_tips_route) ... ok
-test_view_reports_empty_state (test_web_app.TestFlaskWebRoutes.test_view_reports_empty_state) ... ok
-test_view_reports_with_data_and_filtering (test_web_app.TestFlaskWebRoutes.test_view_reports_with_data_and_filtering) ... ok
-
-----------------------------------------------------------------------
-Ran 18 tests in 0.148s
-
-OK
+python -m unittest discover -s tests -p "test_*.py" -v
 ```
 
 ---
 
-## College Viva & Defense Guide (Q&A)
+## College Viva & Defense Q&A
 
-### Q1: Why did you choose Flask instead of Django or FastAPI?
-**Answer**: Flask is a lightweight micro-framework ideal for college mini-projects. It gives complete control over routes and views without introducing heavy boilerplate like Django ORMs or ASGI dependencies that are unnecessary for file-based CSV storage.
+### Q1: Why are there two separate portals instead of a single page?
+> **Answer:** In civic administration, separation of duties is critical. Citizens need an intuitive interface to report issues, upload photos, and track the progress of their complaints. Municipal corporation administrators require an operational command center to prioritize complaints, assign field sanitation workers, update audit trails, and review ward analytics. Combining both into one interface creates security risks and poor user experience.
 
-### Q2: How does the application prevent duplicate or conflicting Report IDs?
-**Answer**: Through the helper function `get_next_report_id()`. When saving, the application reads `reports.csv`, extracts the numerical part of all existing IDs starting with `ENV-`, identifies the maximum integer, and increments it by 1 (e.g., `max(1, 2) + 1 = 3 -> ENV-0003`).
+### Q2: How is role-based access control (RBAC) enforced?
+> **Answer:** Role-based access control is enforced at both the UI route guard level and the database level:
+> - Route guards (`Auth.requireCitizen()` and `Auth.requireAdmin()`) inspect session credentials and redirect unauthorized users.
+> - Public registration is restricted to citizen accounts only; users cannot self-assign administrator privileges.
+> - In Firebase, `firestore.rules` enforces that only authenticated users with administrative privileges can update complaint statuses or worker assignments.
 
-### Q3: How is data persisted without an SQL database?
-**Answer**: Using Python's built-in `csv` module with `csv.writer` and `csv.reader`. When a user submits a report, the application safely appends a row with proper delimiters to `reports.csv`. When viewing, `get_all_reports()` reads the rows, checks for malformed lines, and passes dictionary records to Jinja2 templates.
+### Q3: How do the Citizen Portal and Admin Panel communicate?
+> **Answer:** They share a unified database layer (`db.js`). When a citizen submits a complaint on `user-dashboard.html`, it is written to the shared complaints repository. When an administrator logs into `admin-dashboard.html`, the system reads from this same repository, enabling immediate triage, worker dispatch, and status updates that reflect back to the citizen's audit timeline.
 
-### Q4: How is client-side and server-side validation handled?
-**Answer**:
-- **Client-Side**: In `main.js`, form listeners check the location field on typing and before submit, giving immediate green/red input outlines without waiting for network round-trips.
-- **Server-Side**: In `app.py`, `validate_report_data()` trims whitespace, rejects inputs shorter than 2 characters, and ensures the selected issue type matches the permitted list.
-
-### Q5: What design pattern is used here?
-**Answer**: A clean **MVC (Model-View-Controller)** pattern:
-- **Model**: Python CSV helper functions and data structures (`save_report`, `get_all_reports`, `WASTE_CATEGORIES`).
-- **View**: Jinja2 HTML templates (`base.html`, `report_issue.html`, etc.) styled with CSS.
-- **Controller**: Flask route functions in `app.py` receiving HTTP requests and returning rendered responses.
-
----
-
-## Current Limitations & Future Enhancements
-
-### Current Limitations:
-1. **Local Storage**: Data is saved to local disk in CSV format; concurrent write operations from thousands of simultaneous web users are not supported.
-2. **No Image Uploads**: Citizens cannot yet attach photo evidence of overflowing bins.
-3. **No Automatic Civic Dispatch**: Reports are tracked locally for academic awareness and not forwarded to municipal authorities.
-
-### Future Enhancements:
-- **Database Migration**: Upgrade CSV storage to SQLite or PostgreSQL via SQLAlchemy.
-- **Photo Uploads**: Allow photo attachments stored in a local static directory or AWS S3.
-- **Geolocation**: Integrate OpenStreetMap / Leaflet.js to pinpoint report coordinates on an interactive map.
-- **Municipal API Hook**: Connect to civic redressal systems (e.g., Swachhata API) for automated municipal complaint logging.
+### Q4: Why can this run on GitHub Pages without a backend server?
+> **Answer:** GitHub Pages hosts static web assets (HTML, CSS, JS). By utilizing client-side Firebase SDKs (Auth, Firestore, Storage) via CDN, the application operates as a serverless Single Page Application (SPA). For offline demonstration, the built-in `localStorage` bridge provides synchronous data sharing across browser tabs without needing external servers.
 
 ---
 
 ## Academic Disclaimer
 
-> **Note**: This application is an educational prototype developed for academic coursework. All data is stored locally in `reports.csv` on the host machine. It is not affiliated with any government municipal department. For public municipal emergencies, contact your local municipal corporation directly.
+This application is an educational civic prototype developed for academic evaluation, community awareness, and technical demonstration. In demonstration mode, submitted reports are logged in persistent storage and are not dispatched to government emergency lines.
